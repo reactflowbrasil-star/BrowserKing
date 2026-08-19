@@ -98,7 +98,13 @@
         createModel('gemini-3.1-flash-lite-preview', 'Gemini 3.1 Flash Lite Preview', { supportsVision: true }),
         createModel('gemini-2.5-pro', 'Gemini 2.5 Pro', { supportsVision: true }),
         createModel('gemini-2.5-flash', 'Gemini 2.5 Flash', { supportsVision: true }),
-        createModel('gemini-2.5-flash-lite', 'Gemini 2.5 Flash-Lite', { supportsVision: true })
+        createModel('gemini-2.5-flash-lite', 'Gemini 2.5 Flash-Lite', { supportsVision: true }),
+        createModel('gemini-3-pro-image', 'Nano Banana Pro (Image Gen)', { supportsVision: true, category: 'image' }),
+        createModel('gemini-2.5-flash-image', 'Nano Banana Fast (Image Gen)', { supportsVision: true, category: 'image' }),
+        createModel('gemini-3.1-flash-lite-image', 'Nano Banana Lite (Image Gen)', { supportsVision: true, category: 'image' }),
+        createModel('veo-3.1-generate-001', 'Veo 3.1 (Video Gen)', { supportsVision: true, category: 'video' }),
+        createModel('veo-3.1-fast-generate-001', 'Veo 3.1 Fast (Video Gen)', { supportsVision: true, category: 'video' }),
+        createModel('veo-3.1-lite-generate-001', 'Veo 3.1 Lite (Video Gen)', { supportsVision: true, category: 'video' })
       ]
     },
     groq: {
@@ -595,9 +601,9 @@
       return false;
     }
 
-    // Google: all Gemini models support vision
+    // Google: Gemini and Veo models support vision
     if (providerId === 'google') {
-      return /gemini/.test(value);
+      return /(gemini|veo)/.test(value);
     }
 
     // xAI: only models with 'vision' or grok-3/4 (not mini), grok-2-vision
@@ -656,7 +662,9 @@
 
   function shouldKeepModel(modelId) {
     const value = String(modelId || '').toLowerCase();
-    return !/(embed|moderation|whisper|tts|transcribe|image|speech|audio|rerank)/.test(value);
+    if (/(embed|moderation|whisper|tts|transcribe|speech|audio|rerank)/.test(value)) return false;
+    if (/(image|video)/.test(value) && !/(gemini.*image|veo.*generate)/.test(value)) return false;
+    return true;
   }
 
   function getModelDescription(definition, model) {

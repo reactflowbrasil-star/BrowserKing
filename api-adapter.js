@@ -1644,6 +1644,16 @@ Model: {{modelName}}`;
     const evidence = `${task} ${toolNames}`;
     const rules = [
       {
+        route: 'videoGen', model: GEMINI_MODELS.videoGen,
+        pattern: /\b(vídeo|video|gravar tela|gravar|录屏|录制|generate video|criar vídeo|criar video|gerar vídeo|gerar video|movie|film|clip|animação|animação|animation|renderizar|render video|video gen)\b/i,
+        reason: 'Geração de vídeo com Google Veo 3.1.'
+      },
+      {
+        route: 'imageGen', model: GEMINI_MODELS.imageGen,
+        pattern: /\b(imagem|image|gerar imagem|criar imagem|foto|desenho|ilustra|generate image|criar foto|gerar foto|desenhar|pintar|paint|draw|sketch|renderizar|render image|image gen|nano banana)\b/i,
+        reason: 'Geração de imagem com Nano Banana.'
+      },
+      {
         route: 'dom', model: GEMINI_MODELS.dom,
         pattern: /\b(dom|html|css selector|xpath|accessibility tree|árvore de acessibilidade|arvore de acessibilidade|playwright|puppeteer|selenium|stagehand|queryselector|evaluate\(|locator\(|frame locator|shadow dom)\b/i,
         reason: 'Automação DOM complexa e uso de ferramentas estruturadas.'
@@ -1684,6 +1694,12 @@ Model: {{modelName}}`;
     if (model === GEMINI_MODELS.visual) return GEMINI_MODELS.crossPlatform;
     if (model === GEMINI_MODELS.dom) return GEMINI_MODELS.fast;
     if (model === GEMINI_MODELS.crossPlatform) return GEMINI_MODELS.fast;
+    if (model === GEMINI_MODELS.imageGen) return GEMINI_MODELS.imageGenFast;
+    if (model === GEMINI_MODELS.imageGenFast) return GEMINI_MODELS.imageGenLite;
+    if (model === GEMINI_MODELS.imageGenLite) return GEMINI_MODELS.default;
+    if (model === GEMINI_MODELS.videoGen) return GEMINI_MODELS.videoGenFast;
+    if (model === GEMINI_MODELS.videoGenFast) return GEMINI_MODELS.videoGenLite;
+    if (model === GEMINI_MODELS.videoGenLite) return GEMINI_MODELS.default;
     return GEMINI_MODELS.crossPlatform;
   }
 
