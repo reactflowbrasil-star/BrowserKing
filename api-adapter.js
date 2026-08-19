@@ -368,7 +368,13 @@ Model: {{modelName}}`;
     visual: 'gemini-3.1-pro-preview',
     dom: 'gemini-3.1-pro-preview',
     fast: 'gemini-3.6-flash',
-    crossPlatform: 'gemini-2.5-computer-use-preview-10-2025'
+    crossPlatform: 'gemini-2.5-computer-use-preview-10-2025',
+    imageGen: 'gemini-3-pro-image',
+    imageGenFast: 'gemini-2.5-flash-image',
+    imageGenLite: 'gemini-3.1-flash-lite-image',
+    videoGen: 'veo-3.1-generate-001',
+    videoGenFast: 'veo-3.1-fast-generate-001',
+    videoGenLite: 'veo-3.1-lite-generate-001'
   });
 
   async function writeDebugLog(entry) {
