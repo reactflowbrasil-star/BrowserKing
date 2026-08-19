@@ -252,7 +252,7 @@ Model: {{modelName}}`;
         const payload = { action, data, stepId, ts: Date.now() };
         chrome.storage.local.set({ hatclawAgentActivity: payload });
 
-        // If this is an action with tool params, also emit cursor movement command
+        // If this is an action with tool params, emit DOM-first structured action
         if (action === 'start' && data?.type === 'action' && data?.details) {
           try {
             const detailsStr = String(data.details);
@@ -261,30 +261,65 @@ Model: {{modelName}}`;
             if (jsonStart >= 0 && jsonEnd > jsonStart) {
               const params = JSON.parse(detailsStr.slice(jsonStart, jsonEnd + 1));
               const actionName = String(params.action || '').toLowerCase();
-              const titleClick = String(data.title || '').toLowerCase().includes('clicando');
-              const isClick = titleClick || ['left_click', 'right_click', 'double_click', 'triple_click', 'click'].some(a => actionName.includes(a));
-              const isHover = actionName.includes('hover');
 
-              let coord = null;
-              if (typeof params.x === 'number' && typeof params.y === 'number') {
-                coord = [params.x, params.y];
-              } else if (Array.isArray(params.coordinate) && params.coordinate.length >= 2) {
-                coord = params.coordinate;
+              // Build structured action for content-script.js DOM executor
+              const domAction = { ts: Date.now() };
+
+              // Map tool action names to content-script action types
+              if (actionName.includes('left_click') || actionName.includes('click')) {
+                domAction.type = 'left_click';
+              } else if (actionName.includes('double_click')) {
+                domAction.type = 'double_click';
+              } else if (actionName.includes('right_click')) {
+                domAction.type = 'right_click';
+              } else if (actionName.includes('type') || actionName.includes('key')) {
+                domAction.type = 'type';
+                domAction.text = params.text || params.value || '';
+              } else if (actionName.includes('scroll')) {
+                domAction.type = 'scroll';
+                domAction.direction = params.direction || 'down';
+                domAction.amount = params.amount || 3;
+              } else if (actionName.includes('hover') || actionName.includes('mouse')) {
+                domAction.type = 'hover';
+              } else if (actionName.includes('screenshot') || actionName.includes('read_page')) {
+                // Screenshot/read_page are not DOM actions, skip
+                domAction.type = null;
+              } else {
+                domAction.type = actionName;
               }
 
-              if (coord) {
-                chrome.storage.local.set({
-                  hatclawCursorCommand: {
-                    type: 'MOVE_CURSOR',
-                    x: coord[0], y: coord[1],
-                    clicked: isClick, hover: isHover,
-                    ts: Date.now()
-                  }
-                });
-              } else {
-                const selector = params.selector || params.cssSelector || params.element || null;
+              if (domAction.type) {
+                // Element resolution: ref > selector > coordinate
                 const ref = params.ref || params.elementRef || params.target || null;
-                if (selector || ref) {
+                const selector = params.selector || params.cssSelector || params.element || null;
+                let coord = null;
+                if (typeof params.x === 'number' && typeof params.y === 'number') {
+                  coord = [params.x, params.y];
+                } else if (Array.isArray(params.coordinate) && params.coordinate.length >= 2) {
+                  coord = params.coordinate;
+                }
+
+                if (ref) domAction.ref = ref;
+                if (selector) domAction.selector = selector;
+                if (coord) domAction.coordinate = coord;
+
+                // Store structured action for content-script.js to pick up
+                chrome.storage.local.set({ hatclawAgentAction: domAction });
+
+                // Also store legacy cursor command for backward compat
+                if (coord) {
+                  const isClick = ['left_click', 'right_click', 'double_click', 'triple_click', 'click'].some(a => actionName.includes(a));
+                  const isHover = actionName.includes('hover');
+                  chrome.storage.local.set({
+                    hatclawCursorCommand: {
+                      type: 'MOVE_CURSOR',
+                      x: coord[0], y: coord[1],
+                      clicked: isClick, hover: isHover,
+                      ts: Date.now()
+                    }
+                  });
+                } else if (ref || selector) {
+                  const isClick = ['left_click', 'right_click', 'double_click', 'triple_click', 'click'].some(a => actionName.includes(a));
                   chrome.storage.local.set({
                     hatclawCursorCommand: {
                       type: 'MOVE_CURSOR_TO_ELEMENT',

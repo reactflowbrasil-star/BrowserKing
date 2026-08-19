@@ -126,12 +126,23 @@
   // PRIMARY: storage.onChanged — reliable cross-context communication
   if (chrome.storage?.onChanged) {
     chrome.storage.onChanged.addListener((changes, areaName) => {
-      if (areaName === 'local' && changes.hatclawAgentActivity) {
-        const payload = changes.hatclawAgentActivity.newValue;
-        if (payload?.action === 'start' && payload?.data?.type) {
-          updateGlow(payload.data.type);
-        } else if (payload?.action === 'clear') {
-          updateGlow('idle');
+      if (areaName === 'local') {
+        // Activity-based glow (original)
+        if (changes.hatclawAgentActivity) {
+          const payload = changes.hatclawAgentActivity.newValue;
+          if (payload?.action === 'start' && payload?.data?.type) {
+            updateGlow(payload.data.type);
+          } else if (payload?.action === 'clear') {
+            updateGlow('idle');
+          }
+        }
+
+        // DOM action-based glow (content-script.js)
+        if (changes.hatclawAgentAction) {
+          const action = changes.hatclawAgentAction.newValue;
+          if (action && action.type) {
+            updateGlow('action');
+          }
         }
       }
     });
@@ -140,7 +151,8 @@
   // Also poll for active state (backup for when storage events are missed)
   setInterval(() => {
     if (chrome.storage?.local) {
-      chrome.storage.local.get('hatclawAgentActivity', (result) => {
+      chrome.storage.local.get(['hatclawAgentActivity', 'hatclawAgentAction'], (result) => {
+        // Check activity-based state
         const payload = result?.hatclawAgentActivity;
         if (payload?.action === 'start' && payload?.data?.type) {
           const age = Date.now() - (payload.ts || 0);
@@ -148,6 +160,15 @@
             updateGlow(payload.data.type);
           } else {
             updateGlow('idle');
+          }
+        }
+
+        // Check DOM action-based state
+        const domAction = result?.hatclawAgentAction;
+        if (domAction && domAction.type) {
+          const age = Date.now() - (domAction.ts || 0);
+          if (age < 10000) {
+            updateGlow('action');
           }
         }
       });
