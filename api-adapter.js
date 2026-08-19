@@ -256,10 +256,9 @@ Model: {{modelName}}`;
         if (action === 'start' && data?.type === 'action' && data?.details) {
           try {
             const detailsStr = String(data.details);
-            const jsonStart = detailsStr.indexOf('{');
-            const jsonEnd = detailsStr.lastIndexOf('}');
-            if (jsonStart >= 0 && jsonEnd > jsonStart) {
-              const params = JSON.parse(detailsStr.slice(jsonStart, jsonEnd + 1));
+            const paramsStr = extractFirstJsonObject(detailsStr);
+            if (paramsStr) {
+              const params = JSON.parse(paramsStr);
               const actionName = String(params.action || '').toLowerCase();
 
               // Build structured action for content-script.js DOM executor
@@ -1137,6 +1136,14 @@ Model: {{modelName}}`;
           caption: caption || 'Imagem gerada pelo HatClaw.',
           images
         });
+        for (const img of images) {
+          const url = img.base64Data ? `data:${img.mimeType || 'image/png'};base64,${img.base64Data}` : img.url;
+          if (url) {
+            await chrome.storage.local.set({
+              hatclawNewMedia: { type: 'image', url, prompt: caption || 'Imagem gerada', model: requestedModel }
+            });
+          }
+        }
       }
 
       if (files.length > 0) {
@@ -1968,6 +1975,24 @@ Model: {{modelName}}`;
     return openAIRequest;
   }
 
+  function extractFirstJsonObject(str) {
+    const start = str.indexOf('{');
+    if (start < 0) return null;
+    let depth = 0;
+    let inString = false;
+    let escape = false;
+    for (let i = start; i < str.length; i++) {
+      const ch = str[i];
+      if (escape) { escape = false; continue; }
+      if (ch === '\\' && inString) { escape = true; continue; }
+      if (ch === '"') { inString = !inString; continue; }
+      if (inString) continue;
+      if (ch === '{') depth++;
+      else if (ch === '}') { depth--; if (depth === 0) return str.slice(start, i + 1); }
+    }
+    return str.slice(start);
+  }
+
   function parseToolArguments(value) {
     if (!value) {
       return {};
@@ -1980,6 +2005,10 @@ Model: {{modelName}}`;
     try {
       return JSON.parse(value);
     } catch (error) {
+      try {
+        const firstObj = extractFirstJsonObject(String(value));
+        if (firstObj) return JSON.parse(firstObj);
+      } catch (_) {}
       return { raw: value };
     }
   }
@@ -2387,7 +2416,11 @@ Model: {{modelName}}`;
                   toolState.args = (toolState.args || '') + toolDelta.function.arguments;
                   if (!toolState.emitted && toolState.name) {
                     try {
-                      const parsedArgs = JSON.parse(toolState.args);
+                      let parsedArgs = null;
+                      try { parsedArgs = JSON.parse(toolState.args); } catch (_) {
+                        const firstObj = extractFirstJsonObject(toolState.args);
+                        if (firstObj) parsedArgs = JSON.parse(firstObj);
+                      }
                       if (parsedArgs && typeof parsedArgs === 'object') {
                         toolState.emitted = true;
                         const uiInfo = translateToolToUI({ function: { name: toolState.name, arguments: toolState.args } });
