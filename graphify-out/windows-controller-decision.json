@@ -1,0 +1,23 @@
+{
+  "request": "Implementar controlador seguro completo para Windows",
+  "goal": "Permitir automação local auditada de mouse, teclado, janelas, arquivos, processos, capturas e PowerShell com confirmação de ações críticas",
+  "conversation_constraints": ["sem execução crítica silenciosa", "confirmação local", "auditoria"],
+  "repository_constraints": ["Chrome Manifest V3", "nativeMessaging já declarado", "extensão sem pipeline fonte disponível"],
+  "entities": [
+    {"kind":"project","name":"BrowserKing","evidence":"explicit"},
+    {"kind":"module","name":"Windows native host","evidence":"explicit"},
+    {"kind":"capability","name":"PowerShell audited","evidence":"explicit"}
+  ],
+  "intents": [
+    {"id":"automation","confidence":0.98,"context":0.95,"domain":0.98,"impact":1,"dependency":0.95,"criticality":"critical","evidence":["controle completo solicitado"]},
+    {"id":"security","confidence":1,"context":1,"domain":1,"impact":1,"dependency":1,"criticality":"critical","evidence":["confirmações e auditoria solicitadas"]},
+    {"id":"integration","confidence":0.95,"context":0.9,"domain":0.95,"impact":0.9,"dependency":1,"criticality":"high","evidence":["nativeMessaging no manifesto"]},
+    {"id":"tests","confidence":0.9,"context":0.85,"domain":0.9,"impact":0.9,"dependency":0.9,"criticality":"high","evidence":["host cruza limite de segurança"]}
+  ],
+  "capabilities": [
+    {"id":"architecture-query","kind":"graph","intents":["integration"],"inputs":["repository"],"outputs":["integration map"],"requires":[],"conflicts":[],"selected":true,"selection_reason":"localiza pontos existentes","cost":"low","risk":"low"},
+    {"id":"native-host-implementation","kind":"workflow","intents":["automation","security","integration"],"inputs":["request","repository"],"outputs":["code"],"requires":["architecture-query"],"conflicts":[],"selected":true,"selection_reason":"implementa capacidades tipadas","cost":"high","risk":"high"},
+    {"id":"security-tests","kind":"workflow","intents":["tests","security"],"inputs":["code"],"outputs":["test evidence"],"requires":["native-host-implementation"],"conflicts":[],"selected":true,"selection_reason":"valida limites críticos","cost":"medium","risk":"low"}
+  ],
+  "validation": ["node syntax checks", "manifest parse", "policy and host tests", "PowerShell parser", "native protocol smoke test"]
+}

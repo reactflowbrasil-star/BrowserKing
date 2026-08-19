@@ -1,0 +1,16 @@
+<resources>
+    <color name="background">#202220</color>
+    <color name="top_bar">#5A3A40</color>
+    <color name="surface">#292B29</color>
+    <color name="surface_alt">#303330</color>
+    <color name="composer">#2C2F2C</color>
+    <color name="border">#444744</color>
+    <color name="model_text">#F2E4C1</color>
+    <color name="text_primary">#F2F0EC</color>
+    <color name="text_secondary">#B9B8B4</color>
+    <color name="text_muted">#777A77</color>
+    <color name="success">#80D64B</color>
+    <color name="danger">#FF6B6B</color>
+    <color name="send_blue">#C8FF3D</color>
+    <color name="streaming">#FFD93D</color>
+</resources>

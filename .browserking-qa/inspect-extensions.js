@@ -1,0 +1,3 @@
+const {chromium}=require('playwright');
+const path=require('path');
+(async()=>{const root=path.resolve(__dirname,'..');const c=await chromium.launchPersistentContext(path.join(root,'.browserking-chrome-profile'),{executablePath:'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',headless:false,viewport:{width:1200,height:800}});const p=c.pages()[0]||await c.newPage();await p.goto('chrome://extensions');await p.waitForTimeout(1500);console.log(await p.locator('body').innerText());console.log('dev',await p.locator('#devMode').count(),'load',await p.getByText('Load unpacked',{exact:true}).count());await p.screenshot({path:path.join(root,'qa-artifacts','chrome-extensions.png')});await c.close()})().catch(e=>{console.error(e);process.exit(1)});

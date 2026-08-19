@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080a08">
+  <meta name="description" content="Baixe o HatClaw para Chrome e Android. Automação inteligente no navegador e no celular, com liberdade para escolher sua IA.">
+  <meta property="og:title" content="HatClaw — Sua IA no controle">
+  <meta property="og:description" content="Automação inteligente no navegador e no Android. Código aberto, local e feito para agir.">
+  <title>HatClaw — Automação que sai da conversa</title>
+  <link rel="icon" href="assets/icon-128.png">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="pro-text-type.css">
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+  <canvas class="gravity-stars" aria-hidden="true"></canvas>
+
+  <div class="scroll-progress" aria-hidden="true"><span></span></div>
+  <header class="nav" aria-label="Navegação principal">
+    <a class="brand" href="#inicio" aria-label="HatClaw, início">
+      <img src="assets/icon-128.png" alt="" width="40" height="40">
+      <span>HATCLAW</span>
+    </a>
+    <nav id="mobile-navigation">
+      <a href="#como-funciona">Como funciona</a>
+      <a href="#recursos">Recursos</a>
+      <a href="#downloads">Downloads</a>
+      <a href="#faq">Dúvidas</a>
+    </nav>
+    <a class="nav-github" href="https://github.com/Mushisushi28/HatClaw" target="_blank" rel="noreferrer">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 .7a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2.23c-3.22.7-3.9-1.37-3.9-1.37-.52-1.34-1.28-1.7-1.28-1.7-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.57-.29-5.27-1.28-5.27-5.69 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.16 1.18A11 11 0 0 1 12 6.1c.98 0 1.95.13 2.87.39 2.2-1.49 3.16-1.18 3.16-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.42-2.71 5.39-5.29 5.68.42.36.79 1.06.79 2.14v3.28c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .7Z"/></svg>
+      GitHub
+    </a>
+    <button class="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobile-navigation"><span></span><span></span></button>
+  </header>
+
+  <main id="conteudo">
+    <section class="hero" id="inicio">
+      <div class="hero-grid" aria-hidden="true"></div>
+      <div class="orb orb-one" aria-hidden="true"></div>
+      <div class="hero-copy reveal">
+        <div class="eyebrow"><span></span> CÓDIGO ABERTO · CHROME + ANDROID</div>
+        <h1 aria-label="Sua IA não veio para assistir.">Sua IA não veio<br>para <span id="hero-pro-text" class="hero-pro-text" aria-hidden="true">assistir.</span></h1>
+        <p class="hero-lead">Transforme qualquer IA compatível em um agente capaz de enxergar páginas, tomar decisões e executar tarefas no navegador — com uma extensão aberta, local e sob seu controle.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#downloads">Escolher download <span>↘</span></a>
+          <a class="button button-secondary" href="#como-funciona">Ver como funciona <span>→</span></a>
+        </div>
+        <div class="prompt-suggestions" aria-label="Exemplos de tarefas">
+          <span>Experimente:</span>
+          <button type="button" data-prompt="Pesquise e compare as melhores opções">Comparar opções</button>
+          <button type="button" data-prompt="Preencha este formulário com os meus dados">Preencher formulários</button>
+          <button type="button" data-prompt="Repita este fluxo automaticamente">Automatizar fluxos</button>
+        </div>
+        <div class="hero-proof">
+          <div class="avatars" aria-hidden="true"><span>G</span><span>AI</span><span>⚡</span></div>
+          <p><strong>20+ provedores de IA</strong><br><span>Uma única interface. Zero mensalidade.</span></p>
+        </div>
+      </div>
+
+      <div class="hero-visual hero-product-shot reveal delay-1">
+        <img src="assets/hatclaw-hero-chat.png" alt="Interface do HatClaw com o modelo Gemini 3.7 Flash pronta para receber um comando">
+        <p class="product-shot-caption"><span><i></i> HATCLAW EM AÇÃO</span><b>CHROME + ANDROID</b></p>
+      </div>
+    </section>
+
+    <section class="ticker" aria-label="Principais capacidades">
+      <div><span>VISÃO COMPUTACIONAL</span><i>✦</i><span>CLIQUE & DIGITAÇÃO</span><i>✦</i><span>MULTIAGENTES</span><i>✦</i><span>WORKFLOWS</span><i>✦</i><span>CONTROLE LOCAL</span><i>✦</i><span>VISÃO COMPUTACIONAL</span><i>✦</i></div>
+    </section>
+
+    <section class="trust-strip" aria-label="Diferenciais do HatClaw">
+      <div><strong>20+</strong><span>provedores e modelos compatíveis</span></div>
+      <div><strong>100%</strong><span>código aberto e auditável</span></div>
+      <div><strong>0</strong><span>contas obrigatórias no HatClaw</span></div>
+      <div><strong>1</strong><span>interface para navegador e Android</span></div>
+    </section>
+
+    <section class="workflow section" id="como-funciona">
+      <header class="section-heading reveal">
+        <span class="kicker">/ COMO FUNCIONA</span>
+        <h2>Você pede.<br><em>O agente resolve.</em></h2>
+        <p>O HatClaw cria uma ponte segura entre o modelo de IA escolhido e a interface na sua frente. Você acompanha cada etapa e mantém o controle.</p>
+      </header>
+      <div class="workflow-grid">
+        <article class="workflow-step reveal"><span>01</span><div class="step-visual observe" aria-hidden="true"><i></i><b>28 elementos</b></div><h3>Entende a tela</h3><p>Captura a página, identifica textos, botões, campos e o contexto da tarefa.</p></article>
+        <article class="workflow-step reveal delay-1"><span>02</span><div class="step-visual decide" aria-hidden="true"><i></i><i></i><i></i><b>plano pronto</b></div><h3>Planeja a ação</h3><p>O modelo avalia os próximos passos e escolhe as ferramentas necessárias.</p></article>
+        <article class="workflow-step reveal delay-2"><span>03</span><div class="step-visual execute" aria-hidden="true"><i></i><b>executando</b></div><h3>Executa e confirma</h3><p>Clica, digita, navega e apresenta o resultado para você revisar.</p></article>
+      </div>
+    </section>
+
+    <section class="features section" id="recursos">
+      <header class="section-heading reveal">
+        <span class="kicker">/ PODER DE EXECUÇÃO</span>
+        <h2>Do pedido à ação.<br><em>Sem trocar de contexto.</em></h2>
+        <p>O HatClaw conecta modelos de IA às ferramentas que você já usa — com controle, visibilidade e liberdade de escolha.</p>
+      </header>
+      <div class="feature-grid">
+        <article class="feature-card feature-wide reveal">
+          <span class="card-index">01</span>
+          <div class="feature-icon">⌁</div>
+          <h3>Veja. Entenda. Execute.</h3>
+          <p>A IA enxerga a página, interpreta interfaces e age como você: clica, digita, navega e entrega o resultado.</p>
+          <div class="mini-browser" aria-hidden="true"><span></span><div><i></i><i></i><i></i></div><b>✓ tarefa concluída</b></div>
+        </article>
+        <article class="feature-card reveal delay-1">
+          <span class="card-index">02</span>
+          <div class="feature-icon">⌘</div>
+          <h3>Sua IA. Suas regras.</h3>
+          <p>Use OpenAI, Gemini, Anthropic, Grok, modelos locais ou qualquer endpoint compatível.</p>
+          <div class="provider-cloud" aria-label="Provedores compatíveis"><span>GPT</span><span>G</span><span>AI</span><span>∞</span></div>
+        </article>
+        <article class="feature-card reveal">
+          <span class="card-index">03</span>
+          <div class="feature-icon">⟁</div>
+          <h3>Agentes em equipe.</h3>
+          <p>Combine especialistas com personas e memórias próprias. Um coordenador consolida as decisões.</p>
+          <div class="agent-chain" aria-hidden="true"><i>A1</i><i>A2</i><i>A3</i><span>→</span><b>OK</b></div>
+        </article>
+        <article class="feature-card feature-wide reveal delay-1">
+          <span class="card-index">04</span>
+          <div class="feature-icon">↻</div>
+          <h3>Grave uma vez. Repita sempre.</h3>
+          <p>Registre fluxos, reproduza tarefas e exporte gravações. Menos repetição, mais trabalho concluído.</p>
+          <div class="timeline" aria-hidden="true"><span></span><i></i><i></i><i></i><i></i><b>00:18</b></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="use-cases section" id="casos-de-uso">
+      <header class="use-cases-heading reveal">
+        <span class="kicker">/ FEITO PARA O TRABALHO REAL</span>
+        <h2>Uma extensão.<br><em>Muitos caminhos.</em></h2>
+      </header>
+      <div class="use-case-list">
+        <article class="use-case active reveal" tabindex="0">
+          <span>01</span><div><small>PESQUISA</small><h3>Pesquise, filtre e compare sem abrir vinte abas.</h3><p>Peça para o agente localizar informações, organizar critérios e devolver uma resposta objetiva.</p></div><b>↗</b>
+        </article>
+        <article class="use-case reveal" tabindex="0">
+          <span>02</span><div><small>OPERAÇÕES</small><h3>Reduza tarefas repetitivas a um único comando.</h3><p>Preencha campos, navegue por sistemas e reproduza fluxos com acompanhamento visual.</p></div><b>↗</b>
+        </article>
+        <article class="use-case reveal" tabindex="0">
+          <span>03</span><div><small>MULTIAGENTES</small><h3>Coloque especialistas para revisar decisões complexas.</h3><p>Distribua a análise entre agentes com papéis próprios e receba uma conclusão consolidada.</p></div><b>↗</b>
+        </article>
+      </div>
+    </section>
+
+    <section class="showcase section">
+      <div class="showcase-shot reveal">
+        <img src="assets/product-screen.png" alt="Painel de controle seguro do HatClaw no Windows" loading="lazy">
+        <span class="shot-label">PAINEL DE CONTROLE</span>
+      </div>
+      <div class="showcase-copy reveal delay-1">
+        <span class="kicker">/ CONTROLE DE VERDADE</span>
+        <h2>O navegador é só o <em>começo.</em></h2>
+        <p>Amplie o alcance do agente com o controlador opcional para Windows e a build Android baseada no serviço de acessibilidade — sempre com permissões explícitas.</p>
+        <ul>
+          <li><span>01</span><div><strong>Ações auditadas</strong><p>Operações sensíveis exigem confirmação local.</p></div></li>
+          <li><span>02</span><div><strong>Execução transparente</strong><p>Acompanhe o que o agente faz, em tempo real.</p></div></li>
+          <li><span>03</span><div><strong>Chaves armazenadas localmente</strong><p>As credenciais configuradas na extensão permanecem no armazenamento do navegador.</p></div></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="downloads section" id="downloads">
+      <header class="section-heading centered reveal">
+        <span class="kicker">/ ESCOLHA SUA PLATAFORMA</span>
+        <h2>Instale. Conecte.<br><em>Coloque para trabalhar.</em></h2>
+      </header>
+      <div class="download-grid">
+        <article class="download-card featured reveal">
+          <div class="download-top"><span class="platform-icon chrome-icon" aria-hidden="true"></span><span class="badge">RECOMENDADO</span></div>
+          <p class="overline">EXTENSÃO PARA NAVEGADOR</p>
+          <h3>HatClaw para Chrome</h3>
+          <p>Experiência principal do HatClaw: automação visual, múltiplos provedores, workflows e agentes especializados no Chrome.</p>
+          <dl><div><dt>Versão</dt><dd>1.4.0</dd></div><div><dt>Requisito</dt><dd>Chrome 116+</dd></div><div><dt>Formato</dt><dd>ZIP</dd></div></dl>
+          <a class="button button-download" href="downloads/hatclaw-extension-v1.4.0.zip" download>Baixar extensão <span>↓</span></a>
+          <small>5,1 MB · Grátis · Código aberto · Sem cadastro</small>
+        </article>
+        <article class="download-card reveal delay-1">
+          <div class="download-top"><span class="platform-icon android-icon" aria-hidden="true">⌁</span><span class="status-dot">BUILD ANDROID</span></div>
+          <p class="overline">APP PARA CELULAR</p>
+          <h3>HatClaw para Android</h3>
+          <p>Build experimental para testar ações locais no aparelho por meio do serviço de acessibilidade do Android.</p>
+          <dl><div><dt>Versão</dt><dd>1.0.0</dd></div><div><dt>Requisito</dt><dd>Android 8+</dd></div><div><dt>Formato</dt><dd>APK</dd></div></dl>
+          <a class="button button-download secondary-download" href="downloads/hatclaw-android-v1.0.0-debug.apk" download>Baixar APK <span>↓</span></a>
+          <small>26 KB · Build de desenvolvimento · Instalação manual</small>
+        </article>
+      </div>
+      <div class="download-assurance reveal">
+        <span>✓ Arquivos servidos diretamente por este projeto</span>
+        <span>✓ Código disponível para inspeção no GitHub</span>
+        <span>! Revise permissões antes de instalar</span>
+      </div>
+      <p class="download-note reveal">O APK é uma build de desenvolvimento para testes e não representa uma versão publicada na Play Store.</p>
+    </section>
+
+    <section class="steps section" id="instalacao">
+      <header class="section-heading reveal"><span class="kicker">/ INSTALAÇÃO</span><h2>Três passos.<br><em>Depois, é só pedir.</em></h2></header>
+      <div class="step-switcher reveal">
+        <div class="tabs" role="tablist" aria-label="Instruções por plataforma">
+          <button role="tab" aria-selected="true" aria-controls="chrome-steps" id="tab-chrome">Chrome</button>
+          <button role="tab" aria-selected="false" aria-controls="android-steps" id="tab-android">Android</button>
+        </div>
+        <ol id="chrome-steps" role="tabpanel" aria-labelledby="tab-chrome">
+          <li><span>01</span><div><strong>Extraia o arquivo ZIP</strong><p>Salve a pasta em um local permanente no computador.</p></div></li>
+          <li><span>02</span><div><strong>Abra chrome://extensions</strong><p>Ative o “Modo do desenvolvedor” no canto superior.</p></div></li>
+          <li><span>03</span><div><strong>Carregue sem compactação</strong><p>Selecione a pasta extraída, abra o HatClaw e adicione sua chave de IA.</p></div></li>
+        </ol>
+        <ol id="android-steps" role="tabpanel" aria-labelledby="tab-android" hidden>
+          <li><span>01</span><div><strong>Baixe e abra o APK</strong><p>Autorize a instalação pelo navegador ou gerenciador de arquivos.</p></div></li>
+          <li><span>02</span><div><strong>Conclua a instalação</strong><p>O Android pode solicitar confirmação para apps fora da Play Store.</p></div></li>
+          <li><span>03</span><div><strong>Ative a acessibilidade</strong><p>Siga o atalho exibido no app e habilite o serviço HatClaw.</p></div></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="faq section" id="faq">
+      <header class="section-heading reveal"><span class="kicker">/ DÚVIDAS FREQUENTES</span><h2>Antes de instalar,<br><em>vale saber.</em></h2><p>Respostas diretas sobre instalação, modelos de IA, privacidade e o estágio atual do aplicativo Android.</p></header>
+      <div class="faq-list reveal">
+        <details><summary>Preciso criar uma conta no HatClaw?<span>+</span></summary><p>Não. A extensão não exige cadastro próprio. Você configura a chave do provedor de IA que deseja usar ou conecta um endpoint local compatível.</p></details>
+        <details><summary>Quais modelos de IA são compatíveis?<span>+</span></summary><p>O HatClaw oferece suporte a provedores como OpenAI, Anthropic, Google, xAI, DeepSeek, Mistral, Groq e endpoints compatíveis com a API da OpenAI. A qualidade da automação depende da capacidade de visão e uso de ferramentas do modelo escolhido.</p></details>
+        <details><summary>Por que a extensão é instalada manualmente?<span>+</span></summary><p>Esta distribuição é feita por ZIP e usa o modo de desenvolvedor do Chrome. Extraia o arquivo, abra <code>chrome://extensions</code> e selecione “Carregar sem compactação”.</p></details>
+        <details><summary>O APK Android está pronto para uso diário?<span>+</span></summary><p>Ainda não. O arquivo disponível é uma build de desenvolvimento destinada a testes da automação local via acessibilidade.</p></details>
+        <details><summary>Onde ficam minhas chaves de API?<span>+</span></summary><p>As configurações da extensão são mantidas no armazenamento local do navegador. Como o projeto é aberto, você também pode revisar a implementação antes de inserir credenciais.</p></details>
+      </div>
+    </section>
+
+    <section class="final-cta">
+      <div class="orb orb-two" aria-hidden="true"></div>
+      <span class="kicker">O PRÓXIMO COMANDO É SEU</span>
+      <h2>Menos conversa.<br><em>Mais coisas feitas.</em></h2>
+      <p>Comece pela extensão para Chrome ou explore o código do projeto antes de instalar.</p>
+      <div class="final-actions"><a class="button button-primary" href="#downloads">Escolher download <span>↘</span></a><a class="button button-secondary" href="https://github.com/Mushisushi28/HatClaw" target="_blank" rel="noreferrer">Abrir GitHub ↗</a></div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="brand"><img src="assets/icon-128.png" alt="" width="36" height="36"><span>HATCLAW</span></div>
+    <p>Automação aberta para quem prefere construir.</p>
+    <div><a href="https://github.com/Mushisushi28/HatClaw" target="_blank" rel="noreferrer">GitHub ↗</a><a href="#inicio">Voltar ao topo ↑</a></div>
+    <small>© <span id="year"></span> HatClaw · Projeto open source</small>
+  </footer>
+
+  <a class="mobile-download-cta" href="#downloads"><span>Baixar HatClaw</span><b>↘</b></a>
+  <div class="prompt-toast" role="status" aria-live="polite"></div>
+
+  <script src="gravity-stars.js"></script>
+  <script src="script.js"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react@18.3.1",
+        "react/jsx-runtime": "https://esm.sh/react@18.3.1/jsx-runtime",
+        "react-dom/client": "https://esm.sh/react-dom@18.3.1/client",
+        "framer-motion": "https://esm.sh/framer-motion@11.18.2?external=react,react-dom",
+        "framer": "./framer-runtime-shim.js"
+      }
+    }
+  </script>
+  <script type="module" src="pro-text-type.js"></script>
+</body>
+</html>

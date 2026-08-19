@@ -1,0 +1,9 @@
+{
+  "allowedRoots": [
+    "C:\\Users\\SEU_USUARIO\\Desktop",
+    "C:\\Users\\SEU_USUARIO\\Documents",
+    "C:\\Users\\SEU_USUARIO\\Downloads"
+  ],
+  "maxReadBytes": 2000000,
+  "shellTimeoutMs": 30000
+}

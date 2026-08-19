@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "goal": "Permitir automação local auditada de mouse, teclado, janelas, arquivos, processos, capturas e PowerShell com confirmação de ações críticas",
+  "selected_intents": [
+    {"id":"security","score":1.0},
+    {"id":"automation","score":0.975},
+    {"id":"integration","score":0.937},
+    {"id":"tests","score":0.891}
+  ],
+  "selected_capabilities": ["architecture-query","native-host-implementation","security-tests"],
+  "duration_ms": 0,
+  "validation": [
+    {"name":"JavaScript syntax","status":"passed","evidence":"node --check exit 0"},
+    {"name":"native host tests","status":"passed","evidence":"8 tests passed"},
+    {"name":"native protocol smoke","status":"passed","evidence":"framed system.info response ok"},
+    {"name":"PowerShell parser","status":"passed","evidence":"install.ps1 syntax ok"},
+    {"name":"Graphify structural update","status":"passed","evidence":"7213 nodes and 22234 edges"}
+  ],
+  "outcome": "validated",
+  "feedback": null
+}

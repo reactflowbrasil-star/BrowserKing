@@ -1,0 +1,1792 @@
+{
+  "android-remote/app/build.gradle": {
+    "mtime": 1787020898.885357,
+    "ast_hash": "e99055b9f4b956e866002926a6539f1e",
+    "semantic_hash": "e99055b9f4b956e866002926a6539f1e"
+  },
+  "android-remote/app/src/main/java/com/browserking/remote/MainActivity.java": {
+    "mtime": 1787017371.838282,
+    "ast_hash": "492192d22f574bfd061964b8319ec4f9",
+    "semantic_hash": "492192d22f574bfd061964b8319ec4f9"
+  },
+  "android-remote/build.gradle": {
+    "mtime": 1786842169.3185709,
+    "ast_hash": "6e552ef36c83640520c52fd767491ceb",
+    "semantic_hash": "6e552ef36c83640520c52fd767491ceb"
+  },
+  "android-remote/gradlew": {
+    "mtime": 1786842428.1660125,
+    "ast_hash": "f092910dfa8e47c5a37a452c3f6baf8a",
+    "semantic_hash": "f092910dfa8e47c5a37a452c3f6baf8a"
+  },
+  "android-remote/settings.gradle": {
+    "mtime": 1786996254.812667,
+    "ast_hash": "84739ae2e914b9f5119a931152ca1ad7",
+    "semantic_hash": "84739ae2e914b9f5119a931152ca1ad7"
+  },
+  "api-adapter.js": {
+    "mtime": 1787106972.7609117,
+    "ast_hash": "601b296840baa1338f0f985272923ffa",
+    "semantic_hash": ""
+  },
+  "assets/PairingPrompt-DmH8zDaR.js": {
+    "mtime": 1773799064.0,
+    "ast_hash": "c82dc885cf7fa884b9cc3a0760033ca9",
+    "semantic_hash": "c82dc885cf7fa884b9cc3a0760033ca9"
+  },
+  "assets/PermissionManager-DoRdmWC8.js": {
+    "mtime": 1773799064.0,
+    "ast_hash": "607559d5086b2d3307d6035daaa1cd8d",
+    "semantic_hash": "607559d5086b2d3307d6035daaa1cd8d"
+  },
+  "assets/SchedulingFields-BA8bFP4w.js": {
+    "mtime": 1773799064.0,
+    "ast_hash": "ec2eddbc2a20f01e97948e36e2dff9f3",
+    "semantic_hash": "ec2eddbc2a20f01e97948e36e2dff9f3"
+  },
+  "assets/SessionPool-Cf_smfO9.js": {
+    "mtime": 1773799064.0,
+    "ast_hash": "f50cdc97479bf6787bf36fc1b6c231a8",
+    "semantic_hash": "f50cdc97479bf6787bf36fc1b6c231a8"
+  },
+  "assets/TasksTab-DRWTiiNl.js": {
+    "mtime": 1773799064.0,
+    "ast_hash": "ae42b937b29f846909522e0227968039",
+    "semantic_hash": "ae42b937b29f846909522e0227968039"
+  },
+  "assets/accessibility-tree.js-D8KNCIWO.js": {
+    "mtime": 1787016815.2136285,
+    "ast_hash": "cbb955e55e3c36d76bbe18b5464541ea",
+    "semantic_hash": "cbb955e55e3c36d76bbe18b5464541ea"
+  },
+  "assets/agent-visual-indicator.js-Ct7LqXhp.js": {
+    "mtime": 1773799064.0,
+    "ast_hash": "a1bb4681c73516fcc7afe859ee5dea26",
+    "semantic_hash": "a1bb4681c73516fcc7afe859ee5dea26"
+  },
+  "assets/auto-track-CvZDm2iT.js": {
+    "mtime": 1773799064.0,
+    "ast_hash": "de3aa9b9921f1fb1d681266d05d355ac",
+    "semantic_hash": "de3aa9b9921f1fb1d681266d05d355ac"
+  },
+  "assets/client-D-oCQL9O.js": {
+    "mtime": 1773799064.0,
+    "ast_hash": "fba299f973002e777e806e7496dd73f8",
+    "semantic_hash": "fba299f973002e777e806e7496dd73f8"
+  },
+  "assets/content-script.ts-Bwa5rY9t.js": {
+    "mtime": 1773799064.0,
+    "ast_hash": "0b0b2bee5edbe85f2b5216aaf8729715",
+    "semantic_hash": "0b0b2bee5edbe85f2b5216aaf8729715"
+  },
+  "assets/index-B5su0vAf.js": {
+    "mtime": 1773799064.0,
+    "ast_hash": "368aacd259c8f15180edfbf9552d0a9d",
+    "semantic_hash": "368aacd259c8f15180edfbf9552d0a9d"
+  },
+  "assets/index-BMDIXFv5.js": {
+    "mtime": 1773799064.0,
+    "ast_hash": "ac5c7d1fd105f24209cbc8d064dacf0b",
+    "semantic_hash": "ac5c7d1fd105f24209cbc8d064dacf0b"
+  },
+  "assets/index-BSt0z4Je.js": {
+    "mtime": 1773799064.0,
+    "ast_hash": "d95fb241cfc9b8833473d03cea75f9a8",
+    "semantic_hash": "d95fb241cfc9b8833473d03cea75f9a8"
+  },
+  "assets/index-BVS4T5_D.js": {
+    "mtime": 1773799064.0,
+    "ast_hash": "a2ef6797a3fee63599faa89eb2acef49",
+    "semantic_hash": "a2ef6797a3fee63599faa89eb2acef49"
+  },
+  "assets/index-Bo1tJLM8.js": {
+    "mtime": 1773799064.0,
+    "ast_hash": "7b99471b9c1e5c15eb8a5d1f4e24273a",
+    "semantic_hash": "7b99471b9c1e5c15eb8a5d1f4e24273a"
+  },
+  "assets/index-CG1UimdQ.js": {
+    "mtime": 1773799064.0,
+    "ast_hash": "06cb73a9cfceab089b9ff420ae0c2727",
+    "semantic_hash": "06cb73a9cfceab089b9ff420ae0c2727"
+  },
+  "assets/index-CiXNXYRN.js": {
+    "mtime": 1773799064.0,
+    "ast_hash": "1f700881855eb25ebaf361c39cdab6b0",
+    "semantic_hash": "1f700881855eb25ebaf361c39cdab6b0"
+  },
+  "assets/index-DBbs-1uy.js": {
+    "mtime": 1773799064.0,
+    "ast_hash": "8ccf68529a2b38438738081a5dcd51a1",
+    "semantic_hash": "8ccf68529a2b38438738081a5dcd51a1"
+  },
+  "assets/index-DJ7jVRQk.js": {
+    "mtime": 1773799064.0,
+    "ast_hash": "d2bfcacc480aeb4b380a3c45f5729e97",
+    "semantic_hash": "d2bfcacc480aeb4b380a3c45f5729e97"
+  },
+  "assets/index-DU1bzovA.js": {
+    "mtime": 1773799064.0,
+    "ast_hash": "2fe1bf9f754b26cc5396747e30a8eabb",
+    "semantic_hash": "2fe1bf9f754b26cc5396747e30a8eabb"
+  },
+  "assets/index-biDp86Rc.js": {
+    "mtime": 1773799064.0,
+    "ast_hash": "bf1d90cdc3398d2be22eb205c62002dc",
+    "semantic_hash": "bf1d90cdc3398d2be22eb205c62002dc"
+  },
+  "assets/index-c2WVkJX-.js": {
+    "mtime": 1773799064.0,
+    "ast_hash": "e0695de0c8f7352f9d355c57b5d1759a",
+    "semantic_hash": "e0695de0c8f7352f9d355c57b5d1759a"
+  },
+  "assets/index-fjvc8jEc.js": {
+    "mtime": 1773799064.0,
+    "ast_hash": "c46f09817e84d941dc1a509c00bab06e",
+    "semantic_hash": "c46f09817e84d941dc1a509c00bab06e"
+  },
+  "assets/index.umd-CoBP2sDX.js": {
+    "mtime": 1773799064.0,
+    "ast_hash": "bec9ee319fe0d579e7d55198f101810a",
+    "semantic_hash": "bec9ee319fe0d579e7d55198f101810a"
+  },
+  "assets/is-plan-event-enabled-CTGFxau4.js": {
+    "mtime": 1773799064.0,
+    "ast_hash": "b9d189e0fd0bb9ab10c0a9894e4f4ade",
+    "semantic_hash": "b9d189e0fd0bb9ab10c0a9894e4f4ade"
+  },
+  "assets/mcpPermissions-CtjiWno1.js": {
+    "mtime": 1787016850.3015351,
+    "ast_hash": "0a9641f5dfc8b4798f9fc39633ac728e",
+    "semantic_hash": "0a9641f5dfc8b4798f9fc39633ac728e"
+  },
+  "assets/newtab-ARdw6g3T.js": {
+    "mtime": 1773799064.0,
+    "ast_hash": "9459d525d53b7c6b0a9cfe3844a48f8a",
+    "semantic_hash": "9459d525d53b7c6b0a9cfe3844a48f8a"
+  },
+  "assets/options-6nG4tSQv.js": {
+    "mtime": 1773799064.0,
+    "ast_hash": "74119158b133d8712286b8b7d25b4d78",
+    "semantic_hash": "74119158b133d8712286b8b7d25b4d78"
+  },
+  "assets/pairing-Gr_JmEf_.js": {
+    "mtime": 1773799064.0,
+    "ast_hash": "635d1c2782a7cd174d6032ddb31166a9",
+    "semantic_hash": "635d1c2782a7cd174d6032ddb31166a9"
+  },
+  "assets/permissions-Cxwscq6K.js": {
+    "mtime": 1773799064.0,
+    "ast_hash": "999df14053eb7cda5a71cc5f829acee3",
+    "semantic_hash": "999df14053eb7cda5a71cc5f829acee3"
+  },
+  "assets/profiler-C3buIq92.js": {
+    "mtime": 1773799064.0,
+    "ast_hash": "0b8ed702f0770eb575f3f3691250a574",
+    "semantic_hash": "0b8ed702f0770eb575f3f3691250a574"
+  },
+  "assets/punycode.es6-D49_gIz_.js": {
+    "mtime": 1773799064.0,
+    "ast_hash": "97d2447fc77360d3402b616c9edc47f7",
+    "semantic_hash": "97d2447fc77360d3402b616c9edc47f7"
+  },
+  "assets/service-worker.ts-3CRyLSDu.js": {
+    "mtime": 1773799064.0,
+    "ast_hash": "c03e6ba2fa34a747a456ef63d5988f1a",
+    "semantic_hash": "c03e6ba2fa34a747a456ef63d5988f1a"
+  },
+  "assets/sidepanel-CZxNvhMy.js": {
+    "mtime": 1773799064.0,
+    "ast_hash": "3ac157afd0f9bd5e270a3d8bb3cc8a55",
+    "semantic_hash": "3ac157afd0f9bd5e270a3d8bb3cc8a55"
+  },
+  "assets/startRecording-BZR-1vwv.js": {
+    "mtime": 1773799064.0,
+    "ast_hash": "0e24a672a417c86aa2f45c54527116d6",
+    "semantic_hash": "0e24a672a417c86aa2f45c54527116d6"
+  },
+  "assets/useStorageState-Dnfdak7C.js": {
+    "mtime": 1773799064.0,
+    "ast_hash": "c5883879c11768bd4f4a58bcf39fe2cd",
+    "semantic_hash": "c5883879c11768bd4f4a58bcf39fe2cd"
+  },
+  "auth-bypass.js": {
+    "mtime": 1787106965.9222038,
+    "ast_hash": "d88d6f04675ea871b9b83ba9e92da1be",
+    "semantic_hash": ""
+  },
+  "brand-overlay.js": {
+    "mtime": 1787106063.5909913,
+    "ast_hash": "344982bf23d40916965cf9cdb0056c39",
+    "semantic_hash": ""
+  },
+  "control-center.js": {
+    "mtime": 1786847156.044031,
+    "ast_hash": "73e3d9a29bae4a62906b564a28163cb7",
+    "semantic_hash": "73e3d9a29bae4a62906b564a28163cb7"
+  },
+  "gif.js": {
+    "mtime": 1773799064.0,
+    "ast_hash": "ccdc5a81936c88144ba8a573979af8ed",
+    "semantic_hash": "ccdc5a81936c88144ba8a573979af8ed"
+  },
+  "gif.worker.js": {
+    "mtime": 1773799064.0,
+    "ast_hash": "1a0c81e49a8e7ccec0b18f5f92b9e6b9",
+    "semantic_hash": "1a0c81e49a8e7ccec0b18f5f92b9e6b9"
+  },
+  "gif_viewer.js": {
+    "mtime": 1773799064.0,
+    "ast_hash": "b025152af2f4346bff54b4afc15c41a9",
+    "semantic_hash": "b025152af2f4346bff54b4afc15c41a9"
+  },
+  "i18n/de-DE.json": {
+    "mtime": 1786996285.7585409,
+    "ast_hash": "5fcf48204e4367f2c68f03d102aef386",
+    "semantic_hash": "5fcf48204e4367f2c68f03d102aef386"
+  },
+  "i18n/en-US.json": {
+    "mtime": 1786996285.7704165,
+    "ast_hash": "2a1143eccba3aec51d61fc06a1afe44d",
+    "semantic_hash": "2a1143eccba3aec51d61fc06a1afe44d"
+  },
+  "i18n/en-XA.json": {
+    "mtime": 1773799064.0,
+    "ast_hash": "955b028a558b352173df90432b2f1974",
+    "semantic_hash": "955b028a558b352173df90432b2f1974"
+  },
+  "i18n/en-XB.json": {
+    "mtime": 1773799064.0,
+    "ast_hash": "6c34f0d7f421c3488df88380e52279c2",
+    "semantic_hash": "6c34f0d7f421c3488df88380e52279c2"
+  },
+  "i18n/es-419.json": {
+    "mtime": 1786996285.7714174,
+    "ast_hash": "99cf9d1cbc70cfbf0420c92975dc28f4",
+    "semantic_hash": "99cf9d1cbc70cfbf0420c92975dc28f4"
+  },
+  "i18n/es-ES.json": {
+    "mtime": 1786996285.773417,
+    "ast_hash": "2681557dedc828f9e9ac6c2e966a4e75",
+    "semantic_hash": "2681557dedc828f9e9ac6c2e966a4e75"
+  },
+  "i18n/fr-FR.json": {
+    "mtime": 1786996285.7746513,
+    "ast_hash": "89f49289792fc6fec3bc02a6263fe0d7",
+    "semantic_hash": "89f49289792fc6fec3bc02a6263fe0d7"
+  },
+  "i18n/hi-IN.json": {
+    "mtime": 1786996285.7756538,
+    "ast_hash": "92fd33e934d98dc3c4f693c772f20130",
+    "semantic_hash": "92fd33e934d98dc3c4f693c772f20130"
+  },
+  "i18n/id-ID.json": {
+    "mtime": 1786996285.7766535,
+    "ast_hash": "e6ad904b934058644359bf4e8a2c9c4b",
+    "semantic_hash": "e6ad904b934058644359bf4e8a2c9c4b"
+  },
+  "i18n/it-IT.json": {
+    "mtime": 1786996285.781655,
+    "ast_hash": "846f109df18c578a5cf715506d7682f9",
+    "semantic_hash": "846f109df18c578a5cf715506d7682f9"
+  },
+  "i18n/ja-JP.json": {
+    "mtime": 1786996285.7836864,
+    "ast_hash": "325caef8b531734cf1a4f5e48f1fd6ce",
+    "semantic_hash": "325caef8b531734cf1a4f5e48f1fd6ce"
+  },
+  "i18n/ko-KR.json": {
+    "mtime": 1786996285.7836864,
+    "ast_hash": "974f6f6bb61382892f10ab21f48fb331",
+    "semantic_hash": "974f6f6bb61382892f10ab21f48fb331"
+  },
+  "i18n/pt-BR.json": {
+    "mtime": 1786996285.7836864,
+    "ast_hash": "75083053ba20a49fd76c47ebc93292d7",
+    "semantic_hash": "75083053ba20a49fd76c47ebc93292d7"
+  },
+  "i18n/xx-AC.json": {
+    "mtime": 1773799064.0,
+    "ast_hash": "329e2a76625b37ef19982fb5b7e86032",
+    "semantic_hash": "329e2a76625b37ef19982fb5b7e86032"
+  },
+  "i18n/xx-HA.json": {
+    "mtime": 1786996285.7836864,
+    "ast_hash": "8dda7da0d6d32f1c4a6792e3038131ec",
+    "semantic_hash": "8dda7da0d6d32f1c4a6792e3038131ec"
+  },
+  "i18n/xx-LS.json": {
+    "mtime": 1786996285.7836864,
+    "ast_hash": "0957c8c8fd4f0d86805f3f1007f48728",
+    "semantic_hash": "0957c8c8fd4f0d86805f3f1007f48728"
+  },
+  "managed_schema.json": {
+    "mtime": 1786996285.6666832,
+    "ast_hash": "cfbcc9fc74a0033479b333acbae7cf95",
+    "semantic_hash": "cfbcc9fc74a0033479b333acbae7cf95"
+  },
+  "manifest.json": {
+    "mtime": 1787007070.5231202,
+    "ast_hash": "77adaf153111b2f35239f0bbd8f8cc49",
+    "semantic_hash": "77adaf153111b2f35239f0bbd8f8cc49"
+  },
+  "native-controller-service.js": {
+    "mtime": 1786996285.6666832,
+    "ast_hash": "206db7e36b6de973fb3615a1dd9fcf97",
+    "semantic_hash": "206db7e36b6de973fb3615a1dd9fcf97"
+  },
+  "native-host/config.example.json": {
+    "mtime": 1786847156.0480332,
+    "ast_hash": "b6fcac612c7475596d1f3e659b9abb67",
+    "semantic_hash": "b6fcac612c7475596d1f3e659b9abb67"
+  },
+  "native-host/host.js": {
+    "mtime": 1786996285.7229178,
+    "ast_hash": "4c18ed9e61939db6f1dba748ef8cc63b",
+    "semantic_hash": "4c18ed9e61939db6f1dba748ef8cc63b"
+  },
+  "native-host/install.ps1": {
+    "mtime": 1786996285.723918,
+    "ast_hash": "582f3631af2f6030c09da9e3992de63e",
+    "semantic_hash": "582f3631af2f6030c09da9e3992de63e"
+  },
+  "native-host/package.json": {
+    "mtime": 1786996285.723918,
+    "ast_hash": "6b55a422274a922ee82ec390c944e3d5",
+    "semantic_hash": "6b55a422274a922ee82ec390c944e3d5"
+  },
+  "native-host/policy.js": {
+    "mtime": 1786855839.28309,
+    "ast_hash": "a4f9709db9d53c9d932dcd61bff03a03",
+    "semantic_hash": "a4f9709db9d53c9d932dcd61bff03a03"
+  },
+  "native-host/test/host.test.js": {
+    "mtime": 1786847199.393716,
+    "ast_hash": "12724b4a677eea7f1989f93e14df1e1b",
+    "semantic_hash": "12724b4a677eea7f1989f93e14df1e1b"
+  },
+  "native-host/test/policy.test.js": {
+    "mtime": 1786847156.0510335,
+    "ast_hash": "cf067e7ec6dff4deb613c62523434ddb",
+    "semantic_hash": "cf067e7ec6dff4deb613c62523434ddb"
+  },
+  "native-host/uninstall.ps1": {
+    "mtime": 1786847156.0500329,
+    "ast_hash": "507ad540377669d2c91c7213c435ec2b",
+    "semantic_hash": "507ad540377669d2c91c7213c435ec2b"
+  },
+  "offscreen.js": {
+    "mtime": 1773799064.0,
+    "ast_hash": "3927d0621090c5843e642da851198ddd",
+    "semantic_hash": "3927d0621090c5843e642da851198ddd"
+  },
+  "options-provider-tab.js": {
+    "mtime": 1786849657.980991,
+    "ast_hash": "0814a2a8462dd0c562a2c958b32d9752",
+    "semantic_hash": "0814a2a8462dd0c562a2c958b32d9752"
+  },
+  "provider-config.js": {
+    "mtime": 1787106957.505417,
+    "ast_hash": "e8ec88cbb164d085c5d72d5f52453db6",
+    "semantic_hash": ""
+  },
+  "provider-registry.js": {
+    "mtime": 1787106950.1570346,
+    "ast_hash": "1ecef752147b8ab303165fdc8a4250c7",
+    "semantic_hash": ""
+  },
+  "provider-settings.js": {
+    "mtime": 1786996285.6833384,
+    "ast_hash": "d652415459f8c9e0959dee018a798c97",
+    "semantic_hash": "d652415459f8c9e0959dee018a798c97"
+  },
+  "remote-bridge.js": {
+    "mtime": 1787017775.7313573,
+    "ast_hash": "319ef0990a91506cdc79c334e589f600",
+    "semantic_hash": "319ef0990a91506cdc79c334e589f600"
+  },
+  "remote-relay.js": {
+    "mtime": 1787017371.8372817,
+    "ast_hash": "ebbd46c0879af80566c4a04ff0eb10fb",
+    "semantic_hash": "ebbd46c0879af80566c4a04ff0eb10fb"
+  },
+  "server-relay/api.php": {
+    "mtime": 1787023800.532521,
+    "ast_hash": "73796b00da6af8a6d008e9155f22d450",
+    "semantic_hash": "73796b00da6af8a6d008e9155f22d450"
+  },
+  "service-worker-loader.js": {
+    "mtime": 1787018741.6383176,
+    "ast_hash": "74a11bae66db6ae3a0af624dec03ee2f",
+    "semantic_hash": "74a11bae66db6ae3a0af624dec03ee2f"
+  },
+  "sidepanel-provider-menu.js": {
+    "mtime": 1786996285.6833384,
+    "ast_hash": "34ef933253a93600fef0d0a58f1f6e91",
+    "semantic_hash": "34ef933253a93600fef0d0a58f1f6e91"
+  },
+  "start-internet-access.ps1": {
+    "mtime": 1786996285.6833384,
+    "ast_hash": "0a9d4bd003221a5499d600a0ff9b829c",
+    "semantic_hash": "0a9d4bd003221a5499d600a0ff9b829c"
+  },
+  "theme-init.js": {
+    "mtime": 1773799064.0,
+    "ast_hash": "657482a4c37503f31a679341b5b004dd",
+    "semantic_hash": "657482a4c37503f31a679341b5b004dd"
+  },
+  "ui-branding.js": {
+    "mtime": 1787105713.902062,
+    "ast_hash": "8dfa32faa39fd5209944dd3e5a323b09",
+    "semantic_hash": ""
+  },
+  "voice-input.js": {
+    "mtime": 1786996285.6833384,
+    "ast_hash": "7601fb8b6cbac184d565d716c3a79b2a",
+    "semantic_hash": "7601fb8b6cbac184d565d716c3a79b2a"
+  },
+  "sounds/notification.mp3": {
+    "mtime": 1773799064.0,
+    "ast_hash": "fe524a79117807cc62e045126afbe60d",
+    "semantic_hash": "fe524a79117807cc62e045126afbe60d"
+  },
+  ".browserking-qa/inspect-extensions.js": {
+    "mtime": 1786847786.7097354,
+    "ast_hash": "3b980c1f07e0ac44dd0c5ddb22edc922",
+    "semantic_hash": "3b980c1f07e0ac44dd0c5ddb22edc922"
+  },
+  ".browserking-qa/package.json": {
+    "mtime": 1786847685.205588,
+    "ast_hash": "44b5d41819d3d834fad3e382cfa72616",
+    "semantic_hash": "44b5d41819d3d834fad3e382cfa72616"
+  },
+  ".browserking-qa/validate-extension.js": {
+    "mtime": 1786847936.7121773,
+    "ast_hash": "5d3c2e301005ef229c37141fd097b712",
+    "semantic_hash": "5d3c2e301005ef229c37141fd097b712"
+  },
+  "native-host/com.browserking.windows_controller.json": {
+    "mtime": 1787008603.1487176,
+    "ast_hash": "3133df13fe54e6c6d45792b1dd962266",
+    "semantic_hash": "3133df13fe54e6c6d45792b1dd962266"
+  },
+  "orchestration-settings.js": {
+    "mtime": 1787038181.4714007,
+    "ast_hash": "89d28306143e84e8d3c551e94ab33db0",
+    "semantic_hash": "89d28306143e84e8d3c551e94ab33db0"
+  },
+  ".browserking-bot-chrome-profile/ActorSafetyLists/9.5220.3721/_metadata/verified_contents.json": {
+    "mtime": 1784716520.0,
+    "ast_hash": "5c295139b7a450ab8ca920e707d55dcc",
+    "semantic_hash": "5c295139b7a450ab8ca920e707d55dcc"
+  },
+  ".browserking-bot-chrome-profile/ActorSafetyLists/9.5220.3721/listdata.json": {
+    "mtime": 1784716520.0,
+    "ast_hash": "dbd798b1a29ef2f0d686d8eb4261bcec",
+    "semantic_hash": "dbd798b1a29ef2f0d686d8eb4261bcec"
+  },
+  ".browserking-bot-chrome-profile/ActorSafetyLists/9.5220.3721/manifest.json": {
+    "mtime": 1784716520.0,
+    "ast_hash": "8575e55b84f5aa5d8f54a5e0b1456ac3",
+    "semantic_hash": "8575e55b84f5aa5d8f54a5e0b1456ac3"
+  },
+  ".browserking-bot-chrome-profile/AmountExtractionHeuristicRegexes/4/_metadata/verified_contents.json": {
+    "mtime": 1760462404.0,
+    "ast_hash": "7c3f5058ab66dc810bd81f035558c4de",
+    "semantic_hash": "7c3f5058ab66dc810bd81f035558c4de"
+  },
+  ".browserking-bot-chrome-profile/AmountExtractionHeuristicRegexes/4/manifest.json": {
+    "mtime": 1760462404.0,
+    "ast_hash": "7130a770ae4db8eebc02a87bdee55e4d",
+    "semantic_hash": "7130a770ae4db8eebc02a87bdee55e4d"
+  },
+  ".browserking-bot-chrome-profile/CertificateRevocation/10717/_metadata/verified_contents.json": {
+    "mtime": 1786798850.0,
+    "ast_hash": "1d4e63b6da5d8d53398b882af21c5928",
+    "semantic_hash": "1d4e63b6da5d8d53398b882af21c5928"
+  },
+  ".browserking-bot-chrome-profile/CertificateRevocation/10717/manifest.json": {
+    "mtime": 1786798850.0,
+    "ast_hash": "5baca836511e3e6688cb7be76085c8b1",
+    "semantic_hash": "5baca836511e3e6688cb7be76085c8b1"
+  },
+  ".browserking-bot-chrome-profile/Crowd Deny/2026.8.13.60/_metadata/verified_contents.json": {
+    "mtime": 1786558132.0,
+    "ast_hash": "86f22c41cae769282cd50b0e345e6030",
+    "semantic_hash": "86f22c41cae769282cd50b0e345e6030"
+  },
+  ".browserking-bot-chrome-profile/Crowd Deny/2026.8.13.60/manifest.json": {
+    "mtime": 1786558132.0,
+    "ast_hash": "e8804c1271fde5a50db3ff1ead1c57db",
+    "semantic_hash": "e8804c1271fde5a50db3ff1ead1c57db"
+  },
+  ".browserking-bot-chrome-profile/FileTypePolicies/145.0.7584.0/_metadata/verified_contents.json": {
+    "mtime": 1766018420.0,
+    "ast_hash": "d0612f6091f5a06fc7ee9b5a47ec37a4",
+    "semantic_hash": "d0612f6091f5a06fc7ee9b5a47ec37a4"
+  },
+  ".browserking-bot-chrome-profile/FileTypePolicies/145.0.7584.0/manifest.json": {
+    "mtime": 1766018420.0,
+    "ast_hash": "e97d9354ca8a054fb36d180f393b1252",
+    "semantic_hash": "e97d9354ca8a054fb36d180f393b1252"
+  },
+  ".browserking-bot-chrome-profile/MEIPreload/1.1.0.3/_metadata/verified_contents.json": {
+    "mtime": 946684800.0,
+    "ast_hash": "0f7986d4ff50f426120f34117d0a9f89",
+    "semantic_hash": "0f7986d4ff50f426120f34117d0a9f89"
+  },
+  ".browserking-bot-chrome-profile/MEIPreload/1.1.0.3/manifest.json": {
+    "mtime": 946684800.0,
+    "ast_hash": "837451b9bf5675593e66a3b58787a0a5",
+    "semantic_hash": "837451b9bf5675593e66a3b58787a0a5"
+  },
+  ".browserking-bot-chrome-profile/OnDeviceHeadSuggestModel/20251024.824731831.14/_metadata/verified_contents.json": {
+    "mtime": 1761901576.0,
+    "ast_hash": "f87f334303f58f6ffbc10b31e990cb5b",
+    "semantic_hash": "f87f334303f58f6ffbc10b31e990cb5b"
+  },
+  ".browserking-bot-chrome-profile/OnDeviceHeadSuggestModel/20251024.824731831.14/manifest.json": {
+    "mtime": 1761901576.0,
+    "ast_hash": "6ff2bdfbf79afa0c4ecc94df731aa722",
+    "semantic_hash": "6ff2bdfbf79afa0c4ecc94df731aa722"
+  },
+  ".browserking-bot-chrome-profile/OptimizationHints/727/_metadata/verified_contents.json": {
+    "mtime": 315532800.0,
+    "ast_hash": "c6dc668465f841e32e701895189a0ece",
+    "semantic_hash": "c6dc668465f841e32e701895189a0ece"
+  },
+  ".browserking-bot-chrome-profile/OptimizationHints/727/manifest.json": {
+    "mtime": 315532800.0,
+    "ast_hash": "700507f8f4645aae3b2191feb1093afb",
+    "semantic_hash": "700507f8f4645aae3b2191feb1093afb"
+  },
+  ".browserking-bot-chrome-profile/PKIMetadata/1748/_metadata/verified_contents.json": {
+    "mtime": 315532800.0,
+    "ast_hash": "199dcb0961aaf34cff5327c3f317a707",
+    "semantic_hash": "199dcb0961aaf34cff5327c3f317a707"
+  },
+  ".browserking-bot-chrome-profile/PKIMetadata/1748/manifest.json": {
+    "mtime": 315532800.0,
+    "ast_hash": "5cbad5fe011361c76a4a940e6afd89a0",
+    "semantic_hash": "5cbad5fe011361c76a4a940e6afd89a0"
+  },
+  ".browserking-bot-chrome-profile/SSLErrorAssistant/7/_metadata/verified_contents.json": {
+    "mtime": 315532800.0,
+    "ast_hash": "6d1d175f88b64546105e3e7c31d1129a",
+    "semantic_hash": "6d1d175f88b64546105e3e7c31d1129a"
+  },
+  ".browserking-bot-chrome-profile/SSLErrorAssistant/7/manifest.json": {
+    "mtime": 315532800.0,
+    "ast_hash": "4aaa0ed8099ecc1da778a9bc39393808",
+    "semantic_hash": "4aaa0ed8099ecc1da778a9bc39393808"
+  },
+  ".browserking-bot-chrome-profile/SafetyTips/3091/_metadata/verified_contents.json": {
+    "mtime": 1767786558.0,
+    "ast_hash": "396c475f2dc75d83ea25d85958046a09",
+    "semantic_hash": "396c475f2dc75d83ea25d85958046a09"
+  },
+  ".browserking-bot-chrome-profile/SafetyTips/3091/manifest.json": {
+    "mtime": 1767786558.0,
+    "ast_hash": "d482d7180f77c5c4a21a7f9a04cb797b",
+    "semantic_hash": "d482d7180f77c5c4a21a7f9a04cb797b"
+  },
+  ".browserking-bot-chrome-profile/Subresource Filter/Unindexed Rules/9.70.0/_metadata/verified_contents.json": {
+    "mtime": 1783949782.0,
+    "ast_hash": "66bc4a73ed2f93f7a52bff16e2499c5b",
+    "semantic_hash": "66bc4a73ed2f93f7a52bff16e2499c5b"
+  },
+  ".browserking-bot-chrome-profile/Subresource Filter/Unindexed Rules/9.70.0/manifest.json": {
+    "mtime": 1783949782.0,
+    "ast_hash": "2c47f0e0349edb09cf8d54d55d8f53b0",
+    "semantic_hash": "2c47f0e0349edb09cf8d54d55d8f53b0"
+  },
+  ".browserking-bot-chrome-profile/TrustTokenKeyCommitments/2026.8.3.1/_metadata/verified_contents.json": {
+    "mtime": 1785740182.0,
+    "ast_hash": "61be80a9c93aef9160d69c843d290855",
+    "semantic_hash": "61be80a9c93aef9160d69c843d290855"
+  },
+  ".browserking-bot-chrome-profile/TrustTokenKeyCommitments/2026.8.3.1/keys.json": {
+    "mtime": 1785740182.0,
+    "ast_hash": "ee666d1b2290efa6cdbc89ea3d317333",
+    "semantic_hash": "ee666d1b2290efa6cdbc89ea3d317333"
+  },
+  ".browserking-bot-chrome-profile/TrustTokenKeyCommitments/2026.8.3.1/manifest.json": {
+    "mtime": 1785740182.0,
+    "ast_hash": "259f068207f60fb9d4448c02c27b74ba",
+    "semantic_hash": "259f068207f60fb9d4448c02c27b74ba"
+  },
+  ".browserking-bot-chrome-profile/WasmTtsEngine/20260806.1/_metadata/verified_contents.json": {
+    "mtime": 1786014530.0,
+    "ast_hash": "766a78d191dd4b418ddf35597507d8ee",
+    "semantic_hash": "766a78d191dd4b418ddf35597507d8ee"
+  },
+  ".browserking-bot-chrome-profile/WasmTtsEngine/20260806.1/background_compiled.js": {
+    "mtime": 1786014506.0,
+    "ast_hash": "5d96000d90b2869c7b7022a545ac3364",
+    "semantic_hash": "5d96000d90b2869c7b7022a545ac3364"
+  },
+  ".browserking-bot-chrome-profile/WasmTtsEngine/20260806.1/bindings_main.js": {
+    "mtime": 1786014510.0,
+    "ast_hash": "fc91c174a74a07582cd41dcf6c298503",
+    "semantic_hash": "fc91c174a74a07582cd41dcf6c298503"
+  },
+  ".browserking-bot-chrome-profile/WasmTtsEngine/20260806.1/manifest.json": {
+    "mtime": 1786014530.0,
+    "ast_hash": "650f6f6d1ae6daebaece9bd629445848",
+    "semantic_hash": "650f6f6d1ae6daebaece9bd629445848"
+  },
+  ".browserking-bot-chrome-profile/WasmTtsEngine/20260806.1/offscreen_compiled.js": {
+    "mtime": 1786014520.0,
+    "ast_hash": "3c1992989b986ec93d70adf0ef80bc5c",
+    "semantic_hash": "3c1992989b986ec93d70adf0ef80bc5c"
+  },
+  ".browserking-bot-chrome-profile/WasmTtsEngine/20260806.1/streaming_worklet_processor.js": {
+    "mtime": 1786014524.0,
+    "ast_hash": "d927d187466d75a9407a67444733f1fc",
+    "semantic_hash": "d927d187466d75a9407a67444733f1fc"
+  },
+  ".browserking-bot-chrome-profile/WasmTtsEngine/20260806.1/voices.json": {
+    "mtime": 1786014526.0,
+    "ast_hash": "383759f374c7d88c8a0be5e5fa31fd24",
+    "semantic_hash": "383759f374c7d88c8a0be5e5fa31fd24"
+  },
+  ".browserking-bot-chrome-profile/WasmTtsEngine/20260806.1/wasm_tts_manifest_v3.json": {
+    "mtime": 1786014530.0,
+    "ast_hash": "12f8d56e8057eada0c52f162fb341651",
+    "semantic_hash": "12f8d56e8057eada0c52f162fb341651"
+  },
+  ".browserking-bot-chrome-profile/ZxcvbnData/3/_metadata/verified_contents.json": {
+    "mtime": 1677021638.0,
+    "ast_hash": "6dbedae5e2f5b6d6b4e3aae391379795",
+    "semantic_hash": "6dbedae5e2f5b6d6b4e3aae391379795"
+  },
+  ".browserking-bot-chrome-profile/ZxcvbnData/3/manifest.json": {
+    "mtime": 1677021638.0,
+    "ast_hash": "fb195043cfc35ce711b45934e387267b",
+    "semantic_hash": "fb195043cfc35ce711b45934e387267b"
+  },
+  ".browserking-bot-chrome-profile/component_crx_cache/metadata.json": {
+    "mtime": 1786856036.4421432,
+    "ast_hash": "9b5fc272fa1493f19d7001038b589a9a",
+    "semantic_hash": "9b5fc272fa1493f19d7001038b589a9a"
+  },
+  ".browserking-bot-chrome-profile/extensions_crx_cache/metadata.json": {
+    "mtime": 1786855689.9530108,
+    "ast_hash": "2aa9e263ee3796d9ce358460a2451b4c",
+    "semantic_hash": "2aa9e263ee3796d9ce358460a2451b4c"
+  },
+  ".browserking-bot-chrome-profile/hyphen-data/120.0.6050.0/_metadata/verified_contents.json": {
+    "mtime": 978307200.0,
+    "ast_hash": "117d173e82b282deca740475e35c8ecd",
+    "semantic_hash": "117d173e82b282deca740475e35c8ecd"
+  },
+  ".browserking-bot-chrome-profile/hyphen-data/120.0.6050.0/manifest.json": {
+    "mtime": 978307200.0,
+    "ast_hash": "2617c38bed67a4190fc499142b6f2867",
+    "semantic_hash": "2617c38bed67a4190fc499142b6f2867"
+  },
+  ".browserking-gemini-qa-profile/component_crx_cache/metadata.json": {
+    "mtime": 1786851855.2072244,
+    "ast_hash": "2aa9e263ee3796d9ce358460a2451b4c",
+    "semantic_hash": "2aa9e263ee3796d9ce358460a2451b4c"
+  },
+  ".browserking-gemini-qa-profile/extensions_crx_cache/metadata.json": {
+    "mtime": 1786851815.2777433,
+    "ast_hash": "2aa9e263ee3796d9ce358460a2451b4c",
+    "semantic_hash": "2aa9e263ee3796d9ce358460a2451b4c"
+  },
+  "panel-runtime-guard.js": {
+    "mtime": 1786996285.6823075,
+    "ast_hash": "ca3ab89e26f42ba6e787bb7ac8d66f71",
+    "semantic_hash": "ca3ab89e26f42ba6e787bb7ac8d66f71"
+  },
+  "start-telegram-bot.ps1": {
+    "mtime": 1786854988.633273,
+    "ast_hash": "a7585a06955963d3d107715dbb11c24d",
+    "semantic_hash": "a7585a06955963d3d107715dbb11c24d"
+  },
+  "telegram-bot.js": {
+    "mtime": 1786996285.6833384,
+    "ast_hash": "8dff08297414da6f78182c2c4cd82ef8",
+    "semantic_hash": "8dff08297414da6f78182c2c4cd82ef8"
+  },
+  ".browserking-bot-chrome-profile/Subresource Filter/Unindexed Rules/9.70.0/LICENSE.txt": {
+    "mtime": 1783949684.0,
+    "ast_hash": "d33aaa5246e1ce0a94fa15ba0c407ae2",
+    "semantic_hash": "d33aaa5246e1ce0a94fa15ba0c407ae2"
+  },
+  ".browserking-bot-chrome-profile/WasmTtsEngine/20260806.1/offscreen.html": {
+    "mtime": 1786014516.0,
+    "ast_hash": "1cc8c17dc404f0226bab3cd41d2a4d22",
+    "semantic_hash": "1cc8c17dc404f0226bab3cd41d2a4d22"
+  },
+  ".browserking-bot-chrome-profile/ZxcvbnData/3/english_wikipedia.txt": {
+    "mtime": 1591085456.0,
+    "ast_hash": "5713cf8a57fe61cb28fc99a88323cbde",
+    "semantic_hash": "5713cf8a57fe61cb28fc99a88323cbde"
+  },
+  ".browserking-bot-chrome-profile/ZxcvbnData/3/female_names.txt": {
+    "mtime": 1591085456.0,
+    "ast_hash": "826b02933e2bbf07ebf69e3da323d389",
+    "semantic_hash": "826b02933e2bbf07ebf69e3da323d389"
+  },
+  ".browserking-bot-chrome-profile/ZxcvbnData/3/male_names.txt": {
+    "mtime": 1591085458.0,
+    "ast_hash": "0951d82428623061017b1254cad02f4d",
+    "semantic_hash": "0951d82428623061017b1254cad02f4d"
+  },
+  ".browserking-bot-chrome-profile/ZxcvbnData/3/surnames.txt": {
+    "mtime": 1591085460.0,
+    "ast_hash": "fd371a8cb1595f425332063f52f8e842",
+    "semantic_hash": "fd371a8cb1595f425332063f52f8e842"
+  },
+  ".browserking-bot-chrome-profile/ZxcvbnData/3/us_tv_and_film.txt": {
+    "mtime": 1591085462.0,
+    "ast_hash": "9c2d1b4b6932aa765231e0d0ed2c4f99",
+    "semantic_hash": "9c2d1b4b6932aa765231e0d0ed2c4f99"
+  },
+  ".browserking-bot-chrome-profile/optimization_guide_model_store/15/AC9BF66B1B98B9AD/2DED8BC1C1B582BD/VERSION.txt": {
+    "mtime": 315532800.0,
+    "ast_hash": "3c82ee24c0889b89a04545abf2c38978",
+    "semantic_hash": "3c82ee24c0889b89a04545abf2c38978"
+  },
+  ".browserking-gemini-qa-profile/Default/Service Worker/CacheStorage/65dfcacdea28ddc05e672e3a4fab060a9966b8cf/index.txt": {
+    "mtime": 1786851814.4590845,
+    "ast_hash": "4c0c500266e0a516eae4cc0652e5ebe9",
+    "semantic_hash": "4c0c500266e0a516eae4cc0652e5ebe9"
+  },
+  "README.md": {
+    "mtime": 1786996285.7565408,
+    "ast_hash": "52cb5886f7275ae8282731cbd665e646",
+    "semantic_hash": "52cb5886f7275ae8282731cbd665e646"
+  },
+  "blocked.html": {
+    "mtime": 1786996285.6666832,
+    "ast_hash": "13673915eea35d49c98db48de47733b8",
+    "semantic_hash": "13673915eea35d49c98db48de47733b8"
+  },
+  "control-center.html": {
+    "mtime": 1787008399.7604766,
+    "ast_hash": "708644dae51baee3a5b01dd41bb00563",
+    "semantic_hash": "708644dae51baee3a5b01dd41bb00563"
+  },
+  "gif_viewer.html": {
+    "mtime": 1786996285.6666832,
+    "ast_hash": "d00d08ed58d0dac1529a3607acbffbb7",
+    "semantic_hash": "d00d08ed58d0dac1529a3607acbffbb7"
+  },
+  "git-hash.txt": {
+    "mtime": 1773799064.0,
+    "ast_hash": "570f51539cd8224da203dfdd4d7da24a",
+    "semantic_hash": "570f51539cd8224da203dfdd4d7da24a"
+  },
+  "newtab.html": {
+    "mtime": 1786996285.6666832,
+    "ast_hash": "15d70793e5963b7d002327c657de7292",
+    "semantic_hash": "15d70793e5963b7d002327c657de7292"
+  },
+  "offscreen.html": {
+    "mtime": 1773799064.0,
+    "ast_hash": "fa7965cffdad06012d9559be049020fd",
+    "semantic_hash": "fa7965cffdad06012d9559be049020fd"
+  },
+  "options.html": {
+    "mtime": 1787008399.7617407,
+    "ast_hash": "ac30da9c16bae73ceb0c8b3d121b9549",
+    "semantic_hash": "ac30da9c16bae73ceb0c8b3d121b9549"
+  },
+  "orchestration-settings.html": {
+    "mtime": 1787038172.4317846,
+    "ast_hash": "64b8a43d9b94bec10d459e9e1677df22",
+    "semantic_hash": "64b8a43d9b94bec10d459e9e1677df22"
+  },
+  "pairing.html": {
+    "mtime": 1786996285.6666832,
+    "ast_hash": "d6e8a0d21c7398b6098df5e6c7a47039",
+    "semantic_hash": "d6e8a0d21c7398b6098df5e6c7a47039"
+  },
+  "provider-settings.html": {
+    "mtime": 1787105738.56194,
+    "ast_hash": "822e9d5505a2def7767ca93f69cf2923",
+    "semantic_hash": ""
+  },
+  "public/offscreen.html": {
+    "mtime": 1773799064.0,
+    "ast_hash": "fa7965cffdad06012d9559be049020fd",
+    "semantic_hash": "fa7965cffdad06012d9559be049020fd"
+  },
+  "sidepanel.html": {
+    "mtime": 1787018743.3944004,
+    "ast_hash": "51dd62d5684363ca9b5cbcbe3961d994",
+    "semantic_hash": "51dd62d5684363ca9b5cbcbe3961d994"
+  },
+  ".android-screen-inspector/connected-mobile/screen.png": {
+    "mtime": 1786845782.9799473,
+    "ast_hash": "177106d364b1871546d0cebddec06e81",
+    "semantic_hash": "177106d364b1871546d0cebddec06e81"
+  },
+  ".android-screen-inspector/connection-diagnosis/screen.png": {
+    "mtime": 1786852118.071254,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  ".android-screen-inspector/initial/screen.png": {
+    "mtime": 1786845747.3425786,
+    "ast_hash": "d2e54ca8b4b7f9fc919a48bce9ea05ad",
+    "semantic_hash": "d2e54ca8b4b7f9fc919a48bce9ea05ad"
+  },
+  ".android-screen-inspector/notification-result/screen.png": {
+    "mtime": 1786847263.2034817,
+    "ast_hash": "e3f915892f0dfc8bb15418d00d3ce40e",
+    "semantic_hash": "e3f915892f0dfc8bb15418d00d3ce40e"
+  },
+  ".android-screen-inspector/permanent-result/screen.png": {
+    "mtime": 1786846845.1574545,
+    "ast_hash": "8780484b5d913ce628162888b8889342",
+    "semantic_hash": "8780484b5d913ce628162888b8889342"
+  },
+  ".android-screen-inspector/wifi-result/screen.png": {
+    "mtime": 1786846003.229411,
+    "ast_hash": "c344035e04555041cb2eac026e9db318",
+    "semantic_hash": "c344035e04555041cb2eac026e9db318"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/aghbiahbpaijignceidepookljebhfak/Icons/128.png": {
+    "mtime": 1786855680.3369415,
+    "ast_hash": "4d6718d1d2454b28eb57e77a0b453f03",
+    "semantic_hash": "4d6718d1d2454b28eb57e77a0b453f03"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/aghbiahbpaijignceidepookljebhfak/Icons/192.png": {
+    "mtime": 1786855680.3409426,
+    "ast_hash": "b9a97c31f96686dadf876b063fcb9371",
+    "semantic_hash": "b9a97c31f96686dadf876b063fcb9371"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/aghbiahbpaijignceidepookljebhfak/Icons/256.png": {
+    "mtime": 1786855680.3489447,
+    "ast_hash": "d2695f49e72d99213761bf869e97e895",
+    "semantic_hash": "d2695f49e72d99213761bf869e97e895"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/aghbiahbpaijignceidepookljebhfak/Icons/32.png": {
+    "mtime": 1786855680.331955,
+    "ast_hash": "c50a16207e11eac0a53a115fcf3b051f",
+    "semantic_hash": "c50a16207e11eac0a53a115fcf3b051f"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/aghbiahbpaijignceidepookljebhfak/Icons/48.png": {
+    "mtime": 1786855680.3322542,
+    "ast_hash": "db7d1fef456b4f5602fd843e804ea04a",
+    "semantic_hash": "db7d1fef456b4f5602fd843e804ea04a"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/aghbiahbpaijignceidepookljebhfak/Icons/64.png": {
+    "mtime": 1786855680.3329403,
+    "ast_hash": "2d4e8b7ba69ba8a6801b7139cb7facd3",
+    "semantic_hash": "2d4e8b7ba69ba8a6801b7139cb7facd3"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/aghbiahbpaijignceidepookljebhfak/Icons/96.png": {
+    "mtime": 1786855680.334941,
+    "ast_hash": "c7a07ac785598ddf0873b82f02fa0391",
+    "semantic_hash": "c7a07ac785598ddf0873b82f02fa0391"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/aghbiahbpaijignceidepookljebhfak/Trusted Icons/Icons/128.png": {
+    "mtime": 1786855680.3602774,
+    "ast_hash": "4d6718d1d2454b28eb57e77a0b453f03",
+    "semantic_hash": "4d6718d1d2454b28eb57e77a0b453f03"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/aghbiahbpaijignceidepookljebhfak/Trusted Icons/Icons/192.png": {
+    "mtime": 1786855680.364035,
+    "ast_hash": "b9a97c31f96686dadf876b063fcb9371",
+    "semantic_hash": "b9a97c31f96686dadf876b063fcb9371"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/aghbiahbpaijignceidepookljebhfak/Trusted Icons/Icons/256.png": {
+    "mtime": 1786855680.37348,
+    "ast_hash": "d2695f49e72d99213761bf869e97e895",
+    "semantic_hash": "d2695f49e72d99213761bf869e97e895"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/aghbiahbpaijignceidepookljebhfak/Trusted Icons/Icons/32.png": {
+    "mtime": 1786855680.3529453,
+    "ast_hash": "c50a16207e11eac0a53a115fcf3b051f",
+    "semantic_hash": "c50a16207e11eac0a53a115fcf3b051f"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/aghbiahbpaijignceidepookljebhfak/Trusted Icons/Icons/48.png": {
+    "mtime": 1786855680.3539457,
+    "ast_hash": "db7d1fef456b4f5602fd843e804ea04a",
+    "semantic_hash": "db7d1fef456b4f5602fd843e804ea04a"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/aghbiahbpaijignceidepookljebhfak/Trusted Icons/Icons/64.png": {
+    "mtime": 1786855680.354946,
+    "ast_hash": "2d4e8b7ba69ba8a6801b7139cb7facd3",
+    "semantic_hash": "2d4e8b7ba69ba8a6801b7139cb7facd3"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/aghbiahbpaijignceidepookljebhfak/Trusted Icons/Icons/96.png": {
+    "mtime": 1786855680.3576336,
+    "ast_hash": "c7a07ac785598ddf0873b82f02fa0391",
+    "semantic_hash": "c7a07ac785598ddf0873b82f02fa0391"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/agimnkijcaahngcdmfeangaknmldooml/Icons/128.png": {
+    "mtime": 1786855680.5275338,
+    "ast_hash": "8a5c8fbf7b03f3247dde95c8834abe99",
+    "semantic_hash": "8a5c8fbf7b03f3247dde95c8834abe99"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/agimnkijcaahngcdmfeangaknmldooml/Icons/192.png": {
+    "mtime": 1786855680.5285347,
+    "ast_hash": "48db912e1656fdbc289c704fbdf1f37a",
+    "semantic_hash": "48db912e1656fdbc289c704fbdf1f37a"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/agimnkijcaahngcdmfeangaknmldooml/Icons/256.png": {
+    "mtime": 1786855680.535076,
+    "ast_hash": "42e1c8f772479e7e6d46a8420a0b5476",
+    "semantic_hash": "42e1c8f772479e7e6d46a8420a0b5476"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/agimnkijcaahngcdmfeangaknmldooml/Icons/32.png": {
+    "mtime": 1786855680.5201204,
+    "ast_hash": "e4847d3a4975d5ebf607098e345de0b6",
+    "semantic_hash": "e4847d3a4975d5ebf607098e345de0b6"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/agimnkijcaahngcdmfeangaknmldooml/Icons/48.png": {
+    "mtime": 1786855680.5211205,
+    "ast_hash": "f43720c23db7a78076bd96cbd8695fb5",
+    "semantic_hash": "f43720c23db7a78076bd96cbd8695fb5"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/agimnkijcaahngcdmfeangaknmldooml/Icons/64.png": {
+    "mtime": 1786855680.5221207,
+    "ast_hash": "11bd4fb05e4d3ac9d62a62e9482d3208",
+    "semantic_hash": "11bd4fb05e4d3ac9d62a62e9482d3208"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/agimnkijcaahngcdmfeangaknmldooml/Icons/96.png": {
+    "mtime": 1786855680.5240312,
+    "ast_hash": "a582e127fc4ec2578f4b3720aa7ee6f0",
+    "semantic_hash": "a582e127fc4ec2578f4b3720aa7ee6f0"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/agimnkijcaahngcdmfeangaknmldooml/Trusted Icons/Icons/128.png": {
+    "mtime": 1786855680.544087,
+    "ast_hash": "8a5c8fbf7b03f3247dde95c8834abe99",
+    "semantic_hash": "8a5c8fbf7b03f3247dde95c8834abe99"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/agimnkijcaahngcdmfeangaknmldooml/Trusted Icons/Icons/192.png": {
+    "mtime": 1786855680.5450861,
+    "ast_hash": "48db912e1656fdbc289c704fbdf1f37a",
+    "semantic_hash": "48db912e1656fdbc289c704fbdf1f37a"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/agimnkijcaahngcdmfeangaknmldooml/Trusted Icons/Icons/256.png": {
+    "mtime": 1786855680.551594,
+    "ast_hash": "42e1c8f772479e7e6d46a8420a0b5476",
+    "semantic_hash": "42e1c8f772479e7e6d46a8420a0b5476"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/agimnkijcaahngcdmfeangaknmldooml/Trusted Icons/Icons/32.png": {
+    "mtime": 1786855680.5375798,
+    "ast_hash": "e4847d3a4975d5ebf607098e345de0b6",
+    "semantic_hash": "e4847d3a4975d5ebf607098e345de0b6"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/agimnkijcaahngcdmfeangaknmldooml/Trusted Icons/Icons/48.png": {
+    "mtime": 1786855680.5385804,
+    "ast_hash": "f43720c23db7a78076bd96cbd8695fb5",
+    "semantic_hash": "f43720c23db7a78076bd96cbd8695fb5"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/agimnkijcaahngcdmfeangaknmldooml/Trusted Icons/Icons/64.png": {
+    "mtime": 1786855680.53958,
+    "ast_hash": "11bd4fb05e4d3ac9d62a62e9482d3208",
+    "semantic_hash": "11bd4fb05e4d3ac9d62a62e9482d3208"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/agimnkijcaahngcdmfeangaknmldooml/Trusted Icons/Icons/96.png": {
+    "mtime": 1786855680.5410857,
+    "ast_hash": "a582e127fc4ec2578f4b3720aa7ee6f0",
+    "semantic_hash": "a582e127fc4ec2578f4b3720aa7ee6f0"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/fhihpiojkbmbpdjeoajapmgkhlnakfjf/Icons/128.png": {
+    "mtime": 1786855680.405028,
+    "ast_hash": "b4d3e1915751a4baace955649591e9e9",
+    "semantic_hash": "b4d3e1915751a4baace955649591e9e9"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/fhihpiojkbmbpdjeoajapmgkhlnakfjf/Icons/192.png": {
+    "mtime": 1786855680.4080236,
+    "ast_hash": "c020e6448fb4e4a5fb27cf1b6253ef82",
+    "semantic_hash": "c020e6448fb4e4a5fb27cf1b6253ef82"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/fhihpiojkbmbpdjeoajapmgkhlnakfjf/Icons/256.png": {
+    "mtime": 1786855680.415047,
+    "ast_hash": "4bb4e1440bd21c3fb2b524e24cfa91d5",
+    "semantic_hash": "4bb4e1440bd21c3fb2b524e24cfa91d5"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/fhihpiojkbmbpdjeoajapmgkhlnakfjf/Icons/32.png": {
+    "mtime": 1786855680.3985145,
+    "ast_hash": "14e11a6083d7dc28e62941e4d357296a",
+    "semantic_hash": "14e11a6083d7dc28e62941e4d357296a"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/fhihpiojkbmbpdjeoajapmgkhlnakfjf/Icons/48.png": {
+    "mtime": 1786855680.4005153,
+    "ast_hash": "0b08a30e8d8177c9eb4d29e0a7b8b2c5",
+    "semantic_hash": "0b08a30e8d8177c9eb4d29e0a7b8b2c5"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/fhihpiojkbmbpdjeoajapmgkhlnakfjf/Icons/64.png": {
+    "mtime": 1786855680.4015157,
+    "ast_hash": "eec53528b1feede3c1c5fdd61576bb71",
+    "semantic_hash": "eec53528b1feede3c1c5fdd61576bb71"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/fhihpiojkbmbpdjeoajapmgkhlnakfjf/Icons/96.png": {
+    "mtime": 1786855680.4025154,
+    "ast_hash": "55ff94ecef85bcda19d583cbee44e063",
+    "semantic_hash": "55ff94ecef85bcda19d583cbee44e063"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/fhihpiojkbmbpdjeoajapmgkhlnakfjf/Trusted Icons/Icons/128.png": {
+    "mtime": 1786855680.4256067,
+    "ast_hash": "b4d3e1915751a4baace955649591e9e9",
+    "semantic_hash": "b4d3e1915751a4baace955649591e9e9"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/fhihpiojkbmbpdjeoajapmgkhlnakfjf/Trusted Icons/Icons/192.png": {
+    "mtime": 1786855680.429122,
+    "ast_hash": "c020e6448fb4e4a5fb27cf1b6253ef82",
+    "semantic_hash": "c020e6448fb4e4a5fb27cf1b6253ef82"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/fhihpiojkbmbpdjeoajapmgkhlnakfjf/Trusted Icons/Icons/256.png": {
+    "mtime": 1786855680.437677,
+    "ast_hash": "4bb4e1440bd21c3fb2b524e24cfa91d5",
+    "semantic_hash": "4bb4e1440bd21c3fb2b524e24cfa91d5"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/fhihpiojkbmbpdjeoajapmgkhlnakfjf/Trusted Icons/Icons/32.png": {
+    "mtime": 1786855680.4185555,
+    "ast_hash": "14e11a6083d7dc28e62941e4d357296a",
+    "semantic_hash": "14e11a6083d7dc28e62941e4d357296a"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/fhihpiojkbmbpdjeoajapmgkhlnakfjf/Trusted Icons/Icons/48.png": {
+    "mtime": 1786855680.419331,
+    "ast_hash": "0b08a30e8d8177c9eb4d29e0a7b8b2c5",
+    "semantic_hash": "0b08a30e8d8177c9eb4d29e0a7b8b2c5"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/fhihpiojkbmbpdjeoajapmgkhlnakfjf/Trusted Icons/Icons/64.png": {
+    "mtime": 1786855680.4200642,
+    "ast_hash": "eec53528b1feede3c1c5fdd61576bb71",
+    "semantic_hash": "eec53528b1feede3c1c5fdd61576bb71"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/fhihpiojkbmbpdjeoajapmgkhlnakfjf/Trusted Icons/Icons/96.png": {
+    "mtime": 1786855680.422064,
+    "ast_hash": "55ff94ecef85bcda19d583cbee44e063",
+    "semantic_hash": "55ff94ecef85bcda19d583cbee44e063"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/fmgjjmmmlfnkbppncabfkddbjimcfncm/Icons/128.png": {
+    "mtime": 1786855680.2280662,
+    "ast_hash": "0b21559ca3747caea5341359e605fbfa",
+    "semantic_hash": "0b21559ca3747caea5341359e605fbfa"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/fmgjjmmmlfnkbppncabfkddbjimcfncm/Icons/192.png": {
+    "mtime": 1786855680.2300668,
+    "ast_hash": "9daabb9829c620d1ced3823c9b07eefd",
+    "semantic_hash": "9daabb9829c620d1ced3823c9b07eefd"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/fmgjjmmmlfnkbppncabfkddbjimcfncm/Icons/256.png": {
+    "mtime": 1786855680.2340677,
+    "ast_hash": "10c383e1344517c2894e2510e579f588",
+    "semantic_hash": "10c383e1344517c2894e2510e579f588"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/fmgjjmmmlfnkbppncabfkddbjimcfncm/Icons/32.png": {
+    "mtime": 1786855680.222065,
+    "ast_hash": "5b31d7ccd2804182dc992921f773b426",
+    "semantic_hash": "5b31d7ccd2804182dc992921f773b426"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/fmgjjmmmlfnkbppncabfkddbjimcfncm/Icons/48.png": {
+    "mtime": 1786855680.2230651,
+    "ast_hash": "e76bdb13919d0feb56b3d39175123285",
+    "semantic_hash": "e76bdb13919d0feb56b3d39175123285"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/fmgjjmmmlfnkbppncabfkddbjimcfncm/Icons/64.png": {
+    "mtime": 1786855680.2240658,
+    "ast_hash": "fbefdebb9ca26f364f6e6ddf21ab5ff8",
+    "semantic_hash": "fbefdebb9ca26f364f6e6ddf21ab5ff8"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/fmgjjmmmlfnkbppncabfkddbjimcfncm/Icons/96.png": {
+    "mtime": 1786855680.226066,
+    "ast_hash": "2f03f586a232e6b7be57f550da5a9ee7",
+    "semantic_hash": "2f03f586a232e6b7be57f550da5a9ee7"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/fmgjjmmmlfnkbppncabfkddbjimcfncm/Trusted Icons/Icons/128.png": {
+    "mtime": 1786855680.2420695,
+    "ast_hash": "0b21559ca3747caea5341359e605fbfa",
+    "semantic_hash": "0b21559ca3747caea5341359e605fbfa"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/fmgjjmmmlfnkbppncabfkddbjimcfncm/Trusted Icons/Icons/192.png": {
+    "mtime": 1786855680.2450702,
+    "ast_hash": "9daabb9829c620d1ced3823c9b07eefd",
+    "semantic_hash": "9daabb9829c620d1ced3823c9b07eefd"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/fmgjjmmmlfnkbppncabfkddbjimcfncm/Trusted Icons/Icons/256.png": {
+    "mtime": 1786855680.2510722,
+    "ast_hash": "10c383e1344517c2894e2510e579f588",
+    "semantic_hash": "10c383e1344517c2894e2510e579f588"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/fmgjjmmmlfnkbppncabfkddbjimcfncm/Trusted Icons/Icons/32.png": {
+    "mtime": 1786855680.2370687,
+    "ast_hash": "5b31d7ccd2804182dc992921f773b426",
+    "semantic_hash": "5b31d7ccd2804182dc992921f773b426"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/fmgjjmmmlfnkbppncabfkddbjimcfncm/Trusted Icons/Icons/48.png": {
+    "mtime": 1786855680.2380688,
+    "ast_hash": "e76bdb13919d0feb56b3d39175123285",
+    "semantic_hash": "e76bdb13919d0feb56b3d39175123285"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/fmgjjmmmlfnkbppncabfkddbjimcfncm/Trusted Icons/Icons/64.png": {
+    "mtime": 1786855680.2390692,
+    "ast_hash": "fbefdebb9ca26f364f6e6ddf21ab5ff8",
+    "semantic_hash": "fbefdebb9ca26f364f6e6ddf21ab5ff8"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/fmgjjmmmlfnkbppncabfkddbjimcfncm/Trusted Icons/Icons/96.png": {
+    "mtime": 1786855680.2400692,
+    "ast_hash": "2f03f586a232e6b7be57f550da5a9ee7",
+    "semantic_hash": "2f03f586a232e6b7be57f550da5a9ee7"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/kefjledonklijopmnomlcbpllchaibag/Icons/128.png": {
+    "mtime": 1786855680.4680395,
+    "ast_hash": "f2c27ef66940b4d73cc837bafe3f67b6",
+    "semantic_hash": "f2c27ef66940b4d73cc837bafe3f67b6"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/kefjledonklijopmnomlcbpllchaibag/Icons/192.png": {
+    "mtime": 1786855680.4715483,
+    "ast_hash": "81bcef6b5161393cb5507ab50c8b1c4b",
+    "semantic_hash": "81bcef6b5161393cb5507ab50c8b1c4b"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/kefjledonklijopmnomlcbpllchaibag/Icons/256.png": {
+    "mtime": 1786855680.48056,
+    "ast_hash": "c295411d013831918e5d19fda4d3e952",
+    "semantic_hash": "c295411d013831918e5d19fda4d3e952"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/kefjledonklijopmnomlcbpllchaibag/Icons/32.png": {
+    "mtime": 1786855680.4595387,
+    "ast_hash": "c3c0e9226bbafa8b88331e2cdc6db002",
+    "semantic_hash": "c3c0e9226bbafa8b88331e2cdc6db002"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/kefjledonklijopmnomlcbpllchaibag/Icons/48.png": {
+    "mtime": 1786855680.4615228,
+    "ast_hash": "ce64def504a75b4539bcc58bed7b6809",
+    "semantic_hash": "ce64def504a75b4539bcc58bed7b6809"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/kefjledonklijopmnomlcbpllchaibag/Icons/64.png": {
+    "mtime": 1786855680.4620328,
+    "ast_hash": "45ab13054ed283fd4889a126a8b6d4d8",
+    "semantic_hash": "45ab13054ed283fd4889a126a8b6d4d8"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/kefjledonklijopmnomlcbpllchaibag/Icons/96.png": {
+    "mtime": 1786855680.4645326,
+    "ast_hash": "dda841f0e1fcb4ab18aabc62c5bd1a20",
+    "semantic_hash": "dda841f0e1fcb4ab18aabc62c5bd1a20"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/kefjledonklijopmnomlcbpllchaibag/Trusted Icons/Icons/128.png": {
+    "mtime": 1786855680.4910858,
+    "ast_hash": "f2c27ef66940b4d73cc837bafe3f67b6",
+    "semantic_hash": "f2c27ef66940b4d73cc837bafe3f67b6"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/kefjledonklijopmnomlcbpllchaibag/Trusted Icons/Icons/192.png": {
+    "mtime": 1786855680.4935913,
+    "ast_hash": "81bcef6b5161393cb5507ab50c8b1c4b",
+    "semantic_hash": "81bcef6b5161393cb5507ab50c8b1c4b"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/kefjledonklijopmnomlcbpllchaibag/Trusted Icons/Icons/256.png": {
+    "mtime": 1786855680.5016003,
+    "ast_hash": "c295411d013831918e5d19fda4d3e952",
+    "semantic_hash": "c295411d013831918e5d19fda4d3e952"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/kefjledonklijopmnomlcbpllchaibag/Trusted Icons/Icons/32.png": {
+    "mtime": 1786855680.4835796,
+    "ast_hash": "c3c0e9226bbafa8b88331e2cdc6db002",
+    "semantic_hash": "c3c0e9226bbafa8b88331e2cdc6db002"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/kefjledonklijopmnomlcbpllchaibag/Trusted Icons/Icons/48.png": {
+    "mtime": 1786855680.484578,
+    "ast_hash": "ce64def504a75b4539bcc58bed7b6809",
+    "semantic_hash": "ce64def504a75b4539bcc58bed7b6809"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/kefjledonklijopmnomlcbpllchaibag/Trusted Icons/Icons/64.png": {
+    "mtime": 1786855680.4861243,
+    "ast_hash": "45ab13054ed283fd4889a126a8b6d4d8",
+    "semantic_hash": "45ab13054ed283fd4889a126a8b6d4d8"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/kefjledonklijopmnomlcbpllchaibag/Trusted Icons/Icons/96.png": {
+    "mtime": 1786855680.4880855,
+    "ast_hash": "dda841f0e1fcb4ab18aabc62c5bd1a20",
+    "semantic_hash": "dda841f0e1fcb4ab18aabc62c5bd1a20"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/mpnpojknpmmopombnjdcgaaiekajbnjb/Icons/128.png": {
+    "mtime": 1786855680.2800784,
+    "ast_hash": "45ab3b1c9bbf2721e1069ac8ba4f37a9",
+    "semantic_hash": "45ab3b1c9bbf2721e1069ac8ba4f37a9"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/mpnpojknpmmopombnjdcgaaiekajbnjb/Icons/192.png": {
+    "mtime": 1786855680.283079,
+    "ast_hash": "ee998f313ad58825e9768d077bc802ba",
+    "semantic_hash": "ee998f313ad58825e9768d077bc802ba"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/mpnpojknpmmopombnjdcgaaiekajbnjb/Icons/256.png": {
+    "mtime": 1786855680.28908,
+    "ast_hash": "98a1ab521b60f0039a818f186855fadd",
+    "semantic_hash": "98a1ab521b60f0039a818f186855fadd"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/mpnpojknpmmopombnjdcgaaiekajbnjb/Icons/32.png": {
+    "mtime": 1786855680.2740772,
+    "ast_hash": "b1f7b1594a50ffdf2af90b916818c3c0",
+    "semantic_hash": "b1f7b1594a50ffdf2af90b916818c3c0"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/mpnpojknpmmopombnjdcgaaiekajbnjb/Icons/48.png": {
+    "mtime": 1786855680.2750778,
+    "ast_hash": "db566e2b44a2c1422ddf8cd7e1ac09b5",
+    "semantic_hash": "db566e2b44a2c1422ddf8cd7e1ac09b5"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/mpnpojknpmmopombnjdcgaaiekajbnjb/Icons/64.png": {
+    "mtime": 1786855680.2760775,
+    "ast_hash": "418ed11baaff1f12b0316c5c6b9c92af",
+    "semantic_hash": "418ed11baaff1f12b0316c5c6b9c92af"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/mpnpojknpmmopombnjdcgaaiekajbnjb/Icons/96.png": {
+    "mtime": 1786855680.278078,
+    "ast_hash": "a35361ac5f677ed4d47efbbee2ce6d60",
+    "semantic_hash": "a35361ac5f677ed4d47efbbee2ce6d60"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/mpnpojknpmmopombnjdcgaaiekajbnjb/Trusted Icons/Icons/128.png": {
+    "mtime": 1786855680.2980826,
+    "ast_hash": "45ab3b1c9bbf2721e1069ac8ba4f37a9",
+    "semantic_hash": "45ab3b1c9bbf2721e1069ac8ba4f37a9"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/mpnpojknpmmopombnjdcgaaiekajbnjb/Trusted Icons/Icons/192.png": {
+    "mtime": 1786855680.3000824,
+    "ast_hash": "ee998f313ad58825e9768d077bc802ba",
+    "semantic_hash": "ee998f313ad58825e9768d077bc802ba"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/mpnpojknpmmopombnjdcgaaiekajbnjb/Trusted Icons/Icons/256.png": {
+    "mtime": 1786855680.307084,
+    "ast_hash": "98a1ab521b60f0039a818f186855fadd",
+    "semantic_hash": "98a1ab521b60f0039a818f186855fadd"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/mpnpojknpmmopombnjdcgaaiekajbnjb/Trusted Icons/Icons/32.png": {
+    "mtime": 1786855680.2920809,
+    "ast_hash": "b1f7b1594a50ffdf2af90b916818c3c0",
+    "semantic_hash": "b1f7b1594a50ffdf2af90b916818c3c0"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/mpnpojknpmmopombnjdcgaaiekajbnjb/Trusted Icons/Icons/48.png": {
+    "mtime": 1786855680.2930825,
+    "ast_hash": "db566e2b44a2c1422ddf8cd7e1ac09b5",
+    "semantic_hash": "db566e2b44a2c1422ddf8cd7e1ac09b5"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/mpnpojknpmmopombnjdcgaaiekajbnjb/Trusted Icons/Icons/64.png": {
+    "mtime": 1786855680.2940817,
+    "ast_hash": "418ed11baaff1f12b0316c5c6b9c92af",
+    "semantic_hash": "418ed11baaff1f12b0316c5c6b9c92af"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/mpnpojknpmmopombnjdcgaaiekajbnjb/Trusted Icons/Icons/96.png": {
+    "mtime": 1786855680.2950826,
+    "ast_hash": "a35361ac5f677ed4d47efbbee2ce6d60",
+    "semantic_hash": "a35361ac5f677ed4d47efbbee2ce6d60"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/pommaclcbfghclhalboakcipcmmndhcj/Icons/128.png": {
+    "mtime": 1786855680.5741484,
+    "ast_hash": "442e70a4876f0efb53ca6a8a38fdf617",
+    "semantic_hash": "442e70a4876f0efb53ca6a8a38fdf617"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/pommaclcbfghclhalboakcipcmmndhcj/Icons/192.png": {
+    "mtime": 1786855680.5759299,
+    "ast_hash": "3b9fd7fa846b9d9a5cdee0a5b975ca20",
+    "semantic_hash": "3b9fd7fa846b9d9a5cdee0a5b975ca20"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/pommaclcbfghclhalboakcipcmmndhcj/Icons/256.png": {
+    "mtime": 1786855680.5803938,
+    "ast_hash": "c1e5541bb448e13f31774db3cd8bace9",
+    "semantic_hash": "c1e5541bb448e13f31774db3cd8bace9"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/pommaclcbfghclhalboakcipcmmndhcj/Icons/32.png": {
+    "mtime": 1786855680.5700305,
+    "ast_hash": "1b7822ea3fade00be4ebb7fa00229685",
+    "semantic_hash": "1b7822ea3fade00be4ebb7fa00229685"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/pommaclcbfghclhalboakcipcmmndhcj/Icons/48.png": {
+    "mtime": 1786855680.5710309,
+    "ast_hash": "1aa8c008ec6fbf48b81eae8ac95bc127",
+    "semantic_hash": "1aa8c008ec6fbf48b81eae8ac95bc127"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/pommaclcbfghclhalboakcipcmmndhcj/Icons/64.png": {
+    "mtime": 1786855680.5720303,
+    "ast_hash": "77c1d493fe1e7d70cd12e5cf38c13ab6",
+    "semantic_hash": "77c1d493fe1e7d70cd12e5cf38c13ab6"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/pommaclcbfghclhalboakcipcmmndhcj/Icons/96.png": {
+    "mtime": 1786855680.5730312,
+    "ast_hash": "75760ee744059b7640d25f2344902257",
+    "semantic_hash": "75760ee744059b7640d25f2344902257"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/pommaclcbfghclhalboakcipcmmndhcj/Trusted Icons/Icons/128.png": {
+    "mtime": 1786855680.5864117,
+    "ast_hash": "442e70a4876f0efb53ca6a8a38fdf617",
+    "semantic_hash": "442e70a4876f0efb53ca6a8a38fdf617"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/pommaclcbfghclhalboakcipcmmndhcj/Trusted Icons/Icons/192.png": {
+    "mtime": 1786855680.5886617,
+    "ast_hash": "3b9fd7fa846b9d9a5cdee0a5b975ca20",
+    "semantic_hash": "3b9fd7fa846b9d9a5cdee0a5b975ca20"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/pommaclcbfghclhalboakcipcmmndhcj/Trusted Icons/Icons/256.png": {
+    "mtime": 1786855680.5928335,
+    "ast_hash": "c1e5541bb448e13f31774db3cd8bace9",
+    "semantic_hash": "c1e5541bb448e13f31774db3cd8bace9"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/pommaclcbfghclhalboakcipcmmndhcj/Trusted Icons/Icons/32.png": {
+    "mtime": 1786855680.5823941,
+    "ast_hash": "1b7822ea3fade00be4ebb7fa00229685",
+    "semantic_hash": "1b7822ea3fade00be4ebb7fa00229685"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/pommaclcbfghclhalboakcipcmmndhcj/Trusted Icons/Icons/48.png": {
+    "mtime": 1786855680.5833948,
+    "ast_hash": "1aa8c008ec6fbf48b81eae8ac95bc127",
+    "semantic_hash": "1aa8c008ec6fbf48b81eae8ac95bc127"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/pommaclcbfghclhalboakcipcmmndhcj/Trusted Icons/Icons/64.png": {
+    "mtime": 1786855680.584396,
+    "ast_hash": "77c1d493fe1e7d70cd12e5cf38c13ab6",
+    "semantic_hash": "77c1d493fe1e7d70cd12e5cf38c13ab6"
+  },
+  ".browserking-bot-chrome-profile/Default/Web Applications/Manifest Resources/pommaclcbfghclhalboakcipcmmndhcj/Trusted Icons/Icons/96.png": {
+    "mtime": 1786855680.5854151,
+    "ast_hash": "75760ee744059b7640d25f2344902257",
+    "semantic_hash": "75760ee744059b7640d25f2344902257"
+  },
+  "assets/browserking-watermark.gif": {
+    "mtime": 1773799064.0,
+    "ast_hash": "f71040e2a3a4a705e28d20da4fa60679",
+    "semantic_hash": "f71040e2a3a4a705e28d20da4fa60679"
+  },
+  "assets/cowork_chrome_dark-BBPEPxZX.png": {
+    "mtime": 1773799064.0,
+    "ast_hash": "57bf5a20d1a44746d28267b9890e2ff2",
+    "semantic_hash": "57bf5a20d1a44746d28267b9890e2ff2"
+  },
+  "assets/cowork_chrome_light-CcbQ7yaG.png": {
+    "mtime": 1773799064.0,
+    "ast_hash": "561a0707f71f4e05c56a962c274099ba",
+    "semantic_hash": "561a0707f71f4e05c56a962c274099ba"
+  },
+  "assets/darkshield-C5QZAT-q.svg": {
+    "mtime": 1773799064.0,
+    "ast_hash": "9cd57eda55fe408832fc40252ef976c8",
+    "semantic_hash": "9cd57eda55fe408832fc40252ef976c8"
+  },
+  "assets/extension-dark-min-Ctxo0Z8w.svg": {
+    "mtime": 1773799064.0,
+    "ast_hash": "f4b61c0be0014c4c31294f1416fbdb57",
+    "semantic_hash": "f4b61c0be0014c4c31294f1416fbdb57"
+  },
+  "assets/extension-light-min-CwWd0kAK.svg": {
+    "mtime": 1773799064.0,
+    "ast_hash": "7428c2a693325bc3c66af0b6b8de099f",
+    "semantic_hash": "7428c2a693325bc3c66af0b6b8de099f"
+  },
+  "assets/horizon-spark-connect-C83O8AQN.png": {
+    "mtime": 1773799064.0,
+    "ast_hash": "034cdf5562aa9e8fb79e73f92749357d",
+    "semantic_hash": "034cdf5562aa9e8fb79e73f92749357d"
+  },
+  "assets/lightshield-Dx3kyqnQ.svg": {
+    "mtime": 1773799064.0,
+    "ast_hash": "7e1af32f377a1da9a66f07d04d7c529f",
+    "semantic_hash": "7e1af32f377a1da9a66f07d04d7c529f"
+  },
+  "assets/login-CwIWffrK.svg": {
+    "mtime": 1773799064.0,
+    "ast_hash": "8148d73a84b134d318531230da76e765",
+    "semantic_hash": "8148d73a84b134d318531230da76e765"
+  },
+  "assets/login_dark-BD94bthK.svg": {
+    "mtime": 1773799064.0,
+    "ast_hash": "c7c66415d548898a42ebf761419ed63d",
+    "semantic_hash": "c7c66415d548898a42ebf761419ed63d"
+  },
+  "assets/record-workflow-hero-CjmRJsCN.png": {
+    "mtime": 1773799064.0,
+    "ast_hash": "649ee488723d7e0423d524055ae23943",
+    "semantic_hash": "649ee488723d7e0423d524055ae23943"
+  },
+  "assets/shortcuts-D9M-y4eQ.svg": {
+    "mtime": 1773799064.0,
+    "ast_hash": "e22a8a888356381a298fd3616ea9a1db",
+    "semantic_hash": "e22a8a888356381a298fd3616ea9a1db"
+  },
+  "assets/shortcuts_dark-DelMLMgh.svg": {
+    "mtime": 1773799064.0,
+    "ast_hash": "32cd364a4590cbeb17e3d986e7673ff6",
+    "semantic_hash": "32cd364a4590cbeb17e3d986e7673ff6"
+  },
+  "assets/tabgrp-CEKmEWEf.svg": {
+    "mtime": 1773799064.0,
+    "ast_hash": "9507d59b9abdc76b8638ec8fd0092510",
+    "semantic_hash": "9507d59b9abdc76b8638ec8fd0092510"
+  },
+  "assets/tabgrp-done-CtT5nf9m.svg": {
+    "mtime": 1773799064.0,
+    "ast_hash": "2fbc275cff6e3ae7c181aa912388a9bc",
+    "semantic_hash": "2fbc275cff6e3ae7c181aa912388a9bc"
+  },
+  "assets/tabgrp-done-dark-B3o0rXMr.svg": {
+    "mtime": 1773799064.0,
+    "ast_hash": "798d4ffe7e694d7044b40d952ce467ef",
+    "semantic_hash": "798d4ffe7e694d7044b40d952ce467ef"
+  },
+  "assets/tabgrp-working-BVbHlw3h.svg": {
+    "mtime": 1773799064.0,
+    "ast_hash": "6f8797b06ec41fae618b71ea784b8661",
+    "semantic_hash": "6f8797b06ec41fae618b71ea784b8661"
+  },
+  "assets/tabgrp-working-dark-BLKG_kBo.svg": {
+    "mtime": 1773799064.0,
+    "ast_hash": "fa6dda357d16f4e9e57e6ee0b1d80b3a",
+    "semantic_hash": "fa6dda357d16f4e9e57e6ee0b1d80b3a"
+  },
+  "assets/tabgrp_dark-uFJsQLiN.svg": {
+    "mtime": 1773799064.0,
+    "ast_hash": "d31f94fc68cc4abadbceaf311a60383d",
+    "semantic_hash": "d31f94fc68cc4abadbceaf311a60383d"
+  },
+  "assets/usecase-DTXLdUtN.svg": {
+    "mtime": 1773799064.0,
+    "ast_hash": "ca787896a1b8c390c8a65b0cb84bd1f1",
+    "semantic_hash": "ca787896a1b8c390c8a65b0cb84bd1f1"
+  },
+  "assets/usecase_dark-B8e6CElR.svg": {
+    "mtime": 1773799064.0,
+    "ast_hash": "e120d9103d63caaab067574b27c0c73f",
+    "semantic_hash": "e120d9103d63caaab067574b27c0c73f"
+  },
+  "claude_icon.svg": {
+    "mtime": 1773799064.0,
+    "ast_hash": "f1f67bd683f12e0874cb5cb0d6849fa0",
+    "semantic_hash": "f1f67bd683f12e0874cb5cb0d6849fa0"
+  },
+  "icon-128.png": {
+    "mtime": 1787007128.721946,
+    "ast_hash": "071e8b38687a829072230e9bf534f427",
+    "semantic_hash": "071e8b38687a829072230e9bf534f427"
+  },
+  ".browserking-capabilities-qa-profile/extensions_crx_cache/metadata.json": {
+    "mtime": 1787010020.7535827,
+    "ast_hash": "2aa9e263ee3796d9ce358460a2451b4c",
+    "semantic_hash": "2aa9e263ee3796d9ce358460a2451b4c"
+  },
+  ".browserking-chrome-glow-qa-profile/component_crx_cache/metadata.json": {
+    "mtime": 1787008768.5716438,
+    "ast_hash": "2aa9e263ee3796d9ce358460a2451b4c",
+    "semantic_hash": "2aa9e263ee3796d9ce358460a2451b4c"
+  },
+  ".browserking-chrome-glow-qa-profile/extensions_crx_cache/metadata.json": {
+    "mtime": 1787008770.7400696,
+    "ast_hash": "2aa9e263ee3796d9ce358460a2451b4c",
+    "semantic_hash": "2aa9e263ee3796d9ce358460a2451b4c"
+  },
+  ".browserking-cursor-qa-profile/extensions_crx_cache/metadata.json": {
+    "mtime": 1787023195.314182,
+    "ast_hash": "2aa9e263ee3796d9ce358460a2451b4c",
+    "semantic_hash": "2aa9e263ee3796d9ce358460a2451b4c"
+  },
+  ".browserking-glow-qa-profile/component_crx_cache/metadata.json": {
+    "mtime": 1787008702.1356263,
+    "ast_hash": "2aa9e263ee3796d9ce358460a2451b4c",
+    "semantic_hash": "2aa9e263ee3796d9ce358460a2451b4c"
+  },
+  ".browserking-glow-qa-profile/extensions_crx_cache/metadata.json": {
+    "mtime": 1787008703.1055963,
+    "ast_hash": "2aa9e263ee3796d9ce358460a2451b4c",
+    "semantic_hash": "2aa9e263ee3796d9ce358460a2451b4c"
+  },
+  ".browserking-qa/graphify-agent-context-e2e.js": {
+    "mtime": 1787019687.2169514,
+    "ast_hash": "28c836b740e50551700827600f3ecef1",
+    "semantic_hash": "28c836b740e50551700827600f3ecef1"
+  },
+  ".browserking-qa/graphify-e2e.js": {
+    "mtime": 1787018902.4385235,
+    "ast_hash": "661a77f6e85ff19579e2a97e67c70053",
+    "semantic_hash": "661a77f6e85ff19579e2a97e67c70053"
+  },
+  ".browserking-qa/graphify-sync-e2e.js": {
+    "mtime": 1787019320.5914247,
+    "ast_hash": "526862553bb3dc8df5d6e88418896ae2",
+    "semantic_hash": "526862553bb3dc8df5d6e88418896ae2"
+  },
+  ".browserking-qa/live-gemini-routing.js": {
+    "mtime": 1787020742.4365883,
+    "ast_hash": "344fc259e1fdbdaa0b015ac359865543",
+    "semantic_hash": "344fc259e1fdbdaa0b015ac359865543"
+  },
+  ".browserking-qa/model-router-e2e.js": {
+    "mtime": 1787020464.6157904,
+    "ast_hash": "0933e76b330bdb412191d0e930aef736",
+    "semantic_hash": "0933e76b330bdb412191d0e930aef736"
+  },
+  ".browserking-qa/profile-graphify-sync-a/extensions_crx_cache/metadata.json": {
+    "mtime": 1787019334.5034082,
+    "ast_hash": "2aa9e263ee3796d9ce358460a2451b4c",
+    "semantic_hash": "2aa9e263ee3796d9ce358460a2451b4c"
+  },
+  ".browserking-qa/profile-graphify-sync-b/extensions_crx_cache/metadata.json": {
+    "mtime": 1787019334.949084,
+    "ast_hash": "2aa9e263ee3796d9ce358460a2451b4c",
+    "semantic_hash": "2aa9e263ee3796d9ce358460a2451b4c"
+  },
+  ".browserking-qa/profile-graphify/extensions_crx_cache/metadata.json": {
+    "mtime": 1787018942.6521916,
+    "ast_hash": "2aa9e263ee3796d9ce358460a2451b4c",
+    "semantic_hash": "2aa9e263ee3796d9ce358460a2451b4c"
+  },
+  ".browserking-qa/validate-dom-cursor.js": {
+    "mtime": 1787023715.5610404,
+    "ast_hash": "bc536515978e21b3abb794c1b40bbfbd",
+    "semantic_hash": "bc536515978e21b3abb794c1b40bbfbd"
+  },
+  ".browserking-qa/validate-landing.js": {
+    "mtime": 1787006878.6498072,
+    "ast_hash": "9c84d1de01d525088a076718ed5d5234",
+    "semantic_hash": "9c84d1de01d525088a076718ed5d5234"
+  },
+  "android-remote/app/src/main/java/com/browserking/remote/BootReceiver.java": {
+    "mtime": 1787008001.85311,
+    "ast_hash": "d89756ba22c285289685ddcd55b89c7a",
+    "semantic_hash": "d89756ba22c285289685ddcd55b89c7a"
+  },
+  "android-remote/app/src/main/java/com/browserking/remote/RemotePollingService.java": {
+    "mtime": 1787008001.8541095,
+    "ast_hash": "2433d2bcebf9286d2b3f20eef473261b",
+    "semantic_hash": "2433d2bcebf9286d2b3f20eef473261b"
+  },
+  "dom-navigation-cursor.js": {
+    "mtime": 1787023715.5600417,
+    "ast_hash": "53196d19a4b182f99013925498dd1cfd",
+    "semantic_hash": "53196d19a4b182f99013925498dd1cfd"
+  },
+  "graphify-skill.js": {
+    "mtime": 1787023800.532521,
+    "ast_hash": "eee944c6d5fcfee92749fa18341e5abb",
+    "semantic_hash": "eee944c6d5fcfee92749fa18341e5abb"
+  },
+  "landing/atomic-globe.js": {
+    "mtime": 1787006334.006619,
+    "ast_hash": "7b84a9bfa26b6f616eabb07837120163",
+    "semantic_hash": "7b84a9bfa26b6f616eabb07837120163"
+  },
+  "landing/framer-runtime-shim.js": {
+    "mtime": 1787005761.531433,
+    "ast_hash": "2fb883d77eb4bc0dddce6abc525c1274",
+    "semantic_hash": "2fb883d77eb4bc0dddce6abc525c1274"
+  },
+  "landing/gravity-stars.js": {
+    "mtime": 1787004940.0027382,
+    "ast_hash": "93589b4648c79384f17fcf5680286a56",
+    "semantic_hash": "93589b4648c79384f17fcf5680286a56"
+  },
+  "landing/pro-text-type.js": {
+    "mtime": 1787006265.3101094,
+    "ast_hash": "a65fdd8526481b406a4adc14bcdea3c6",
+    "semantic_hash": "a65fdd8526481b406a4adc14bcdea3c6"
+  },
+  "landing/script.js": {
+    "mtime": 1787006941.370311,
+    "ast_hash": "18641ac9b420d08c72f4ff3cb27cf1ed",
+    "semantic_hash": "18641ac9b420d08c72f4ff3cb27cf1ed"
+  },
+  "landing/typewriter.js": {
+    "mtime": 1787005335.1578803,
+    "ast_hash": "307629873a9924e840e0145a6c9f6e6f",
+    "semantic_hash": "307629873a9924e840e0145a6c9f6e6f"
+  },
+  "multi-agents-ui.js": {
+    "mtime": 1787106084.4737313,
+    "ast_hash": "6f565809ce0e0d9a7bfecabe55080a6b",
+    "semantic_hash": ""
+  },
+  ".browserking-capabilities-qa-profile/Default/Service Worker/CacheStorage/65dfcacdea28ddc05e672e3a4fab060a9966b8cf/index.txt": {
+    "mtime": 1787010016.7374535,
+    "ast_hash": "4c0c500266e0a516eae4cc0652e5ebe9",
+    "semantic_hash": "4c0c500266e0a516eae4cc0652e5ebe9"
+  },
+  ".browserking-glow-qa-profile/Default/Service Worker/CacheStorage/65dfcacdea28ddc05e672e3a4fab060a9966b8cf/index.txt": {
+    "mtime": 1787008696.6704254,
+    "ast_hash": "4c0c500266e0a516eae4cc0652e5ebe9",
+    "semantic_hash": "4c0c500266e0a516eae4cc0652e5ebe9"
+  },
+  ".browserking-qa/dom-test.html": {
+    "mtime": 1787023548.070087,
+    "ast_hash": "4fec9bab9be3f67e08c137f3fd32d290",
+    "semantic_hash": "4fec9bab9be3f67e08c137f3fd32d290"
+  },
+  ".browserking-qa/profile-graphify-sync-a/Default/Service Worker/CacheStorage/65dfcacdea28ddc05e672e3a4fab060a9966b8cf/index.txt": {
+    "mtime": 1787019331.5143013,
+    "ast_hash": "4c0c500266e0a516eae4cc0652e5ebe9",
+    "semantic_hash": "4c0c500266e0a516eae4cc0652e5ebe9"
+  },
+  ".browserking-qa/profile-graphify-sync-b/Default/Service Worker/CacheStorage/65dfcacdea28ddc05e672e3a4fab060a9966b8cf/index.txt": {
+    "mtime": 1787019332.8898113,
+    "ast_hash": "4c0c500266e0a516eae4cc0652e5ebe9",
+    "semantic_hash": "4c0c500266e0a516eae4cc0652e5ebe9"
+  },
+  ".browserking-qa/profile-graphify/Default/Service Worker/CacheStorage/65dfcacdea28ddc05e672e3a4fab060a9966b8cf/index.txt": {
+    "mtime": 1787018938.6034188,
+    "ast_hash": "4c0c500266e0a516eae4cc0652e5ebe9",
+    "semantic_hash": "4c0c500266e0a516eae4cc0652e5ebe9"
+  },
+  "landing/README.md": {
+    "mtime": 1786997699.5150764,
+    "ast_hash": "f5ff357e154e5eceb5f1960f7da69053",
+    "semantic_hash": "f5ff357e154e5eceb5f1960f7da69053"
+  },
+  "landing/index.html": {
+    "mtime": 1787008002.9121032,
+    "ast_hash": "683b3cabee3f2909f8fbce1cb74bc9e8",
+    "semantic_hash": "683b3cabee3f2909f8fbce1cb74bc9e8"
+  },
+  ".android-screen-inspector/20260817-capabilities/bubble-collapsed.png": {
+    "mtime": 1787009538.6015975,
+    "ast_hash": "e1be0421409cd91c988860c194678b85",
+    "semantic_hash": "e1be0421409cd91c988860c194678b85"
+  },
+  ".android-screen-inspector/20260817-capabilities/bubble-expanded-final.png": {
+    "mtime": 1787009636.290414,
+    "ast_hash": "e1ace02fd1d7ccde7ca6d0588ff60b19",
+    "semantic_hash": "e1ace02fd1d7ccde7ca6d0588ff60b19"
+  },
+  ".android-screen-inspector/20260817-capabilities/bubble-expanded.png": {
+    "mtime": 1787009593.7419472,
+    "ast_hash": "0953a1d31a92537ab9b8319816a25dda",
+    "semantic_hash": "0953a1d31a92537ab9b8319816a25dda"
+  },
+  ".android-screen-inspector/20260817-capabilities/bubble-recollapsed.png": {
+    "mtime": 1787009650.613415,
+    "ast_hash": "d6a6d71721bcdba52764ac28168b7a15",
+    "semantic_hash": "d6a6d71721bcdba52764ac28168b7a15"
+  },
+  ".android-screen-inspector/20260817-capabilities/screen.png": {
+    "mtime": 1787009503.6698232,
+    "ast_hash": "8e11f415f8d2617ef2b0fa491840a5c8",
+    "semantic_hash": "8e11f415f8d2617ef2b0fa491840a5c8"
+  },
+  ".android-screen-inspector/20260817T174618/after.png": {
+    "mtime": 1786999643.6919897,
+    "ast_hash": "f1632ceb4cd2f60ca2bea1830e15d1bd",
+    "semantic_hash": "f1632ceb4cd2f60ca2bea1830e15d1bd"
+  },
+  ".android-screen-inspector/20260817T174618/before.png": {
+    "mtime": 1786999581.5710552,
+    "ast_hash": "228e9bf9526309d305bbe6e4fae0394c",
+    "semantic_hash": "228e9bf9526309d305bbe6e4fae0394c"
+  },
+  ".android-screen-inspector/20260817T174618/cursor-early.png": {
+    "mtime": 1786999641.4539888,
+    "ast_hash": "bb573b76123df265435b4b8bb745d833",
+    "semantic_hash": "bb573b76123df265435b4b8bb745d833"
+  },
+  ".android-screen-inspector/20260817T174618/cursor-late.png": {
+    "mtime": 1786999642.111636,
+    "ast_hash": "fbb9ecae943dc654cad434a50154e81e",
+    "semantic_hash": "fbb9ecae943dc654cad434a50154e81e"
+  },
+  ".android-screen-inspector/hatclaw-brand/screen.png": {
+    "mtime": 1786996387.3848379,
+    "ast_hash": "6495814317b6acf575545477731bfbc8",
+    "semantic_hash": "6495814317b6acf575545477731bfbc8"
+  },
+  ".android-screen-inspector/hatclaw-update-20260817/screen-v1.1.2.png": {
+    "mtime": 1787020929.174298,
+    "ast_hash": "be0987834784746291c1adb566ce9a40",
+    "semantic_hash": "be0987834784746291c1adb566ce9a40"
+  },
+  ".android-screen-inspector/hatclaw-update-20260817/screen.png": {
+    "mtime": 1787020877.871174,
+    "ast_hash": "6b0f83461d1b56b1ae9c826ea905cf64",
+    "semantic_hash": "6b0f83461d1b56b1ae9c826ea905cf64"
+  },
+  ".android-screen-inspector/icon-validation-home/screen.png": {
+    "mtime": 1787007229.7586432,
+    "ast_hash": "466a270f933b45c95c8b05714a65ad06",
+    "semantic_hash": "466a270f933b45c95c8b05714a65ad06"
+  },
+  "android-remote/app/src/main/res/mipmap-hdpi/ic_launcher.png": {
+    "mtime": 1787007128.7754538,
+    "ast_hash": "7d76cf59a593f7daeca47d7641b9c49d",
+    "semantic_hash": "7d76cf59a593f7daeca47d7641b9c49d"
+  },
+  "android-remote/app/src/main/res/mipmap-hdpi/ic_launcher_round.png": {
+    "mtime": 1787007128.779455,
+    "ast_hash": "7d76cf59a593f7daeca47d7641b9c49d",
+    "semantic_hash": "7d76cf59a593f7daeca47d7641b9c49d"
+  },
+  "android-remote/app/src/main/res/mipmap-mdpi/ic_launcher.png": {
+    "mtime": 1787007128.7581408,
+    "ast_hash": "ce34092e38eeab77bafc764bb16f42ea",
+    "semantic_hash": "ce34092e38eeab77bafc764bb16f42ea"
+  },
+  "android-remote/app/src/main/res/mipmap-mdpi/ic_launcher_round.png": {
+    "mtime": 1787007128.7614515,
+    "ast_hash": "ce34092e38eeab77bafc764bb16f42ea",
+    "semantic_hash": "ce34092e38eeab77bafc764bb16f42ea"
+  },
+  "android-remote/app/src/main/res/mipmap-xhdpi/ic_launcher.png": {
+    "mtime": 1787007128.7974586,
+    "ast_hash": "e5ab13c21355e9f1bb5fd8fa981d582c",
+    "semantic_hash": "e5ab13c21355e9f1bb5fd8fa981d582c"
+  },
+  "android-remote/app/src/main/res/mipmap-xhdpi/ic_launcher_round.png": {
+    "mtime": 1787007128.8014596,
+    "ast_hash": "e5ab13c21355e9f1bb5fd8fa981d582c",
+    "semantic_hash": "e5ab13c21355e9f1bb5fd8fa981d582c"
+  },
+  "android-remote/app/src/main/res/mipmap-xxhdpi/ic_launcher.png": {
+    "mtime": 1787007128.8290641,
+    "ast_hash": "8c986213c432a45f3cb56e62892d445c",
+    "semantic_hash": "8c986213c432a45f3cb56e62892d445c"
+  },
+  "android-remote/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.png": {
+    "mtime": 1787007128.8440678,
+    "ast_hash": "8c986213c432a45f3cb56e62892d445c",
+    "semantic_hash": "8c986213c432a45f3cb56e62892d445c"
+  },
+  "android-remote/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png": {
+    "mtime": 1787007128.887077,
+    "ast_hash": "91d85c40d7ed845478c649108733cca9",
+    "semantic_hash": "91d85c40d7ed845478c649108733cca9"
+  },
+  "android-remote/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png": {
+    "mtime": 1787007128.918084,
+    "ast_hash": "91d85c40d7ed845478c649108733cca9",
+    "semantic_hash": "91d85c40d7ed845478c649108733cca9"
+  },
+  "assets/hatclaw-icon-master.png": {
+    "mtime": 1787007128.666921,
+    "ast_hash": "e8f572bb21d561c38b7f062ed6e9d2fa",
+    "semantic_hash": "e8f572bb21d561c38b7f062ed6e9d2fa"
+  },
+  "assets/spy.png": {
+    "mtime": 1787006864.9268384,
+    "ast_hash": "6c7ccd911192602b532766264c8f8eb1",
+    "semantic_hash": "6c7ccd911192602b532766264c8f8eb1"
+  },
+  "icon-16.png": {
+    "mtime": 1787007128.6778214,
+    "ast_hash": "336ee51376e8c78415eec4aa2ebf72cb",
+    "semantic_hash": "336ee51376e8c78415eec4aa2ebf72cb"
+  },
+  "icon-32.png": {
+    "mtime": 1787007128.6878223,
+    "ast_hash": "4b6d47d9eb71c0ee1a6d3e1270e0fabb",
+    "semantic_hash": "4b6d47d9eb71c0ee1a6d3e1270e0fabb"
+  },
+  "icon-48.png": {
+    "mtime": 1787007128.6995494,
+    "ast_hash": "ce34092e38eeab77bafc764bb16f42ea",
+    "semantic_hash": "ce34092e38eeab77bafc764bb16f42ea"
+  },
+  "landing/assets/hatclaw-hero-chat.png": {
+    "mtime": 1787007975.6562235,
+    "ast_hash": "5ec3ea922c6a04964e2af541b960835f",
+    "semantic_hash": "5ec3ea922c6a04964e2af541b960835f"
+  },
+  "landing/assets/icon-128.png": {
+    "mtime": 1787007128.7471077,
+    "ast_hash": "071e8b38687a829072230e9bf534f427",
+    "semantic_hash": "071e8b38687a829072230e9bf534f427"
+  },
+  "landing/assets/product-screen.png": {
+    "mtime": 1786848162.8117294,
+    "ast_hash": "43f5e128bf3b7dc11d3a766844820b43",
+    "semantic_hash": "43f5e128bf3b7dc11d3a766844820b43"
+  },
+  "graphify-out/memory/query_20260819_023759_estado_atual_da_vers\u00e3o_funcional.md": {
+    "mtime": 1787107079.6477437,
+    "ast_hash": "6e3f83dca2783ea51a12c79394f2fe8c",
+    "semantic_hash": ""
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "goal": "Consolidar a marca visível do sistema como HatClaw",
+  "outcome": "validated",
+  "validation": [
+    "JavaScript syntax valid",
+    "Chrome manifest valid and named HatClaw",
+    "Android assembleDebug successful",
+    "APK installed with application label HatClaw"
+  ],
+  "compatibility": "Legacy package names, provider URLs and model IDs retained where technically required"
+}

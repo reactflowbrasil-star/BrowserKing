@@ -1,0 +1,8 @@
+Options -Indexes
+RewriteEngine On
+RewriteRule ^(?:android|extension|graph)/.+$ api.php [QSA,L]
+RewriteRule ^health$ api.php [QSA,L]
+
+<FilesMatch "^(?:config\.php|\.htaccess)$">
+  Require all denied
+</FilesMatch>

@@ -1,0 +1,8 @@
+{
+  "name": "browserking-windows-controller",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Secure audited Windows native messaging host for HatClaw",
+  "scripts": { "test": "node --test test/*.test.js" },
+  "engines": { "node": ">=18" }
+}

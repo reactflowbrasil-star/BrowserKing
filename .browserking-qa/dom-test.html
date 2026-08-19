@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>HatClaw DOM Cursor QA</title>
+  <style>
+    body { font: 18px system-ui; display: grid; place-items: center; min-height: 100vh; margin: 0; background: #f4f5f7; }
+    main { text-align: center; }
+    button { padding: 14px 26px; font: inherit; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Teste de navegação DOM</h1>
+    <button id="confirmar" onclick="this.textContent='Confirmado via DOM'; this.dataset.clicked='true'">Confirmar</button>
+  </main>
+</body>
+</html>

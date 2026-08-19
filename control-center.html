@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>HatClaw — Controle do Windows</title>
+  <style>
+    :root{color-scheme:dark;font:15px system-ui;background:#101113;color:#eee}body{max-width:980px;margin:32px auto;padding:0 20px}h1{margin-bottom:6px}.muted{color:#aaa}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.card{border:1px solid #34363b;border-radius:12px;padding:16px;background:#191b1f}label{display:block;margin:10px 0 5px}input,textarea,select,button{font:inherit;border-radius:7px;border:1px solid #454951;background:#22252a;color:#fff;padding:9px}input,textarea,select{box-sizing:border-box;width:100%}textarea{min-height:90px}button{cursor:pointer;background:#C8FF3D;border-color:#A7E600;color:#10140B;font-weight:700;margin:8px 6px 0 0}button:hover{background:#D7FF70}pre{white-space:pre-wrap;max-height:320px;overflow:auto;background:#0c0d0f;padding:12px;border-radius:8px}.warning{color:#ffcf70}@media(max-width:700px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <h1>Controle seguro do Windows</h1>
+  <p class="muted">Ações críticas exibem uma confirmação local do Windows e todas as chamadas são auditadas.</p>
+  <div class="grid">
+    <section class="card"><h2>Sistema</h2><button data-action="system.info">Ver status</button><button data-action="screen.capture">Capturar tela</button><button data-action="window.list">Listar janelas</button></section>
+    <section class="card"><h2>Mouse e teclado</h2><label>X / Y</label><input id="xy" value="400,300"><button data-action="mouse.move">Mover</button><button data-action="mouse.click">Clicar</button><label>Texto</label><textarea id="text"></textarea><label><input id="sensitive" type="checkbox" style="width:auto"> Conteúdo sensível (sempre confirmar)</label><button data-action="keyboard.type">Digitar</button></section>
+    <section class="card"><h2>Arquivos</h2><label>Caminho</label><input id="path"><label>Conteúdo</label><textarea id="content"></textarea><button data-action="file.list">Listar</button><button data-action="file.read">Ler</button><button data-action="file.write">Gravar</button><button data-action="file.delete">Excluir</button></section>
+    <section class="card"><h2>PowerShell auditado</h2><p class="warning">Todo comando exige confirmação e possui timeout.</p><textarea id="command" placeholder="Get-Process | Select-Object -First 10"></textarea><button data-action="powershell.run">Executar</button></section>
+  </div>
+  <h2>Resultado</h2><pre id="output">Pronto.</pre>
+  <script src="control-center.js"></script>
+</body>
+</html>

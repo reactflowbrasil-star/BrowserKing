@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:background="@color/top_bar"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="9dp"
+        android:paddingEnd="9dp">
+
+        <TextView
+            android:id="@+id/connectionDot"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:gravity="center"
+            android:text="●"
+            android:textColor="@color/text_muted"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/streamingIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="● Digitando…"
+            android:textColor="@color/streaming"
+            android:textSize="12sp"
+            android:visibility="gone" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="HatClaw"
+            android:textColor="@color/text_primary"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:contentDescription="Silenciar"
+            android:gravity="center"
+            android:text="⌁"
+            android:textColor="@color/text_secondary"
+            android:textSize="22sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="19dp"
+        android:paddingEnd="8dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="Gemini 3.6 Flash  ⌄"
+            android:textColor="@color/model_text"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="42dp"
+            android:layout_height="match_parent"
+            android:contentDescription="Nova conversa"
+            android:gravity="center"
+            android:text="◉"
+            android:textColor="@color/text_secondary"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/moreButton"
+            android:layout_width="34dp"
+            android:layout_height="match_parent"
+            android:contentDescription="Configurações de conexão"
+            android:gravity="center"
+            android:text="⋮"
+            android:textColor="@color/text_secondary"
+            android:textSize="23sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/connectionPanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/surface"
+        android:orientation="vertical"
+        android:paddingStart="16dp"
+        android:paddingTop="12dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="13dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CONEXÃO REMOTA"
+            android:textColor="@color/text_secondary"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/serverUrl"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/field_bg"
+            android:hint="https://hatclaw.com/extencao"
+            android:inputType="textUri"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:singleLine="true"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_muted"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/pairingToken"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/field_bg"
+            android:hint="Token de pareamento"
+            android:inputType="textPassword"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:singleLine="true"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_muted"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="9dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/statusText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Sem conexão"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp" />
+
+            <Button
+                android:id="@+id/connectButton"
+                android:layout_width="118dp"
+                android:layout_height="44dp"
+                android:background="@drawable/connect_bg"
+                android:text="Conectar"
+                android:textAllCaps="false"
+                android:textColor="@color/text_primary"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/capabilityBar"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp">
+
+            <TextView android:id="@+id/toolsCapability" style="@style/CapabilityChip" android:text="● Ferramentas" />
+            <TextView android:id="@+id/skillsCapability" style="@style/CapabilityChip" android:text="○ Skills" />
+            <TextView android:id="@+id/pluginsCapability" style="@style/CapabilityChip" android:text="○ Plugins" />
+            <TextView android:id="@+id/appsCapability" style="@style/CapabilityChip" android:text="○ Apps" />
+            <TextView android:id="@+id/providersCapability" style="@style/CapabilityChip" android:text="○ Providers" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="10dp"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:text="ABAS AO VIVO"
+            android:textColor="@color/text_secondary"
+            android:textSize="10sp"
+            android:textStyle="bold" />
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/tabList"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" />
+        </HorizontalScrollView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/graphSection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="10dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="GRAPHIFY"
+            android:textColor="@color/text_secondary"
+            android:textSize="10sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/graphStatus"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="6dp"
+            android:text="v0 • 0 dispositivos"
+            android:textColor="@color/text_muted"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/graphSyncButton"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:background="@drawable/connect_bg"
+            android:text="Sync"
+            android:textAllCaps="false"
+            android:textColor="@color/text_primary"
+            android:textSize="10sp" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <ScrollView
+            android:id="@+id/messageScroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:fillViewport="true"
+            android:paddingStart="10dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="8dp">
+
+            <LinearLayout
+                android:id="@+id/messageList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </ScrollView>
+
+        <TextView
+            android:id="@+id/emptyState"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="42dp"
+            android:text="Converse com o HatClaw pelo navegador remoto ativo"
+            android:textAlignment="center"
+            android:textColor="@color/text_muted"
+            android:textSize="15sp" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="6dp"
+        android:background="@drawable/composer_bg"
+        android:orientation="vertical"
+        android:paddingStart="13dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="7dp">
+
+        <EditText
+            android:id="@+id/promptInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:gravity="top|start"
+            android:hint="Como posso ajudar você hoje?"
+            android:imeOptions="actionSend"
+            android:inputType="textCapSentences|textMultiLine"
+            android:maxLines="5"
+            android:minHeight="42dp"
+            android:padding="0dp"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_secondary"
+            android:textSize="15sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/approvalMode"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="☝  Perguntar antes de agir  ⌄"
+                android:clickable="true"
+                android:focusable="true"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/attachButton"
+                android:layout_width="38dp"
+                android:layout_height="match_parent"
+                android:contentDescription="Anexar"
+                android:gravity="center"
+                android:text="＋"
+                android:textColor="@color/text_secondary"
+                android:textSize="21sp" />
+
+            <TextView
+                android:id="@+id/micButton"
+                android:layout_width="38dp"
+                android:layout_height="match_parent"
+                android:contentDescription="Microfone"
+                android:gravity="center"
+                android:text="●"
+                android:textColor="@color/send_blue"
+                android:textSize="13sp" />
+
+            <Button
+                android:id="@+id/sendButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/send_bg"
+                android:enabled="false"
+                android:padding="0dp"
+                android:text="↑"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="21sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:gravity="center"
+        android:text="HatClaw é uma IA e pode cometer erros. Verifique as respostas."
+        android:textColor="@color/text_secondary"
+        android:textSize="10sp" />
+</LinearLayout>

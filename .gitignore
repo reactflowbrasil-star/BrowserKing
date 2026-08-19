@@ -1,0 +1,54 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node
+node_modules/
+
+# Secrets (users add their own keys via the settings UI)
+*.env
+.env.*
+credentials.json
+
+# Debug logs
+*.log
+.browserking-remote.json
+.browserking-telegram-state.json
+.browserking-telegram-state.json.tmp
+.browserking-error-fix-qa-profile*/
+.browserking-internet.json
+tools/cloudflared.exe
+cloudflared-*.log
+server-relay/config.php
+android-remote/.gradle/
+android-remote/local.properties
+android-remote/app/build/
+.qa-artifacts/
+
+# Browser profiles (Chromium data - do not commit)
+.browserking-qa/
+.browserking-qa/profile-*/
+.browserking-gemini-qa-profile/
+.browserking-glow-qa-profile/
+.browserking-chrome-profile/
+.browserking-chromium-profile/
+.browserking-cursor-qa-profile/
+.browserking-bot-chrome-profile/
+.browserking-capabilities-qa-profile/
+.browserking-chrome-glow-qa-profile/
+.browserking-error-fix-qa-profile/
+.browserking-error-fix-qa-profile-2/
+.browserking-error-fix-qa-profile-3/
+
+# Android inspector
+.android-screen-inspector/
+
+# QA artifacts
+qa-artifacts/
