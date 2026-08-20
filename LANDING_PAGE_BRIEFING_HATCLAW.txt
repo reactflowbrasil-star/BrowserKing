@@ -1,0 +1,230 @@
+HATCLAW — BRIEFING COMPLETO PARA LANDING PAGE
+Extensão Chrome + aplicativo Android companion
+
+1. POSICIONAMENTO
+
+HatClaw é um agente de IA para controlar o navegador e executar tarefas reais na web. O usuário descreve o objetivo em linguagem natural; o agente interpreta a solicitação, observa a tela, escolhe ações e executa cliques, digitação, navegação e leitura de páginas.
+
+Proposta de valor:
+- Transformar instruções em tarefas executadas no navegador.
+- Usar o provedor de IA escolhido pelo cliente.
+- Automatizar tarefas repetitivas sem trocar de ferramenta.
+- Controlar o agente pelo painel lateral do Chrome ou pelo celular Android.
+- Manter flexibilidade entre provedores, modelos cloud e modelos locais.
+
+2. EXTENSÃO CHROME
+
+Interface:
+- Side panel integrado ao Chrome.
+- Seletor de provedor e modelo.
+- Composer com campo de prompt, anexos, microfone, modo de permissão e envio.
+- Histórico visual de mensagens e etapas da execução.
+- Indicador de atividade e borda/glow na página enquanto o agente trabalha.
+- Tema visual dinâmico de acordo com o provedor ativo.
+- Mensagens de status, erros, progresso e recuperação.
+
+Automação do navegador:
+- Captura e interpretação de screenshots.
+- Leitura de conteúdo e contexto da página.
+- Localização de elementos por referência, texto, seletor, coordenada e memória visual.
+- Clique simples, duplo clique e clique direito.
+- Digitação em input, textarea, contenteditable e caixas de texto.
+- Rolagem, foco, hover, seleção e pressionamento de teclas.
+- Navegação entre páginas e abas.
+- Execução em sites reais, incluindo fluxos de pesquisa, formulários, atendimento e mensageria web.
+- Verificação automática do resultado de cada ação.
+- Memória de elementos para reduzir falhas durante o fluxo.
+
+Modelos e provedores:
+- OpenAI/Codex com autenticação da conta ChatGPT pelo navegador/local companion.
+- Google Gemini.
+- Anthropic.
+- Groq.
+- Mistral.
+- xAI.
+- Together.
+- Fireworks.
+- Cerebras.
+- OpenRouter.
+- DeepSeek.
+- Perplexity.
+- NVIDIA.
+- z.ai e z.ai Coding.
+- Ollama/local.
+- LiteLLM e endpoints OpenAI-compatible personalizados.
+
+Modelos OpenAI/Codex disponíveis incluem GPT-5.6 Sol, GPT-5.6 Terra, GPT-5.6 Luna, GPT-5.5, GPT-5.4, GPT-5.4 Mini, GPT-5.4 Nano, GPT-5.3 Codex, GPT-5.2, GPT-5.1, GPT-5, GPT-5 Mini, GPT-5 Nano, GPT-4.1, GPT-4o, o3 e variantes disponíveis no provedor.
+
+Roteamento automático:
+- Classifica a tarefa como texto, visual/browser, complexa ou geração.
+- Escolhe automaticamente um provedor ativo e configurado compatível.
+- Prioriza modelos de menor custo para tarefas simples e de alto volume.
+- Seleciona modelos com visão quando a tarefa exige screenshots ou interface visual.
+- Mantém o mesmo provedor/modelo durante as etapas de uma tarefa.
+- Evita selecionar modelos de vídeo para tarefas comuns.
+- Ao concluir, ativa automaticamente o provedor e modelo mais econômico disponível.
+- Possui fallback de modelo para reduzir falhas de disponibilidade.
+
+Conversão e compatibilidade:
+- Tradução entre formato Anthropic Messages e APIs OpenAI-compatible.
+- Suporte a respostas streaming/SSE.
+- Conversão de tool calls e resultados de ferramentas.
+- Normalização de argumentos JSON de ferramentas.
+- Downgrade seguro de imagens para modelos sem visão.
+- Continuação automática após ações nativas do Codex.
+
+Ferramentas adicionais:
+- Melhoramento de prompt por contexto.
+- Anexo de imagens e documentos conforme o fluxo habilitado.
+- Gravação e reprodução de workflows do navegador.
+- Exportação de histórico da conversa em TXT ou Markdown.
+- Exportação de gravações em GIF.
+- Orquestração multiagente com especialistas paralelos e coordenador final.
+- Memória local de agentes especialistas e aprendizagem automática opcional.
+- Integração com Graphify para contexto e conhecimento do projeto.
+- Integração opcional com Telegram relay.
+- Controlador nativo Windows opcional para mouse, teclado, janelas, arquivos, screenshots, aplicativos e PowerShell auditado.
+
+3. SEGURANÇA E PRIVACIDADE
+
+- Chaves e credenciais permanecem no ambiente local configurado pelo usuário.
+- O usuário escolhe quais provedores ficam habilitados.
+- Permissões de automação possuem modos configuráveis.
+- Ações sensíveis podem exigir confirmação local.
+- Ações nativas Windows são auditadas.
+- O controlador nativo trabalha com diretórios permitidos e limites configuráveis.
+- O usuário pode usar provedores locais como Ollama e LM Studio.
+- O produto não exige uma conta central para funcionar com API keys próprias.
+- O cliente controla quais páginas, contas e provedores serão utilizados.
+
+4. APLICATIVO ANDROID
+
+O app Android funciona como companion remoto do HatClaw.
+
+Recursos:
+- Conexão com a extensão por relay seguro e token de pareamento.
+- Visualização do status da extensão.
+- Lista de abas disponíveis.
+- Envio de tarefas para execução no navegador.
+- Recebimento de mensagens, etapas, respostas e status.
+- Modo “Agir sem perguntar” ou “Perguntar antes de agir”.
+- Entrada de texto multilinha.
+- Envio por botão ou ação do teclado.
+- Entrada por voz usando o microfone do Android.
+- Anexo de imagens para tarefas de visão.
+- Sincronização de capacidades, provedores, ferramentas, skills e plugins.
+- Sincronização de status Graphify.
+- Exportação do histórico da conversa em TXT ou Markdown usando o seletor nativo de arquivos Android.
+- Operação em segundo plano por serviço de polling/relay.
+- Reconexão usando endereço e token salvos localmente.
+- Interface escura otimizada para uso contínuo.
+
+Requisitos Android:
+- Android compatível com o APK debug/release distribuído.
+- Permissão de internet.
+- Permissão opcional de notificações.
+- Permissão de microfone para comandos por voz.
+- Permissão de imagens para anexos visuais.
+- Pareamento com uma extensão HatClaw ativa.
+
+5. CASOS DE USO PARA A LANDING PAGE
+
+- “Pesquise preços e compare opções em várias páginas.”
+- “Abra o WhatsApp Web, encontre um contato e prepare uma mensagem.”
+- “Preencha um formulário com os dados fornecidos.”
+- “Extraia informações de uma página e organize o resultado.”
+- “Navegue em um sistema interno seguindo um procedimento.”
+- “Execute novamente um workflow repetitivo.”
+- “Controle o agente pelo celular enquanto ele trabalha no computador.”
+- “Use Gemini, OpenAI/Codex ou seu modelo local no mesmo painel.”
+- “Escolha o modelo mais econômico automaticamente para cada tarefa.”
+
+6. BENEFÍCIOS COMERCIAIS
+
+- Economia de tempo em tarefas manuais.
+- Redução de operações repetitivas.
+- Flexibilidade de custo com múltiplos provedores.
+- Menor dependência de um único fornecedor de IA.
+- Uso de modelos locais quando privacidade ou custo forem prioridade.
+- Continuidade entre desktop e Android.
+- Automação acessível por linguagem natural.
+- Mais controle para equipes técnicas e usuários avançados.
+
+7. PLANO DE ASSINATURA — ESTRUTURA SUGERIDA
+
+Plano Individual:
+- Extensão Chrome.
+- App Android companion.
+- Provedores configuráveis.
+- Automação de navegador.
+- Exportação de histórico.
+- Suporte a anexos e voz.
+
+Plano Profissional:
+- Tudo do Individual.
+- Orquestração multiagente.
+- Workflows gravados e reproduzíveis.
+- Roteamento automático econômico.
+- Integração Telegram.
+- Controlador nativo Windows.
+- Prioridade de suporte.
+
+Plano Equipe:
+- Tudo do Profissional.
+- Configurações padronizadas por equipe.
+- Governança de provedores e modelos.
+- Políticas de permissões.
+- Auditoria de ações.
+- Onboarding e suporte dedicado.
+
+Importante para a página de venda:
+- API keys, consumo de modelos e custos dos provedores de IA podem ser cobrados separadamente pelos respectivos fornecedores.
+- A assinatura HatClaw deve deixar claro o que pertence ao produto e o que pertence ao provedor de IA escolhido.
+
+8. FRASES DE MARKETING
+
+Headline:
+“Diga o que precisa. O HatClaw executa no navegador.”
+
+Subheadline:
+“Um agente de IA para Chrome e Android que entende sua tarefa, controla páginas reais e escolhe automaticamente o melhor modelo para cada etapa.”
+
+Alternativa:
+“Automação inteligente, múltiplos provedores e controle pelo celular em uma única experiência.”
+
+CTA principal:
+“Começar agora”
+
+CTA secundário:
+“Ver como funciona”
+
+Provas de valor:
+- “Automatize tarefas reais, não apenas conversas.”
+- “Use o provedor que preferir.”
+- “Economize tokens com roteamento automático.”
+- “Continue no celular sem interromper o fluxo.”
+- “Seus dados e suas credenciais sob seu controle.”
+
+9. SEÇÃO COMO FUNCIONA
+
+1. Instale a extensão no Chrome.
+2. Configure ou vincule o provedor de IA.
+3. Opcionalmente instale o companion Android.
+4. Escreva uma instrução em linguagem natural.
+5. O HatClaw interpreta a tarefa e seleciona o modelo adequado.
+6. O agente observa a página e executa as ações necessárias.
+7. O usuário acompanha o progresso e recebe o resultado.
+8. Ao finalizar, o modelo econômico fica ativo para a próxima tarefa.
+
+10. TOM VISUAL SUGERIDO
+
+- Interface dark premium.
+- Verde-lima como cor de ação e automação.
+- Cards com bordas suaves e alto contraste.
+- Demonstrações reais do side panel, navegador e app Android.
+- Destaque visual para “Chrome + Android + múltiplos provedores”.
+- Ícones simples para browser, celular, raio/economia, escudo/privacidade e workflow.
+
+11. OBSERVAÇÃO DE IMPLEMENTAÇÃO
+
+Este briefing foi baseado nas funcionalidades presentes no repositório HatClaw/BrowserKing, incluindo a extensão Chrome e o módulo Android Remote. Antes da publicação comercial, validar em ambiente de produção: autenticação de cada provedor, limites de uso, disponibilidade dos modelos, relay, permissões do navegador e política de privacidade/termos de serviço.
