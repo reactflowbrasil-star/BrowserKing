@@ -175,6 +175,7 @@
     }
     if (chrome.storage?.local) {
       chrome.storage.local.get(['hatclawAgentActivity', 'hatclawAgentAction'], (result) => {
+        if (chrome.runtime?.lastError && /context invalidated/i.test(chrome.runtime.lastError.message || '')) return;
         // Check activity-based state
         const payload = result?.hatclawAgentActivity;
         if (payload?.action === 'start' && payload?.data?.type && belongsToThisTab(payload)) {

@@ -330,6 +330,24 @@
     }
 
     if (action.text) {
+      // Digitação deve sempre mirar um campo editável; nunca use cabeçalhos
+      // ou outros elementos apenas porque estão visíveis na página.
+      if (/^(type|input)$/i.test(String(action.type || ''))) {
+        var editables = Array.from(document.querySelectorAll('textarea, input:not([type="hidden"]), [contenteditable="true"], [role="textbox"]'))
+          .filter(isElementVisible)
+          .filter(function (el) { return !el.disabled && !el.readOnly; });
+        var activeEditable = document.activeElement && editables.indexOf(document.activeElement) >= 0 ? document.activeElement : null;
+        var exactEditable = editables.find(function (el) {
+          var haystack = ((el.getAttribute('aria-label') || '') + ' ' + (el.getAttribute('placeholder') || '') + ' ' + (el.innerText || '')).toLowerCase();
+          return haystack.indexOf(action.text.trim().toLowerCase()) >= 0;
+        });
+        var preferredEditable = exactEditable || activeEditable || editables.find(function (el) { return el.getAttribute('role') === 'textbox' || el.isContentEditable; }) || editables[0];
+        if (preferredEditable) {
+          rememberElement(preferredEditable, 'editable:' + action.text);
+          console.log('[BK] type target ->', getElementDescription(preferredEditable));
+          return preferredEditable;
+        }
+      }
       var searchSel = 'button, a, input, textarea, select, [role="button"], [tabindex], [role="tab"], [role="menuitem"], [role="link"], label, [role="checkbox"], [role="radio"], [role="switch"]';
       var candidates = Array.from(document.querySelectorAll(searchSel));
       var needle = action.text.trim().toLowerCase();
@@ -664,12 +682,12 @@
       if (message.type === 'AGENT_ACTION' && message.action) {
         handleAgentAction(Object.assign({ ts: Date.now() }, message.action));
         sendResponse({ received: true });
-        return true;
+        return false;
       }
       if (message.type === 'GET_PAGE_CONTEXT') {
         var context = getPageContextSummary(message.goal || message.task || '');
         sendResponse({ context: context, fingerprint: capturePageState().fingerprint, memorySize: Object.keys(elementMemory).length });
-        return true;
+        return false;
       }
       if (message.type === 'MOVE_CURSOR') { showCursor(message.x, message.y, !!message.clicked); }
       if (message.type === 'HIDE_GLOW_FOR_SCREENSHOT') {

@@ -29,7 +29,13 @@
   let lastColor = null;
 
   async function applyOverlay() {
-    const state = await registry.loadState();
+    let state;
+    try {
+      state = await registry.loadState();
+    } catch (error) {
+      if (/Extension context invalidated|context invalidated/i.test(String(error?.message || error))) return;
+      throw error;
+    }
     const definition = registry.getActiveProviderDefinition(state);
     const color = definition.color || SYSTEM_BRAND_COLOR;
     const isDark = true; // Most browser agents use dark themes
@@ -180,7 +186,7 @@
     }
     debounceTimer = setTimeout(() => {
       debounceTimer = null;
-      applyOverlay();
+      applyOverlay().catch(() => {});
     }, 100);
   }
 
@@ -188,8 +194,8 @@
   observer.observe(document.documentElement, { childList: true, subtree: true });
   chrome.storage.onChanged.addListener((changes, areaName) => {
     if (areaName === 'local' && changes.browserKingProviderState) {
-      applyOverlay();
+      applyOverlay().catch(() => {});
     }
   });
-  applyOverlay();
+  applyOverlay().catch(() => {});
 })();
