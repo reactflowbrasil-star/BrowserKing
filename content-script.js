@@ -6,6 +6,8 @@
   var agentCursor = null;
   var lastActionTs = 0;
   var isExecuting = false;
+  var cursorWasVisibleBeforeScreenshot = false;
+  var recentActionStates = [];
 
   /* ===== ELEMENT MEMORY ===== */
 
@@ -191,6 +193,23 @@
   /* ===== UTILITY ===== */
 
   function sleep(ms) { return new Promise(function(r) { setTimeout(r, ms); }); }
+
+  function waitForStableState(timeoutMs, quietMs) {
+    timeoutMs = timeoutMs || 5000;
+    quietMs = quietMs || 350;
+    return new Promise(function(resolve) {
+      var finished = false;
+      var quietTimer = null;
+      var observer = new MutationObserver(function() {
+        clearTimeout(quietTimer);
+        quietTimer = setTimeout(done, quietMs);
+      });
+      function done() { if (finished) return; finished = true; clearTimeout(quietTimer); observer.disconnect(); resolve(); }
+      observer.observe(document.documentElement, { childList: true, subtree: true, attributes: true });
+      quietTimer = setTimeout(done, quietMs);
+      setTimeout(done, timeoutMs);
+    });
+  }
 
   function getElementCenter(el) {
     if (!el || el === document.body || el === document.documentElement) return { x: window.innerWidth / 2, y: window.innerHeight / 2 };
@@ -513,8 +532,10 @@
     var domChanged = Math.abs(prev.bodyLength - curr.bodyLength) > 50;
     var elementChanged = Math.abs(prev.elementCount - curr.elementCount) > 5;
     var scrolled = Math.abs(prev.scrollY - curr.scrollY) > 50;
+    var classification = urlChanged || titleChanged ? 'SUCCESS' : (domChanged || elementChanged || scrolled ? 'PARTIAL_SUCCESS' : 'NO_EFFECT');
     return {
       ok: urlChanged || titleChanged || domChanged || elementChanged || scrolled,
+      classification: classification,
       urlChanged: urlChanged, titleChanged: titleChanged, domChanged: domChanged,
       elementChanged: elementChanged, scrolled: scrolled,
       evidence: urlChanged ? 'navigation' : (domChanged ? 'dom_mutation' : (titleChanged ? 'title_change' : (scrolled ? 'scroll' : 'no_change')))
@@ -534,11 +555,19 @@
     try {
       console.log('[BrowserKing] === ACTION START ===', action.type, JSON.stringify(action));
       await executeAction(action);
-      await sleep(300);
+      await waitForStableState(5000, 350);
       var currState = capturePageState();
       var verification = verifyAction(prevState, currState);
+      var stateKey = [action.type, currState.url, currState.title, currState.bodyLength, currState.elementCount, Math.round(currState.scrollY / 50)].join('|');
+      recentActionStates.push(stateKey);
+      recentActionStates = recentActionStates.slice(-6);
+      var repeats = recentActionStates.filter(function(key) { return key === stateKey; }).length;
+      if (!verification.ok && repeats >= 3) {
+        verification.classification = 'LOOP_DETECTED';
+        verification.evidence = 'same_action_same_state_no_progress';
+      }
       chrome.storage.local.set({
-        hatclawActionResult: { success: true, action: action.type, verification: verification, duration: Date.now() - startTime, memorySize: Object.keys(elementMemory).length, ts: Date.now() }
+        hatclawActionResult: { success: verification.ok, action: action.type, verification: verification, duration: Date.now() - startTime, memorySize: Object.keys(elementMemory).length, ts: Date.now() }
       });
       console.log('[BrowserKing] === ACTION OK ===', action.type, verification);
     } catch (error) {
@@ -582,6 +611,14 @@
         return true;
       }
       if (message.type === 'MOVE_CURSOR') { showCursor(message.x, message.y, !!message.clicked); }
+      if (message.type === 'HIDE_GLOW_FOR_SCREENSHOT') {
+        cursorWasVisibleBeforeScreenshot = Boolean(agentCursor && agentCursor.classList.contains('bk-visible'));
+        hideCursor();
+      }
+      if (message.type === 'RESTORE_GLOW_AFTER_SCREENSHOT' && cursorWasVisibleBeforeScreenshot && agentCursor) {
+        agentCursor.classList.add('bk-visible');
+        cursorWasVisibleBeforeScreenshot = false;
+      }
       if (message.type === 'MOVE_CURSOR_TO_ELEMENT') {
         var el = findElement(message);
         if (el) { var center = getElementCenter(el); showCursor(center.x, center.y, !!message.clicked); }
