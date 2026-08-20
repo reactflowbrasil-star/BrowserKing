@@ -67,16 +67,16 @@
           <button class="secondary" data-action="chatgpt-logout" type="button">Sair</button>
         </div>` : ''}
 
-        <div class="field">
+        ${definition.authMode === 'chatgpt' ? '' : `<div class="field">
           <label>Base URL</label>
           <input data-action="base-url" value="${escapeHtml(providerState.baseUrl)}" />
-        </div>
+        </div>`}
 
-        <div class="field">
+        ${definition.authMode === 'chatgpt' ? '' : `<div class="field">
           <label>${definition.authMode === 'chatgpt' ? 'Autenticação' : 'API Key'}</label>
           <input data-action="api-key" type="password" placeholder="${definition.requiresApiKey ? 'Enter API key' : 'Not required for this provider'}" value="${escapeHtml(providerState.apiKey || '')}" />
           <small>${definition.authMode === 'chatgpt' ? 'Use o botão acima; nenhuma chave ou cookie é salvo na extensão.' : (definition.requiresApiKey ? 'Only providers with a key appear in the sidepanel picker.' : 'Local or proxy provider.')}</small>
-        </div>
+        </div>`}
 
         <div class="row">
           <div class="field">

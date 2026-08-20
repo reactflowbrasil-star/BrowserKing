@@ -2598,7 +2598,7 @@ Model: {{modelName}}`;
     let upstreamResponse;
 
     try {
-      if (provider.id === 'openai' && /127\.0\.0\.1:3210|localhost:3210/.test(String(provider.baseUrl || ''))) {
+      if (provider.id === 'openai') {
         const reply = await chrome.runtime.sendMessage({ target: 'browserking-windows', action: 'codex.chat', params: openAIRequest });
         if (!reply?.ok) throw new Error(reply?.error || 'Falha no companion Codex');
         upstreamResponse = new Response(JSON.stringify(reply.result), { status: 200, headers: { 'Content-Type': 'application/json' } });

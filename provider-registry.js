@@ -494,8 +494,19 @@
     }
 
     migrateZaiProviders(normalized);
+    migrateOpenAIToCodex(normalized);
 
     return normalized;
+  }
+
+  function migrateOpenAIToCodex(state) {
+    const openai = state.providers.openai;
+    if (!openai) return;
+    openai.baseUrl = PROVIDERS.openai.defaultBaseUrl;
+    openai.apiKey = '';
+    if (!openai.model || /^gpt-5(?:\.[0-2])?-codex/i.test(openai.model)) {
+      openai.model = PROVIDERS.openai.defaultModel;
+    }
   }
 
   function migrateZaiProviders(state) {
@@ -679,6 +690,9 @@
 
   async function fetchProviderModels(providerId, providerState) {
     const definition = getProviderDefinition(providerId);
+    if (definition.authMode === 'chatgpt') {
+      return deepClone(definition.models);
+    }
     if (providerId === 'anthropic') {
       return deepClone(definition.models);
     }
