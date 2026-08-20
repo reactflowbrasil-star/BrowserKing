@@ -18,6 +18,26 @@ chrome.action.onClicked.addListener((tab) => {
   if (tab?.windowId != null) chrome.sidePanel.open({ windowId: tab.windowId }).catch(() => {});
 });
 
+const DEVICE_HEARTBEAT_ALARM = 'hatclaw-device-heartbeat';
+async function registerDeviceHeartbeat() {
+  try {
+    const stored = await chrome.storage.local.get('hatclawDeviceId');
+    const deviceId = stored.hatclawDeviceId || `chrome-${crypto.randomUUID()}`;
+    await chrome.storage.local.set({ hatclawDeviceId: deviceId });
+    await fetch('https://hatclaw.com/extencao/extension/device-heartbeat', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ deviceId, extensionVersion: chrome.runtime.getManifest().version, userAgent: navigator.userAgent })
+    });
+  } catch (_) {}
+}
+chrome.alarms.create(DEVICE_HEARTBEAT_ALARM, { periodInMinutes: 5 });
+chrome.alarms.onAlarm.addListener(alarm => {
+  if (alarm.name === DEVICE_HEARTBEAT_ALARM) registerDeviceHeartbeat();
+});
+chrome.runtime.onInstalled.addListener(() => registerDeviceHeartbeat());
+chrome.runtime.onStartup.addListener(() => registerDeviceHeartbeat());
+registerDeviceHeartbeat();
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message?.type === 'HATCLAW_IDENTIFY_TAB') {
     sendResponse({ tabId: sender.tab?.id || null });
