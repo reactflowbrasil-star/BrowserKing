@@ -46,17 +46,29 @@ class CodexAppServer {
     await this.start();
     const messages=Array.isArray(params.messages)?params.messages:[];
     const tools=Array.isArray(params.tools)?params.tools:[];
-    const history=messages.map(m=>`${String(m.role||'user').toUpperCase()}: ${typeof m.content==='string'?m.content:JSON.stringify(m.content)}`).join('\n\n');
+    const instructionMessages=messages.filter(m=>m?.role==='system'||m?.role==='developer');
+    const conversationMessages=messages.filter(m=>m?.role!=='system'&&m?.role!=='developer');
+    const developerInstructions=instructionMessages
+      .map(m=>typeof m.content==='string'?m.content:JSON.stringify(m.content))
+      .filter(Boolean)
+      .join('\n\n');
+    const history=conversationMessages.map(m=>`${String(m.role||'user').toUpperCase()}: ${typeof m.content==='string'?m.content:JSON.stringify(m.content)}`).join('\n\n');
     const toolGuide=tools.length ? `\n\nFERRAMENTAS DISPONIVEIS:\n${tools.map(t=>JSON.stringify(t.function||t)).join('\n')}\n\nRetorne JSON com content e tool_calls. Quando precisar agir, use tool_calls com name e arguments como uma string JSON. Quando responder normalmente, use tool_calls vazio.` : '';
     const text=history+toolGuide;
-    const thread=await this.call('thread/start',{model:params.model||'gpt-5.6-terra',cwd:os.tmpdir(),approvalPolicy:'never',sandbox:'read-only',serviceName:'hatclaw'});
+    const thread=await this.call('thread/start',{model:params.model||'gpt-5.6-terra',cwd:os.tmpdir(),approvalPolicy:'never',sandbox:'read-only',serviceName:'hatclaw',...(developerInstructions?{developerInstructions}:{})});
     const threadId=thread.thread.id;
     let answer='';
     const completed=this.waitFor(m=>{if(m?.params?.threadId!==threadId)return false;if(m.method==='item/agentMessage/delta')answer+=m.params.delta||'';if(m.method==='item/completed'&&m.params?.item?.type==='agentMessage')answer=m.params.item.text||answer;return m.method==='turn/completed';});
     const outputSchema=tools.length?{type:'object',properties:{content:{type:'string'},tool_calls:{type:'array',items:{type:'object',properties:{name:{type:'string'},arguments:{type:'string'}},required:['name','arguments'],additionalProperties:false}}},required:['content','tool_calls'],additionalProperties:false}:undefined;
     await this.call('turn/start',{threadId,input:[{type:'text',text}],model:params.model||'gpt-5.6-terra',approvalPolicy:'never',sandboxPolicy:{type:'readOnly'},...(outputSchema?{outputSchema}:{})});
     const completion=await completed;
-    if(completion.params?.turn?.status==='failed'||completion.params?.turn?.error)throw new Error(completion.params?.turn?.error?.message||'O turno do Codex falhou');
+    if(completion.params?.turn?.status==='failed'||completion.params?.turn?.error){
+      const rawError=completion.params?.turn?.error?.message||'O turno do Codex falhou';
+      if(/flagged as potentially violating|usage polic/i.test(rawError)){
+        throw new Error('O Codex não processou este pedido. Reformule o objetivo de forma operacional e específica; a conta continua conectada.');
+      }
+      throw new Error(rawError);
+    }
     if(!answer.trim())throw new Error('O Codex concluiu sem produzir resposta; selecione um modelo Codex atual.');
     let parsed=null;try{parsed=tools.length?JSON.parse(answer):null;}catch{}
     const toolCalls=Array.isArray(parsed?.tool_calls)?parsed.tool_calls.map(call=>({id:`call_${crypto.randomUUID().replace(/-/g,'')}`,type:'function',function:{name:call.name,arguments:typeof call.arguments==='string'?call.arguments:JSON.stringify(call.arguments||{})}})):[];
