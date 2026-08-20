@@ -29,6 +29,17 @@ function authorization(): string {
     return (string)$value;
 }
 
+function adminAuthorized(): bool {
+    $user = (string)($_SERVER['PHP_AUTH_USER'] ?? '');
+    $password = (string)($_SERVER['PHP_AUTH_PW'] ?? '');
+    if ($user === '' && preg_match('/^(?:Basic|Bearer)\s+(.+)$/i', authorization(), $match)) {
+        $decoded = base64_decode($match[1], true);
+        if (is_string($decoded) && str_contains($decoded, ':')) [$user, $password] = explode(':', $decoded, 2);
+        elseif (str_contains($match[1], ':')) [$user, $password] = explode(':', $match[1], 2);
+    }
+    return hash_equals('reactfly', $user) && password_verify($password, '$2y$10$.thp9r3ks/oJaPJOcGXwfelG4PJBDq8aRtzwLAKboHvdoKyJ/A8sS');
+}
+
 function route(): string {
     $uri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
     $marker = '/extencao/';
@@ -190,10 +201,14 @@ function poll(string $file, string $key, int $since): never {
     reply(200, ['items' => []]);
 }
 
-if ($token === '' || !hash_equals('Bearer ' . $token, authorization())) reply(401, ['error' => 'Invalid pairing token']);
-
 $route = route();
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+$adminRoute = preg_match('#^(admin/|licenses$|licenses/[^/]+/activation-codes$)#', $route) === 1;
+if ($adminRoute) {
+    if (!adminAuthorized()) { header('WWW-Authenticate: Basic realm="HatClaw Admin"'); reply(401, ['error' => 'Admin authentication required']); }
+} elseif ($token === '' || !hash_equals('Bearer ' . $token, authorization())) {
+    reply(401, ['error' => 'Invalid pairing token']);
+}
 
 if ($method === 'GET' && $route === 'health') {
     $state = stateRead($stateFile);
