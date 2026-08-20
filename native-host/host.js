@@ -40,7 +40,7 @@ class CodexAppServer {
   }
   waitFor(test,timeout=180000){return new Promise((resolve,reject)=>{const fn=m=>{if(!test(m))return;cleanup();resolve(m);};const timer=setTimeout(()=>{cleanup();reject(new Error('Tempo esgotado aguardando o Codex'));},timeout);const cleanup=()=>{clearTimeout(timer);this.waiters=this.waiters.filter(x=>x!==fn);};this.waiters.push(fn);});}
   async account(){await this.start();const result=await this.call('account/read',{refreshToken:false});const account=result?.account||result;return {authenticated:Boolean(account?.type||account?.email),authMode:account?.type||null,planType:account?.planType||null,email:account?.email||null};}
-  async login(){await this.start();const result=await this.call('account/login/start',{type:'chatgpt',useHostedLoginSuccessPage:true,appBrand:'chatgpt'});return {authUrl:result.authUrl,loginId:result.loginId,message:'Login oficial aberto no navegador.'};}
+  async login(){await this.start();const current=await this.account();if(current.authenticated)return {...current,message:`Conta ChatGPT já conectada${current.planType?` (${current.planType})`:''}.`};const result=await this.call('account/login/start',{type:'chatgpt',useHostedLoginSuccessPage:true,appBrand:'chatgpt'});return {authenticated:false,authUrl:result.authUrl,loginId:result.loginId,message:'Login oficial aberto no navegador.'};}
   async logout(){await this.start();await this.call('account/logout',{});return {authenticated:false,message:'Conta ChatGPT desconectada.'};}
   async chat(params){
     await this.start();

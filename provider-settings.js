@@ -264,7 +264,8 @@
           state.activeProvider = 'openai';
           await persist('Login aberto no navegador. Conclua o acesso e clique em Verificar conexão.');
         }
-        setCardStatus(card, reply.result?.message || (reply.result?.authenticated ? `Conectado via ChatGPT (${reply.result.planType || 'plano ativo'}).` : 'Ainda não conectado.'), reply.result?.authenticated ? 'success' : '');
+        const currentCard = providerGrid.querySelector(`[data-provider-id="${providerId}"]`) || card;
+        setCardStatus(currentCard, reply.result?.message || (reply.result?.authenticated ? `Conectado via ChatGPT (${reply.result.planType || 'plano ativo'}).` : 'Ainda não conectado.'), reply.result?.authenticated ? 'success' : '');
       } catch (error) {
         setCardStatus(card, error.message, 'error');
       } finally {
