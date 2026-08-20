@@ -22,6 +22,37 @@ const config = loadConfig();
 
 function estimateTokens(value){return Math.max(1,Math.ceil(String(value||'').length/4));}
 
+function parseToolEnvelope(answer, toolsEnabled) {
+  if (!toolsEnabled) return null;
+  const source = String(answer || '').trim();
+  const candidates = [
+    source,
+    source.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, ''),
+  ];
+  const objectStart = source.indexOf('{');
+  const objectEnd = source.lastIndexOf('}');
+  if (objectStart >= 0 && objectEnd > objectStart) candidates.push(source.slice(objectStart, objectEnd + 1));
+  for (const candidate of candidates) {
+    try {
+      const parsed = JSON.parse(candidate);
+      if (parsed && typeof parsed === 'object') return parsed;
+    } catch {}
+  }
+  return null;
+}
+
+function buildAssistantMessage(answer, tools) {
+  const parsed=parseToolEnvelope(answer,tools.length>0);
+  const toolCalls=Array.isArray(parsed?.tool_calls)?parsed.tool_calls.map(call=>({id:`call_${crypto.randomUUID().replace(/-/g,'')}`,type:'function',function:{name:call.name,arguments:typeof call.arguments==='string'?call.arguments:JSON.stringify(call.arguments||{})}})):[];
+  const parsedContent=typeof parsed?.content==='string'?parsed.content.trim():'';
+  const visibleContent=parsedContent||(
+    toolCalls.length
+      ? 'Vou executar a ação solicitada e informar o resultado em seguida.'
+      : String(answer||'').trim()
+  );
+  return {role:'assistant',content:visibleContent,...(toolCalls.length?{tool_calls:toolCalls}:{})};
+}
+
 class CodexAppServer {
   constructor() { this.child=null; this.nextId=1; this.pending=new Map(); this.waiters=[]; }
   async start() {
@@ -55,7 +86,7 @@ class CodexAppServer {
       .filter(Boolean)
       .join('\n\n');
     const history=conversationMessages.map(m=>`${String(m.role||'user').toUpperCase()}: ${typeof m.content==='string'?m.content:JSON.stringify(m.content)}`).join('\n\n');
-    const toolGuide=tools.length ? `\n\nFERRAMENTAS DISPONIVEIS:\n${tools.map(t=>JSON.stringify(t.function||t)).join('\n')}\n\nRetorne JSON com content e tool_calls. Quando precisar agir, use tool_calls com name e arguments como uma string JSON. Quando responder normalmente, use tool_calls vazio.` : '';
+    const toolGuide=tools.length ? `\n\nFERRAMENTAS DISPONIVEIS:\n${tools.map(t=>JSON.stringify(t.function||t)).join('\n')}\n\nRetorne JSON com content e tool_calls. O campo content deve sempre conter uma frase curta e útil ao usuário, inclusive quando houver tool_calls. Quando precisar agir, use tool_calls com name e arguments como uma string JSON. Quando responder normalmente, use tool_calls vazio.` : '';
     const text=history+toolGuide;
     const thread=await this.call('thread/start',{model:params.model||'gpt-5.6-terra',cwd:os.tmpdir(),approvalPolicy:'never',sandbox:'read-only',serviceName:'hatclaw',...(developerInstructions?{developerInstructions}:{})});
     const threadId=thread.thread.id;
@@ -72,9 +103,8 @@ class CodexAppServer {
       throw new Error(rawError);
     }
     if(!answer.trim())throw new Error('O Codex concluiu sem produzir resposta; selecione um modelo Codex atual.');
-    let parsed=null;try{parsed=tools.length?JSON.parse(answer):null;}catch{}
-    const toolCalls=Array.isArray(parsed?.tool_calls)?parsed.tool_calls.map(call=>({id:`call_${crypto.randomUUID().replace(/-/g,'')}`,type:'function',function:{name:call.name,arguments:typeof call.arguments==='string'?call.arguments:JSON.stringify(call.arguments||{})}})):[];
-    const message={role:'assistant',content:parsed?.content??answer,...(toolCalls.length?{tool_calls:toolCalls}:{})};
+    const message=buildAssistantMessage(answer,tools);
+    const toolCalls=message.tool_calls||[];
     return {id:`chatcmpl-${crypto.randomUUID()}`,object:'chat.completion',created:Math.floor(Date.now()/1000),model:params.model||'gpt-5.6-terra',choices:[{index:0,message,finish_reason:toolCalls.length?'tool_calls':'stop'}],usage:{prompt_tokens:estimateTokens(text+developerInstructions),completion_tokens:estimateTokens(answer),total_tokens:estimateTokens(text+developerInstructions)+estimateTokens(answer),estimated:true}};
   }
 }
@@ -189,4 +219,4 @@ function startProtocol() {
 
 if (require.main === module) startProtocol();
 
-module.exports = { handle, resolveAllowed, runPowerShell, startProtocol, estimateTokens };
+module.exports = { handle, resolveAllowed, runPowerShell, startProtocol, estimateTokens, parseToolEnvelope, buildAssistantMessage };

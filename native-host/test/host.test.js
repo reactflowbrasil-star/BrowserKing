@@ -1,7 +1,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const path = require('node:path');
-const { handle, resolveAllowed } = require('../host');
+const { handle, resolveAllowed, buildAssistantMessage } = require('../host');
 
 test('host rejects an unknown action through its public handler', async()=>{
   const result=await handle({requestId:'test-unknown',action:'not.real',params:{}});
@@ -18,4 +18,19 @@ test('system info reports security boundaries', async()=>{
 
 test('filesystem blocks paths outside configured roots',()=>{
   assert.throws(()=>resolveAllowed(path.parse(process.cwd()).root),/outside allowed roots/);
+});
+
+test('tool response always includes visible assistant content',()=>{
+  const message=buildAssistantMessage(JSON.stringify({
+    content:'',
+    tool_calls:[{name:'computer',arguments:'{"action":"screenshot"}'}]
+  }),[{name:'computer'}]);
+  assert.match(message.content,/executar a ação solicitada/i);
+  assert.equal(message.tool_calls.length,1);
+});
+
+test('tool response accepts fenced JSON envelopes',()=>{
+  const message=buildAssistantMessage('```json\n{"content":"Vou preparar a mensagem.","tool_calls":[]}\n```',[{name:'computer'}]);
+  assert.equal(message.content,'Vou preparar a mensagem.');
+  assert.equal(message.tool_calls,undefined);
 });
