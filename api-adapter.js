@@ -1779,6 +1779,71 @@ Model: {{modelName}}`;
     return { ...selected, taskPreview: task.replace(/\s+/g, ' ').trim().slice(0, 180), selectedAt: Date.now() };
   }
 
+  const AUTO_ROUTE_KEY = 'hatclawAutomaticTaskRoute';
+
+  function classifyAutomaticTask(body) {
+    const text = getLatestUserText(body?.messages || []).toLowerCase();
+    const toolNames = ensureArray(body?.tools).map((tool) => String(tool?.name || tool?.function?.name || '')).join(' ').toLowerCase();
+    const evidence = `${text} ${toolNames}`;
+    return {
+      visual: /screenshot|captura|tela|clicar|clique|digitar|preencher|navegar|browser|página|pagina|whatsapp|desktop|aba|janela/.test(evidence),
+      generation: /gerar vídeo|gerar video|criar vídeo|criar video|gerar imagem|criar imagem|veo|nano banana/.test(evidence),
+      complex: /código|codigo|programar|debug|arquitetura|dom|html|javascript|json|múltipl|multipl|pesquisa|analis/.test(evidence),
+      text
+    };
+  }
+
+  function automaticModelFor(providerId, state, task) {
+    const provider = state.providers[providerId];
+    const available = new Set((provider?.models || []).map((model) => model.id));
+    const preferred = task.visual
+      ? { google: 'gemini-3.6-flash', openai: 'gpt-5.4-mini', anthropic: 'claude-haiku-4-5', groq: 'llama-3.3-70b-versatile' }
+      : { google: 'gemini-3.6-flash', openai: 'gpt-5.6-luna', anthropic: 'claude-haiku-4-5', groq: 'llama-3.1-8b-instant' };
+    const candidate = preferred[providerId];
+    if (candidate && available.has(candidate)) return candidate;
+    return provider?.model || provider?.models?.[0]?.id || null;
+  }
+
+  async function selectAutomaticProviderRoute(config, body) {
+    if (!config?.providers || !registry?.getEnabledProviders) return null;
+    const task = classifyAutomaticTask(body);
+    const enabled = registry.getEnabledProviders(config).filter(({ definition }) => definition.transport === 'openai' || definition.transport === 'anthropic');
+    const priority = ['google', 'openai', 'groq', 'anthropic', 'mistral', 'ollama', 'deepseek', 'cerebras', 'together', 'openrouter'];
+    enabled.sort((a, b) => (priority.indexOf(a.definition.id) < 0 ? 99 : priority.indexOf(a.definition.id)) - (priority.indexOf(b.definition.id) < 0 ? 99 : priority.indexOf(b.definition.id)));
+    const selected = enabled.find(({ definition }) => task.visual ? registry.modelSupportsVision(config, definition.id, automaticModelFor(definition.id, config, task)) : true) || enabled[0];
+    if (!selected) return null;
+    const model = automaticModelFor(selected.definition.id, config, task);
+    return {
+      providerId: selected.definition.id,
+      provider: { id: selected.definition.id, label: selected.definition.label, transport: selected.definition.transport, baseUrl: selected.state.baseUrl, apiKey: selected.state.apiKey, model, supportsVision: registry.modelSupportsVision(config, selected.definition.id, model) },
+      model,
+      taskType: task.generation ? 'generation' : task.visual ? 'browser-visual' : task.complex ? 'complex' : 'text',
+      taskPreview: task.text.replace(/\s+/g, ' ').trim().slice(0, 180),
+      selectedAt: Date.now()
+    };
+  }
+
+  async function activateEconomyRoute(config) {
+    if (!config?.providers || !registry?.saveState) return;
+    const candidates = registry.getEnabledProviders(config).filter(({ definition }) => definition.transport === 'openai' || definition.transport === 'anthropic');
+    if (!candidates.length) return;
+    const priority = ['openai', 'google', 'groq', 'anthropic', 'mistral', 'ollama'];
+    candidates.sort((a, b) => (priority.indexOf(a.definition.id) < 0 ? 99 : priority.indexOf(a.definition.id)) - (priority.indexOf(b.definition.id) < 0 ? 99 : priority.indexOf(b.definition.id)));
+    const chosen = candidates[0];
+    const cheapModel = automaticModelFor(chosen.definition.id, config, { visual: false, complex: false, generation: false });
+    const next = JSON.parse(JSON.stringify(config));
+    next.activeProvider = chosen.definition.id;
+    if (next.providers[chosen.definition.id] && cheapModel) next.providers[chosen.definition.id].model = cheapModel;
+    await registry.saveState(next);
+    if (globalThis.chrome?.storage?.local) await chrome.storage.local.remove(AUTO_ROUTE_KEY);
+    globalThis.dispatchEvent(new CustomEvent('hatclaw:model-routed', { detail: { providerId: chosen.definition.id, model: cheapModel, route: 'economy-final' } }));
+  }
+
+  function responseCompletesTask(data) {
+    const stop = String(data?.stop_reason || data?.choices?.[0]?.finish_reason || '').toLowerCase();
+    return stop === 'end_turn' || stop === 'stop' || stop === 'completed' || stop === 'length';
+  }
+
   async function persistModelRoute(route) {
     if (!route || !globalThis.chrome?.storage?.local) return;
     await chrome.storage.local.set({
@@ -1799,7 +1864,7 @@ Model: {{modelName}}`;
     if (model === GEMINI_MODELS.videoGen) return GEMINI_MODELS.videoGenFast;
     if (model === GEMINI_MODELS.videoGenFast) return GEMINI_MODELS.videoGenLite;
     if (model === GEMINI_MODELS.videoGenLite) return GEMINI_MODELS.default;
-    return GEMINI_MODELS.crossPlatform;
+    return GEMINI_MODELS.default;
   }
 
   function isGeminiVideoModel(model) {
@@ -2653,7 +2718,17 @@ Model: {{modelName}}`;
     }
 
     const providerConfig = await getProviderConfig();
-    const provider = getActiveProvider(providerConfig);
+    let provider = getActiveProvider(providerConfig);
+    let automaticRoute = null;
+    if (globalThis.chrome?.storage?.local) {
+      const storedRoute = (await chrome.storage.local.get(AUTO_ROUTE_KEY))?.[AUTO_ROUTE_KEY];
+      if (storedRoute && Date.now() - Number(storedRoute.selectedAt || 0) < 30 * 60 * 1000) automaticRoute = storedRoute;
+    }
+    if (isInitialAgentTurn(anthropicRequest)) {
+      automaticRoute = await selectAutomaticProviderRoute(providerConfig, anthropicRequest);
+      if (automaticRoute && globalThis.chrome?.storage?.local) await chrome.storage.local.set({ [AUTO_ROUTE_KEY]: automaticRoute });
+    }
+    if (automaticRoute?.provider) provider = automaticRoute.provider;
     let requestedModel = resolveTargetModel(anthropicRequest, provider);
     if (provider.id === 'google' && hasToolResult(anthropicRequest.messages) && isGeminiVideoModel(requestedModel)) {
       requestedModel = GEMINI_MODELS.default;
@@ -2672,6 +2747,14 @@ Model: {{modelName}}`;
         codexRoute = { enabled: false, tier: 'fallback', model: requestedModel, originalModel: requestedModel, reason: error.message };
         await writeDebugLog({ phase: 'codex_router_error', message: error.message, fallbackModel: requestedModel });
       }
+    }
+
+    if (automaticRoute && globalThis.chrome?.storage?.local) {
+      await chrome.storage.local.set({
+        hatclawModelRouterStatus: { ...automaticRoute, model: requestedModel, automatic: true, economyFirst: true },
+        selectedModel: requestedModel,
+        selectedModelQuickMode: requestedModel
+      });
     }
 
     if (provider.id !== 'openai' && !String(provider.apiKey || '').trim()) {
@@ -2952,6 +3035,10 @@ Model: {{modelName}}`;
     });
 
     await emitTelegramAttachmentResultFromOpenAIResponse(data, requestedModel);
+
+    if (responseCompletesTask(data)) {
+      await activateEconomyRoute(await getProviderConfig());
+    }
 
     if (openAIRequest.stream) {
       const anthropicMessage = convertOpenAIMessageToAnthropic(data, requestedModel);
