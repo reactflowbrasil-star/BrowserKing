@@ -261,7 +261,16 @@ if ($method === 'POST' && $route === 'licenses') {
             'plan' => substr(trim((string)($payload['plan'] ?? 'basic')), 0, 40), 'status' => 'ACTIVE',
             'expiresAt' => (int)($payload['expiresAt'] ?? (time() + 30 * 86400) * 1000),
             'deviceLimit' => max(1, min(100, (int)($payload['deviceLimit'] ?? 1))), 'createdAt' => (int)(microtime(true) * 1000), 'updatedAt' => (int)(microtime(true) * 1000)];
-        $state['licenses'][$id] = $license; audit($state, 'LICENSE_CREATED', ['licenseId' => $id]);
+        $state['licenses'][$id] = $license;
+        foreach ((array)($payload['deviceIds'] ?? []) as $deviceId) {
+            $deviceId = (string)$deviceId;
+            if (isset($state['devices'][$deviceId])) {
+                $state['devices'][$deviceId]['licenseId'] = $id;
+                $state['devices'][$deviceId]['status'] = 'ACTIVE';
+                $state['devices'][$deviceId]['activatedAt'] = $state['devices'][$deviceId]['activatedAt'] ?? (int)(microtime(true) * 1000);
+            }
+        }
+        audit($state, 'LICENSE_CREATED', ['licenseId' => $id, 'deviceIds' => array_values((array)($payload['deviceIds'] ?? []))]);
         return $license;
     });
     reply(201, ['license' => $result]);
