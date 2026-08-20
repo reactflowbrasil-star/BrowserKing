@@ -44,7 +44,8 @@
       #${BUTTON_ID}:disabled { opacity: .75; }
       @keyframes hc-wand-spin { to { transform: rotate(360deg); } }
       .hc-enhancer-field { position: relative !important; }
-      .hc-enhancer-field textarea { padding-right: 46px !important; }
+      .hc-enhancer-field textarea,
+      .hc-enhancer-field [contenteditable="true"] { padding-right: 46px !important; }
       #hc-enhancer-toast {
         position: fixed;
         left: 50%;
@@ -74,23 +75,46 @@
     setTimeout(() => element.remove(), 3800);
   }
 
-  function setTextareaValue(textarea, value) {
-    const setter = Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value')?.set;
-    setter?.call(textarea, value);
-    textarea.dispatchEvent(new Event('input', { bubbles: true }));
-    textarea.dispatchEvent(new Event('change', { bubbles: true }));
-    textarea.style.height = 'auto';
-    textarea.style.height = `${Math.min(textarea.scrollHeight, 240)}px`;
-    textarea.focus();
-    textarea.setSelectionRange(value.length, value.length);
+  function getFieldValue(field) {
+    return field instanceof HTMLTextAreaElement || field instanceof HTMLInputElement
+      ? field.value
+      : field.innerText || field.textContent || '';
   }
 
-  function collectContext(textarea) {
+  function setFieldValue(field, value) {
+    if (field instanceof HTMLTextAreaElement || field instanceof HTMLInputElement) {
+      const prototype = field instanceof HTMLTextAreaElement ? HTMLTextAreaElement.prototype : HTMLInputElement.prototype;
+      Object.getOwnPropertyDescriptor(prototype, 'value')?.set?.call(field, value);
+      field.style.height = 'auto';
+      field.style.height = `${Math.min(field.scrollHeight, 240)}px`;
+      field.dispatchEvent(new Event('input', { bubbles: true }));
+      field.dispatchEvent(new Event('change', { bubbles: true }));
+      field.focus();
+      field.setSelectionRange(value.length, value.length);
+      return;
+    }
+
+    field.focus();
+    field.textContent = value;
+    field.dispatchEvent(new InputEvent('input', {
+      bubbles: true,
+      inputType: 'insertText',
+      data: value,
+    }));
+    const range = document.createRange();
+    range.selectNodeContents(field);
+    range.collapse(false);
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+  }
+
+  function collectContext(inputField) {
     const candidates = [...document.querySelectorAll('[data-testid*="message"], article, [class*="message"], [class*="Message"]')];
     const seen = new Set();
     const excerpts = [];
     for (const node of candidates.slice(-12)) {
-      if (node.contains(textarea)) continue;
+      if (node.contains(inputField)) continue;
       const text = (node.innerText || '').replace(/\s+/g, ' ').trim();
       if (text.length < 8 || text.length > 2000 || seen.has(text)) continue;
       seen.add(text);
@@ -137,9 +161,9 @@
     }
   }
 
-  async function enhance(textarea, button) {
+  async function enhance(inputField, button) {
     if (busy) return;
-    const original = textarea.value.trim();
+    const original = getFieldValue(inputField).trim();
     if (!original) return toast('Escreva uma solicitação antes de aperfeiçoar.');
 
     busy = true;
@@ -147,8 +171,8 @@
     button.classList.add('loading');
     button.title = 'Aperfeiçoando texto…';
     try {
-      const improved = await requestImprovement(original, collectContext(textarea));
-      setTextareaValue(textarea, improved);
+      const improved = await requestImprovement(original, collectContext(inputField));
+      setFieldValue(inputField, improved);
       toast('Solicitação aperfeiçoada com o contexto da conversa.');
     } catch (error) {
       console.warn('[HatClaw Prompt Enhancer]', error);
@@ -161,21 +185,38 @@
     }
   }
 
-  function findField(textarea) {
-    let field = textarea.parentElement;
+  function findContainer(inputField) {
+    const inputRect = inputField.getBoundingClientRect();
+    let field = inputField.parentElement;
     while (field && field !== document.body) {
       const rect = field.getBoundingClientRect();
-      if (rect.width >= textarea.getBoundingClientRect().width && rect.height >= textarea.offsetHeight && rect.height < 220) return field;
+      if (rect.width >= inputRect.width && rect.height >= inputRect.height && rect.height < 220) return field;
       field = field.parentElement;
     }
-    return textarea.parentElement;
+    return inputField.parentElement;
+  }
+
+  function findInputField() {
+    const selectors = [
+      'textarea',
+      '[contenteditable="true"][role="textbox"]',
+      '[contenteditable="true"][data-placeholder]',
+      '[contenteditable="true"]',
+      'input[type="text"]',
+    ];
+    const candidates = [...document.querySelectorAll(selectors.join(','))];
+    return candidates.find((field) => {
+      if (field.closest('#hc-record-dropdown')) return false;
+      const rect = field.getBoundingClientRect();
+      return rect.width > 120 && rect.height > 20 && rect.bottom > window.innerHeight * 0.55;
+    }) || null;
   }
 
   function inject() {
     if (document.getElementById(BUTTON_ID)) return true;
-    const textarea = document.querySelector('textarea');
-    if (!textarea) return false;
-    const field = findField(textarea);
+    const inputField = findInputField();
+    if (!inputField) return false;
+    const field = findContainer(inputField);
     if (!field) return false;
     addStyles();
     field.classList.add('hc-enhancer-field');
@@ -188,7 +229,7 @@
     button.addEventListener('click', (event) => {
       event.preventDefault();
       event.stopPropagation();
-      enhance(textarea, button);
+      enhance(inputField, button);
     });
     field.appendChild(button);
     return true;
