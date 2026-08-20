@@ -79,6 +79,7 @@ public class MainActivity extends Activity {
     private LinearLayout tabList;
     private TextView approvalMode;
     private TextView attachButton;
+    private TextView exportButton;
     private TextView micButton;
     private TextView streamingIndicator;
     private LinearLayout graphSection;
@@ -92,6 +93,10 @@ public class MainActivity extends Activity {
     private static final int PICK_IMAGE = 4101;
     private static final int REQUEST_AUDIO = 4102;
     private static final int REQUEST_IMAGES = 4103;
+    private static final int EXPORT_CONVERSATION = 4104;
+    private String pendingExportContent;
+    private String pendingExportMime;
+    private String pendingExportName;
 
     private static final class MessageBubble {
         final LinearLayout root;
@@ -132,6 +137,7 @@ public class MainActivity extends Activity {
         tabList = findViewById(R.id.tabList);
         approvalMode = findViewById(R.id.approvalMode);
         attachButton = findViewById(R.id.attachButton);
+        exportButton = findViewById(R.id.exportButton);
         micButton = findViewById(R.id.micButton);
         streamingIndicator = findViewById(R.id.streamingIndicator);
         graphSection = findViewById(R.id.graphSection);
@@ -154,6 +160,7 @@ public class MainActivity extends Activity {
         sendButton.setOnClickListener(v -> sendPrompt());
         approvalMode.setOnClickListener(v -> toggleApprovalMode());
         attachButton.setOnClickListener(v -> chooseImage());
+        exportButton.setOnClickListener(v -> showExportMenu());
         micButton.setOnClickListener(v -> toggleMicrophone());
         graphSyncButton.setOnClickListener(v -> syncGraph());
         promptInput.setOnEditorActionListener((view, actionId, event) -> {
@@ -173,6 +180,34 @@ public class MainActivity extends Activity {
             connectionPanel.setVisibility(View.VISIBLE);
             setConnectionState("Configure o pareamento", false);
         }
+    }
+
+    private void showExportMenu() {
+        new android.app.AlertDialog.Builder(this)
+            .setTitle("Exportar histórico da conversa")
+            .setItems(new String[]{"Exportar como TXT", "Exportar como Markdown"}, (dialog, which) -> beginExport(which == 1 ? "md" : "txt"))
+            .show();
+    }
+
+    private String collectConversationText() {
+        StringBuilder output = new StringBuilder("HatClaw — Histórico da conversa\nExportado em ")
+            .append(new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault()).format(new java.util.Date())).append("\n\n");
+        for (int i = 0; i < messageList.getChildCount(); i++) {
+            View child = messageList.getChildAt(i);
+            String text = child instanceof TextView ? ((TextView) child).getText().toString().trim() : child.toString();
+            if (!text.isEmpty()) output.append(text).append("\n\n");
+        }
+        return output.toString().trim() + "\n";
+    }
+
+    private void beginExport(String format) {
+        pendingExportContent = collectConversationText();
+        pendingExportMime = "md".equals(format) ? "text/markdown" : "text/plain";
+        pendingExportName = "hatclaw-conversa-" + new java.text.SimpleDateFormat("yyyy-MM-dd", Locale.US).format(new java.util.Date()) + ("md".equals(format) ? ".md" : ".txt");
+        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        intent.setType(pendingExportMime);
+        intent.putExtra(Intent.EXTRA_TITLE, pendingExportName);
+        startActivityForResult(intent, EXPORT_CONVERSATION);
     }
 
     private String getOrCreateDeviceId() {
@@ -313,6 +348,16 @@ public class MainActivity extends Activity {
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == EXPORT_CONVERSATION) {
+            if (resultCode != RESULT_OK || data == null || data.getData() == null) return;
+            try (OutputStream stream = getContentResolver().openOutputStream(data.getData())) {
+                stream.write(pendingExportContent.getBytes(StandardCharsets.UTF_8));
+                Toast.makeText(this, "Histórico exportado", Toast.LENGTH_SHORT).show();
+            } catch (Exception error) {
+                Toast.makeText(this, "Falha ao exportar: " + error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+            return;
+        }
         if (requestCode != PICK_IMAGE || resultCode != RESULT_OK || data == null || data.getData() == null) return;
         Uri uri = data.getData();
         try (InputStream input = getContentResolver().openInputStream(uri); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
