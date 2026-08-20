@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+date_default_timezone_set('America/Sao_Paulo');
 
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store');
