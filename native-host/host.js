@@ -5,6 +5,7 @@ const os = require('os');
 const path = require('path');
 const crypto = require('crypto');
 const { spawn } = require('child_process');
+const readline = require('readline');
 const { classify } = require('./policy');
 
 const ROOT = __dirname;
@@ -18,6 +19,43 @@ function loadConfig() {
   try { return { ...defaults, ...JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8')) }; } catch { return defaults; }
 }
 const config = loadConfig();
+
+class CodexAppServer {
+  constructor() { this.child=null; this.nextId=1; this.pending=new Map(); this.waiters=[]; }
+  async start() {
+    if (this.child && !this.child.killed) return;
+    this.child=spawn('codex',['app-server','--stdio'],{stdio:['pipe','pipe','pipe'],windowsHide:true});
+    this.child.on('exit',()=>{ const error=new Error('Codex App Server encerrou'); for(const p of this.pending.values())p.reject(error); this.pending.clear(); this.child=null; });
+    readline.createInterface({input:this.child.stdout}).on('line',line=>{ try{this.onMessage(JSON.parse(line));}catch{} });
+    await this.call('initialize',{clientInfo:{name:'hatclaw',title:'HatClaw',version:'1.4.0'},capabilities:{experimentalApi:true}});
+    this.notify('initialized',{});
+  }
+  send(message){ this.child.stdin.write(JSON.stringify(message)+'\n'); }
+  notify(method,params){ this.send({method,params}); }
+  call(method,params={}){ const id=this.nextId++; return new Promise((resolve,reject)=>{this.pending.set(id,{resolve,reject});this.send({method,id,params});}); }
+  onMessage(message){
+    if(message.id!=null && (message.result!==undefined || message.error)){const p=this.pending.get(message.id);if(p){this.pending.delete(message.id);message.error?p.reject(new Error(message.error.message||'Erro do Codex')):p.resolve(message.result);}return;}
+    if(message.id!=null && message.method){ this.send({id:message.id,result:{decision:'decline'}}); return; }
+    for(const waiter of [...this.waiters]) waiter(message);
+  }
+  waitFor(test,timeout=180000){return new Promise((resolve,reject)=>{const fn=m=>{if(!test(m))return;cleanup();resolve(m);};const timer=setTimeout(()=>{cleanup();reject(new Error('Tempo esgotado aguardando o Codex'));},timeout);const cleanup=()=>{clearTimeout(timer);this.waiters=this.waiters.filter(x=>x!==fn);};this.waiters.push(fn);});}
+  async account(){await this.start();const result=await this.call('account/read',{refreshToken:false});const account=result?.account||result;return {authenticated:Boolean(account?.type||account?.email),authMode:account?.type||null,planType:account?.planType||null,email:account?.email||null};}
+  async login(){await this.start();const result=await this.call('account/login/start',{type:'chatgpt',useHostedLoginSuccessPage:true,appBrand:'chatgpt'});return {authUrl:result.authUrl,loginId:result.loginId,message:'Login oficial aberto no navegador.'};}
+  async logout(){await this.start();await this.call('account/logout',{});return {authenticated:false,message:'Conta ChatGPT desconectada.'};}
+  async chat(params){
+    await this.start();
+    const messages=Array.isArray(params.messages)?params.messages:[];
+    const text=messages.map(m=>`${String(m.role||'user').toUpperCase()}: ${typeof m.content==='string'?m.content:JSON.stringify(m.content)}`).join('\n\n');
+    const thread=await this.call('thread/start',{model:params.model||'gpt-5.6-terra',cwd:os.tmpdir(),approvalPolicy:'never',sandbox:'read-only',serviceName:'hatclaw'});
+    const threadId=thread.thread.id;
+    let answer='';
+    const completed=this.waitFor(m=>{if(m?.params?.threadId!==threadId)return false;if(m.method==='item/completed'&&m.params?.item?.type==='agentMessage')answer=m.params.item.text||answer;return m.method==='turn/completed';});
+    await this.call('turn/start',{threadId,input:[{type:'text',text}],model:params.model||'gpt-5.6-terra',approvalPolicy:'never',sandboxPolicy:{type:'readOnly'}});
+    await completed;
+    return {id:`chatcmpl-${crypto.randomUUID()}`,object:'chat.completion',created:Math.floor(Date.now()/1000),model:params.model||'gpt-5.6-terra',choices:[{index:0,message:{role:'assistant',content:answer},finish_reason:'stop'}]};
+  }
+}
+const codexServer=new CodexAppServer();
 
 function audit(entry) {
   const date = new Date().toISOString().slice(0, 10);
@@ -68,6 +106,10 @@ async function confirm(action, params) {
 
 async function execute(action, p) {
   switch (action) {
+    case 'codex.status': return codexServer.account();
+    case 'codex.login': return codexServer.login();
+    case 'codex.logout': return codexServer.logout();
+    case 'codex.chat': return codexServer.chat(p);
     case 'system.info': return { platform: os.platform(), release: os.release(), hostname: os.hostname(), allowedRoots: config.allowedRoots, auditDirectory: LOG_DIR };
     case 'screen.capture': { const out=path.join(os.tmpdir(),`browserking-${Date.now()}.png`); await runPowerShell(`Add-Type -AssemblyName System.Windows.Forms,System.Drawing;$b=[System.Windows.Forms.Screen]::PrimaryScreen.Bounds;$i=New-Object Drawing.Bitmap $b.Width,$b.Height;$g=[Drawing.Graphics]::FromImage($i);$g.CopyFromScreen($b.Location,[Drawing.Point]::Empty,$b.Size);$i.Save(${psQuote(out)});$g.Dispose();$i.Dispose()`); return { path: out }; }
     case 'mouse.move': await runPowerShell(`Add-Type -AssemblyName System.Windows.Forms;[System.Windows.Forms.Cursor]::Position=New-Object Drawing.Point(${finiteNumber(p.x,'x')},${finiteNumber(p.y,'y')})`); return { moved: true };

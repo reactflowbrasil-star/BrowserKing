@@ -51,15 +51,23 @@
 
         ${note}
 
+        ${definition.authMode === 'chatgpt' ? `
+        <div class="card-note">Conecta à sua assinatura ChatGPT pelo fluxo oficial do Codex. As credenciais ficam no Codex local.</div>
+        <div class="buttons">
+          <button class="primary" data-action="chatgpt-login" type="button">Conectar conta ChatGPT</button>
+          <button class="secondary" data-action="chatgpt-status" type="button">Verificar conexão</button>
+          <button class="secondary" data-action="chatgpt-logout" type="button">Sair</button>
+        </div>` : ''}
+
         <div class="field">
           <label>Base URL</label>
           <input data-action="base-url" value="${escapeHtml(providerState.baseUrl)}" />
         </div>
 
         <div class="field">
-          <label>API Key</label>
+          <label>${definition.authMode === 'chatgpt' ? 'Autenticação' : 'API Key'}</label>
           <input data-action="api-key" type="password" placeholder="${definition.requiresApiKey ? 'Enter API key' : 'Not required for this provider'}" value="${escapeHtml(providerState.apiKey || '')}" />
-          <small>${definition.requiresApiKey ? 'Only providers with a key appear in the sidepanel picker.' : 'Local or proxy provider.'}</small>
+          <small>${definition.authMode === 'chatgpt' ? 'Use o botão acima; nenhuma chave ou cookie é salvo na extensão.' : (definition.requiresApiKey ? 'Only providers with a key appear in the sidepanel picker.' : 'Local or proxy provider.')}</small>
         </div>
 
         <div class="row">
@@ -243,6 +251,27 @@
     const providerId = card.getAttribute('data-provider-id');
     const providerState = state.providers[providerId];
     const action = button.getAttribute('data-action');
+
+    if (action.startsWith('chatgpt-')) {
+      button.disabled = true;
+      try {
+        const nativeAction = action === 'chatgpt-login' ? 'codex.login' : action === 'chatgpt-logout' ? 'codex.logout' : 'codex.status';
+        const reply = await chrome.runtime.sendMessage({ target: 'browserking-windows', action: nativeAction, params: {} });
+        if (!reply?.ok) throw new Error(reply?.error || 'Falha no companion Codex');
+        if (reply.result?.authUrl) await chrome.tabs.create({ url: reply.result.authUrl });
+        if (nativeAction === 'codex.login') {
+          providerState.enabled = true;
+          state.activeProvider = 'openai';
+          await persist('Login aberto no navegador. Conclua o acesso e clique em Verificar conexão.');
+        }
+        setCardStatus(card, reply.result?.message || (reply.result?.authenticated ? `Conectado via ChatGPT (${reply.result.planType || 'plano ativo'}).` : 'Ainda não conectado.'), reply.result?.authenticated ? 'success' : '');
+      } catch (error) {
+        setCardStatus(card, error.message, 'error');
+      } finally {
+        button.disabled = false;
+      }
+      return;
+    }
 
     if (action === 'set-active') {
       state.activeProvider = providerId;

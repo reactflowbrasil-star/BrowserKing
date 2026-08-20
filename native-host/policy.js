@@ -5,6 +5,7 @@ const ACTIONS = new Set([
   'window.list','window.focus','window.close','file.list','file.read','file.write','file.delete',
   'file.move','directory.create','process.launch','powershell.run','audit.read'
   ,'relay.token'
+  ,'codex.status','codex.login','codex.logout','codex.chat'
 ]);
 
 const CRITICAL = new Set(['window.close','file.write','file.delete','file.move','directory.create','process.launch','powershell.run']);

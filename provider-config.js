@@ -11,9 +11,6 @@
   async function initialize() {
     try {
       const state = await registry.loadState();
-      state.activeProvider = 'google';
-      state.providers.google.enabled = true;
-      state.providers.google.model = 'gemini-3.6-flash';
       state.lastPermissionModePreference = 'follow_a_plan';
       state.permissionMode = 'follow_a_plan';
       await registry.syncStateToChrome(state);

@@ -1,9 +1,9 @@
 {
-    "path":  "C:\\\\Users\\\\ReactFlow\\\\Downloads\\\\BrowserKing-master\\\\BrowserKing-master\\\\native-host\\\\browserking-native.cmd",
-    "description":  "HatClaw secure audited Windows controller",
-    "name":  "com.browserking.windows_controller",
-    "allowed_origins":  [
-                            "chrome-extension://cnjbjchpdajaangfmdbilfanmeflmbjf/"
-                        ],
-    "type":  "stdio"
+  "allowed_origins": [
+    "chrome-extension://cnjbjchpdajaangfmdbilfanmeflmbjf/"
+  ],
+  "description": "HatClaw secure audited Windows controller",
+  "path": "C:\\\\Users\\\\ReactFlow\\\\Downloads\\\\BrowserKing-master\\\\BrowserKing-master - Copia (2)\\\\native-host\\\\browserking-native.cmd",
+  "type": "stdio",
+  "name": "com.browserking.windows_controller"
 }

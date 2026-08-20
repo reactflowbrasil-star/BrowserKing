@@ -2491,7 +2491,7 @@ Model: {{modelName}}`;
       await persistModelRoute(modelRoute);
     }
 
-    if (!String(provider.apiKey || '').trim()) {
+    if (provider.id !== 'openai' && !String(provider.apiKey || '').trim()) {
       const providerLabel = provider.label || provider.id || 'selected provider';
       return createAnthropicError(
         `${providerLabel} is not configured. Open HatClaw settings, add the API key, and save before sending a message.`,
@@ -2598,11 +2598,17 @@ Model: {{modelName}}`;
     let upstreamResponse;
 
     try {
-      upstreamResponse = await originalFetch(upstreamUrl, {
-        method: 'POST',
-        headers,
-        body: JSON.stringify(openAIRequest)
-      });
+      if (provider.id === 'openai' && /127\.0\.0\.1:3210|localhost:3210/.test(String(provider.baseUrl || ''))) {
+        const reply = await chrome.runtime.sendMessage({ target: 'browserking-windows', action: 'codex.chat', params: openAIRequest });
+        if (!reply?.ok) throw new Error(reply?.error || 'Falha no companion Codex');
+        upstreamResponse = new Response(JSON.stringify(reply.result), { status: 200, headers: { 'Content-Type': 'application/json' } });
+      } else {
+        upstreamResponse = await originalFetch(upstreamUrl, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify(openAIRequest)
+        });
+      }
     } catch (error) {
       console.error('[API Adapter] Upstream fetch failed:', error);
       return createAnthropicError(error.message || 'Failed to reach upstream provider.', 502);
