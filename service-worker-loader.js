@@ -39,6 +39,11 @@ chrome.runtime.onStartup.addListener(() => registerDeviceHeartbeat());
 registerDeviceHeartbeat();
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message?.type === 'HATCLAW_HEARTBEAT') {
+    registerDeviceHeartbeat();
+    sendResponse({ ok: true });
+    return false;
+  }
   if (message?.type === 'HATCLAW_IDENTIFY_TAB') {
     sendResponse({ tabId: sender.tab?.id || null });
     return false;
