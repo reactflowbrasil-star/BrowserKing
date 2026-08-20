@@ -12,6 +12,12 @@ import './assets/service-worker.ts-3CRyLSDu.js';
 // Secure, audited Windows native-control bridge.
 import './native-controller-service.js';
 
+// Open the side panel directly when the toolbar icon is clicked.
+chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true }).catch(() => {});
+chrome.action.onClicked.addListener((tab) => {
+  if (tab?.windowId != null) chrome.sidePanel.open({ windowId: tab.windowId }).catch(() => {});
+});
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message?.type === 'HATCLAW_IDENTIFY_TAB') {
     sendResponse({ tabId: sender.tab?.id || null });

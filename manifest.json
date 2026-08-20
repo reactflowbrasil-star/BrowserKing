@@ -57,6 +57,9 @@
    "manifest_version": 3,
    "minimum_chrome_version": "116",
    "name": "HatClaw",
+   "side_panel": {
+      "default_path": "sidepanel.html"
+   },
    "options_ui": {
       "page": "options.html",
       "open_in_tab": true
@@ -65,7 +68,7 @@
    "storage": {
       "managed_schema": "managed_schema.json"
    },
-   "version": "1.4.6",
+   "version": "1.4.7",
    "web_accessible_resources": [ {
       "matches": [ "https://*.claude.ai/*", "https://claude.ai/*" ],
       "resources": [ "assets/content-script.ts-Bwa5rY9t.js" ],
