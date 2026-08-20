@@ -1735,13 +1735,16 @@ Model: {{modelName}}`;
 
   function selectGeminiModel(body, provider) {
     if (provider.id !== 'google') return null;
+    // Tool-result continuations belong to the already selected text model.
+    // Re-routing their screenshot/recording metadata can accidentally select Veo.
+    if (hasToolResult(body?.messages)) return null;
     const task = getLatestUserText(body?.messages || []).toLowerCase();
     const toolNames = ensureArray(body?.tools).map(tool => String(tool?.name || tool?.function?.name || '')).join(' ').toLowerCase();
     const evidence = `${task} ${toolNames}`;
     const rules = [
       {
         route: 'videoGen', model: GEMINI_MODELS.videoGen,
-        pattern: /\b(vídeo|video|gravar tela|gravar|录屏|录制|generate video|criar vídeo|criar video|gerar vídeo|gerar video|movie|film|clip|animação|animação|animation|renderizar|render video|video gen)\b/i,
+        pattern: /\b(vídeo|video|录屏|录制|generate video|criar vídeo|criar video|gerar vídeo|gerar video|movie|film|clip|animação|animation|render video|video gen|veo)\b/i,
         reason: 'Geração de vídeo com Google Veo 3.1.'
       },
       {
@@ -1797,6 +1800,10 @@ Model: {{modelName}}`;
     if (model === GEMINI_MODELS.videoGenFast) return GEMINI_MODELS.videoGenLite;
     if (model === GEMINI_MODELS.videoGenLite) return GEMINI_MODELS.default;
     return GEMINI_MODELS.crossPlatform;
+  }
+
+  function isGeminiVideoModel(model) {
+    return /^veo-/i.test(String(model || ''));
   }
 
   function downgradeVisionMessages(messages, modelName) {
@@ -2648,6 +2655,9 @@ Model: {{modelName}}`;
     const providerConfig = await getProviderConfig();
     const provider = getActiveProvider(providerConfig);
     let requestedModel = resolveTargetModel(anthropicRequest, provider);
+    if (provider.id === 'google' && hasToolResult(anthropicRequest.messages) && isGeminiVideoModel(requestedModel)) {
+      requestedModel = GEMINI_MODELS.default;
+    }
     let codexRoute = { enabled: false, tier: 'existing', model: requestedModel, originalModel: requestedModel };
     const modelRoute = selectGeminiModel(anthropicRequest, provider);
     if (modelRoute) {
