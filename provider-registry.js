@@ -53,32 +53,31 @@
       defaultBaseUrl: 'http://127.0.0.1:3210/v1',
       defaultModel: 'gpt-5.6-terra',
       models: [
+        // Codex account profiles exposed by the local companion.
         createModel('gpt-5.6-sol', 'GPT-5.6 Sol', { supportsVision: true }),
         createModel('gpt-5.6-terra', 'GPT-5.6 Terra', { supportsVision: true }),
         createModel('gpt-5.6-luna', 'GPT-5.6 Luna', { supportsVision: true }),
-        createModel('gpt-5.4-pro', 'GPT-5.4 Pro', { supportsVision: true }),
+        // Current OpenAI API model families (newest first).
+        createModel('gpt-5.5', 'GPT-5.5', { supportsVision: true }),
+        createModel('gpt-5.5-pro', 'GPT-5.5 Pro', { supportsVision: true }),
         createModel('gpt-5.4', 'GPT-5.4', { supportsVision: true }),
-        createModel('gpt-5.3-chat', 'GPT-5.3 Chat', { supportsVision: true }),
-        createModel('gpt-5.1', 'GPT-5.1', { supportsVision: true }),
-        createModel('gpt-5.1-mini', 'GPT-5.1 Mini', { supportsVision: true }),
-        createModel('gpt-5.1-nano', 'GPT-5.1 Nano', { supportsVision: true }),
+        createModel('gpt-5.4-pro', 'GPT-5.4 Pro', { supportsVision: true }),
+        createModel('gpt-5.4-mini', 'GPT-5.4 Mini', { supportsVision: true }),
+        createModel('gpt-5.4-nano', 'GPT-5.4 Nano', { supportsVision: true }),
+        createModel('gpt-5.3-codex', 'GPT-5.3 Codex', { supportsVision: true }),
         createModel('gpt-5.2', 'GPT-5.2', { supportsVision: true }),
-        createModel('gpt-5.2-mini', 'GPT-5.2 Mini', { supportsVision: true }),
+        createModel('gpt-5.2-pro', 'GPT-5.2 Pro', { supportsVision: true }),
+        createModel('gpt-5.1', 'GPT-5.1', { supportsVision: true }),
         createModel('gpt-5', 'GPT-5', { supportsVision: true }),
+        createModel('gpt-5-pro', 'GPT-5 Pro', { supportsVision: true }),
         createModel('gpt-5-mini', 'GPT-5 Mini', { supportsVision: true }),
         createModel('gpt-5-nano', 'GPT-5 Nano', { supportsVision: true }),
-        createModel('gpt-5-codex', 'GPT-5 Codex', { supportsVision: false }),
-        createModel('gpt-5.1-codex', 'GPT-5.1 Codex', { supportsVision: false }),
-        createModel('gpt-5.1-codex-mini', 'GPT-5.1 Codex Mini', { supportsVision: false }),
-        createModel('gpt-5.2-codex', 'GPT-5.2 Codex', { supportsVision: false }),
         createModel('gpt-4.1', 'GPT-4.1', { supportsVision: true }),
         createModel('gpt-4.1-mini', 'GPT-4.1 Mini', { supportsVision: true }),
-        createModel('gpt-4.1-nano', 'GPT-4.1 Nano', { supportsVision: true }),
         createModel('gpt-4o', 'GPT-4o', { supportsVision: true }),
         createModel('gpt-4o-mini', 'GPT-4o Mini', { supportsVision: true }),
         createModel('o3', 'o3', { supportsVision: true }),
-        createModel('o3-pro', 'o3-pro', { supportsVision: true }),
-        createModel('o4-mini', 'o4-mini', { supportsVision: true })
+        createModel('o3-pro', 'o3 Pro', { supportsVision: true })
       ]
     },
     google: {
@@ -513,9 +512,12 @@
   function migrateOpenAIToCodex(state) {
     const openai = state.providers.openai;
     if (!openai) return;
+    const supportedIds = new Set(PROVIDERS.openai.models.map((model) => model.id));
+    openai.models = mergeModels(PROVIDERS.openai.models, openai.models)
+      .filter((model) => supportedIds.has(model.id));
     openai.baseUrl = PROVIDERS.openai.defaultBaseUrl;
     openai.apiKey = '';
-    if (!openai.model || /^gpt-5(?:\.[0-2])?-codex/i.test(openai.model)) {
+    if (!openai.model || !supportedIds.has(openai.model)) {
       openai.model = PROVIDERS.openai.defaultModel;
     }
   }
