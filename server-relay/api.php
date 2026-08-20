@@ -297,9 +297,16 @@ if ($method === 'POST' && preg_match('#^admin/licenses/([^/]+)/action$#', $route
 }
 if ($method === 'POST' && preg_match('#^admin/devices/([^/]+)/action$#', $route, $match)) {
     $payload = body(); $deviceId = $match[1]; $action = strtoupper((string)($payload['action'] ?? ''));
-    if (!in_array($action, ['BLOCK', 'UNBLOCK', 'REVOKE'], true)) reply(400, ['error' => 'Unsupported action']);
+    if (!in_array($action, ['BLOCK', 'UNBLOCK', 'REVOKE', 'GENERATE_TOKEN'], true)) reply(400, ['error' => 'Unsupported action']);
     $result = stateMutate($stateFile, function (&$state) use ($deviceId, $action) {
         if (!isset($state['devices'][$deviceId])) reply(404, ['error' => 'Device not found']);
+        if ($action === 'GENERATE_TOKEN') {
+            $token = bin2hex(random_bytes(32));
+            $state['devices'][$deviceId]['installationTokenHash'] = hash('sha256', $token);
+            $state['devices'][$deviceId]['tokenIssuedAt'] = (int)(microtime(true) * 1000);
+            audit($state, 'INSTALLATION_TOKEN_GENERATED', ['deviceId' => $deviceId]);
+            return ['device' => $state['devices'][$deviceId], 'installationToken' => $token];
+        }
         $state['devices'][$deviceId]['status'] = $action === 'BLOCK' ? 'BLOCKED' : ($action === 'UNBLOCK' ? 'ACTIVE' : 'REVOKED');
         audit($state, 'DEVICE_' . $action, ['deviceId' => $deviceId]); return $state['devices'][$deviceId];
     });
