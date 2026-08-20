@@ -46,6 +46,7 @@
     const menu = document.createElement('div');
     menu.id = `${BUTTON_ID}-menu`;
     menu.className = 'hatclaw-export-menu';
+    menu.style.position = 'fixed';
     [['txt', 'Exportar como TXT'], ['md', 'Exportar como Markdown']].forEach(([format, label]) => {
       const option = document.createElement('button');
       option.type = 'button'; option.textContent = label;
@@ -53,6 +54,14 @@
       menu.appendChild(option);
     });
     button.parentElement.appendChild(menu);
+    const buttonRect = button.getBoundingClientRect();
+    const menuRect = menu.getBoundingClientRect();
+    const gap = 8;
+    const top = buttonRect.top - menuRect.height - gap >= 8
+      ? buttonRect.top - menuRect.height - gap
+      : Math.min(window.innerHeight - menuRect.height - 8, buttonRect.bottom + gap);
+    menu.style.left = `${Math.max(8, Math.min(window.innerWidth - menuRect.width - 8, buttonRect.right - menuRect.width))}px`;
+    menu.style.top = `${Math.max(8, top)}px`;
     setTimeout(() => document.addEventListener('click', () => menu.remove(), { once: true }), 0);
   }
 
@@ -69,7 +78,7 @@
   }
 
   const style = document.createElement('style');
-  style.textContent = `#${BUTTON_ID}{width:30px;height:30px;border:0;border-radius:8px;background:transparent;color:#b7b7b7;font-size:22px;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}#${BUTTON_ID}:hover{background:#3b3b3b;color:#c8ff3d}.hatclaw-export-menu{position:absolute;right:0;bottom:38px;z-index:9999;min-width:190px;padding:6px;background:#30302e;border:1px solid #555;border-radius:10px;box-shadow:0 8px 24px #0008}.hatclaw-export-menu button{display:block;width:100%;padding:9px 10px;border:0;background:transparent;color:#eee;text-align:left;border-radius:6px;cursor:pointer}.hatclaw-export-menu button:hover{background:#454540}`;
+  style.textContent = `#${BUTTON_ID}{width:30px;height:30px;border:0;border-radius:8px;background:transparent;color:#b7b7b7;font-size:22px;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}#${BUTTON_ID}:hover{background:#3b3b3b;color:#c8ff3d}.hatclaw-export-menu{z-index:2147483647;min-width:210px;padding:6px;background:#30302e;border:1px solid #555;border-radius:10px;box-shadow:0 8px 24px #0008}.hatclaw-export-menu button{display:block;width:100%;padding:9px 10px;border:0;background:transparent;color:#eee;text-align:left;border-radius:6px;cursor:pointer;white-space:nowrap}.hatclaw-export-menu button:hover{background:#454540}`;
   document.documentElement.appendChild(style);
   new MutationObserver(mount).observe(document.documentElement, { childList: true, subtree: true });
   mount();
