@@ -206,7 +206,7 @@ $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 $adminRoute = preg_match('#^(admin/|licenses$|licenses/[^/]+/activation-codes$)#', $route) === 1;
 if ($adminRoute) {
     if (!adminAuthorized()) { header('WWW-Authenticate: Basic realm="HatClaw Admin"'); reply(401, ['error' => 'Admin authentication required']); }
-} elseif ($token === '' || !hash_equals('Bearer ' . $token, authorization())) {
+} elseif ($route !== 'extension/device-heartbeat' && ($token === '' || !hash_equals('Bearer ' . $token, authorization()))) {
     reply(401, ['error' => 'Invalid pairing token']);
 }
 
