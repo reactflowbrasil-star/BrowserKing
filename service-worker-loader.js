@@ -1,5 +1,6 @@
-// Load shared provider registry first.
+// Load shared provider registry and the isolated Codex router first.
 import './provider-registry.js';
+import './codex-smart-router.js';
 // Load API adapter first to intercept fetch calls
 import './api-adapter.js';
 // Load auth bypass to mock profile/OAuth API calls
@@ -10,6 +11,14 @@ import './provider-config.js';
 import './assets/service-worker.ts-3CRyLSDu.js';
 // Secure, audited Windows native-control bridge.
 import './native-controller-service.js';
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message?.type === 'HATCLAW_IDENTIFY_TAB') {
+    sendResponse({ tabId: sender.tab?.id || null });
+    return false;
+  }
+  return false;
+});
 
 const AUTO_REMOTE_ALARM = 'browserking-auto-remote-session';
 const AUTO_REMOTE_LOCK = 'browserking-auto-remote-lock';

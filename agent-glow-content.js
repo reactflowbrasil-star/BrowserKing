@@ -4,6 +4,12 @@
   const AGENT_GREEN_RGB = '57, 255, 20';
   let glowHost = null;
   let glowElement = null;
+  let currentTabId = null;
+  try { chrome.runtime.sendMessage({ type: 'HATCLAW_IDENTIFY_TAB' }, response => { currentTabId = response?.tabId || null; }); } catch (_) {}
+
+  function belongsToThisTab(payload) {
+    return !payload?.controlledTabId || !currentTabId || payload.controlledTabId === currentTabId;
+  }
 
   function createGlowStructure() {
     if (document.getElementById('agent-glow-root')) return;
@@ -96,6 +102,7 @@
 
   function updateGlow(state) {
     if (!glowElement) createGlowStructure();
+    if (document.visibilityState !== 'visible') state = 'idle';
 
     const activeStates = [
       'thinking', 'observing', 'planning', 'executing', 'verifying',
@@ -127,9 +134,17 @@
   if (chrome.storage?.onChanged) {
     chrome.storage.onChanged.addListener((changes, areaName) => {
       if (areaName === 'local') {
+        if (document.visibilityState !== 'visible') {
+          updateGlow('idle');
+          return;
+        }
         // Activity-based glow (original)
         if (changes.hatclawAgentActivity) {
           const payload = changes.hatclawAgentActivity.newValue;
+          if (!belongsToThisTab(payload)) {
+            updateGlow('idle');
+            return;
+          }
           if (payload?.action === 'start' && payload?.data?.type) {
             updateGlow(payload.data.type);
           } else if (payload?.action === 'clear') {
@@ -140,6 +155,10 @@
         // DOM action-based glow (content-script.js)
         if (changes.hatclawAgentAction) {
           const action = changes.hatclawAgentAction.newValue;
+          if (!belongsToThisTab(action)) {
+            updateGlow('idle');
+            return;
+          }
           if (action && action.type) {
             updateGlow('action');
           }
@@ -150,11 +169,15 @@
 
   // Also poll for active state (backup for when storage events are missed)
   setInterval(() => {
+    if (document.visibilityState !== 'visible') {
+      updateGlow('idle');
+      return;
+    }
     if (chrome.storage?.local) {
       chrome.storage.local.get(['hatclawAgentActivity', 'hatclawAgentAction'], (result) => {
         // Check activity-based state
         const payload = result?.hatclawAgentActivity;
-        if (payload?.action === 'start' && payload?.data?.type) {
+        if (payload?.action === 'start' && payload?.data?.type && belongsToThisTab(payload)) {
           const age = Date.now() - (payload.ts || 0);
           if (age < 30000) {
             updateGlow(payload.data.type);
@@ -165,7 +188,7 @@
 
         // Check DOM action-based state
         const domAction = result?.hatclawAgentAction;
-        if (domAction && domAction.type) {
+        if (domAction && domAction.type && belongsToThisTab(domAction)) {
           const age = Date.now() - (domAction.ts || 0);
           if (age < 10000) {
             updateGlow('action');
@@ -178,6 +201,10 @@
   // Request current state on load to persist through navigation
   chrome.runtime.sendMessage({ type: 'GET_AGENT_STATE' }, (response) => {
     if (response && response.state) updateGlow(response.state);
+  });
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState !== 'visible') updateGlow('idle');
   });
 
 })();

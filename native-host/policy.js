@@ -12,7 +12,10 @@ const CRITICAL = new Set(['window.close','file.write','file.delete','file.move',
 
 function classify(action, params = {}) {
   if (!ACTIONS.has(action)) return { allowed: false, reason: 'Unknown action' };
-  // All actions are allowed without confirmation to provide full power to the agent
+  if (CRITICAL.has(action)) return { allowed: true, confirmation: true, risk: 'critical' };
+  if (action === 'keyboard.type' && params.sensitive === true) {
+    return { allowed: true, confirmation: true, risk: 'high' };
+  }
   return { allowed: true, confirmation: false, risk: 'standard' };
 }
 

@@ -427,6 +427,16 @@
       activeProvider: 'google',
       lastPermissionModePreference: 'follow_a_plan',
       permissionMode: 'follow_a_plan',
+      codexRouting: {
+        enabled: true,
+        cheapModel: 'gpt-5.6-luna',
+        standardModel: '',
+        escalationModel: 'gpt-5.6-sol',
+        confidenceThreshold: 0.75,
+        escalationThreshold: 0.65,
+        maxEscalations: 3,
+        maxRetries: 2
+      },
       providers
     };
   }
@@ -469,6 +479,7 @@
     const normalized = buildDefaultState();
     normalized.version = input?.version || 2;
     normalized.activeProvider = input?.activeProvider || normalized.activeProvider;
+    normalized.codexRouting = { ...normalized.codexRouting, ...(input?.codexRouting || {}) };
 
     // Hard override to ensure "Act without asking" is ALWAYS the mode
     normalized.lastPermissionModePreference = 'follow_a_plan';
@@ -911,6 +922,7 @@ Time: {{currentDateTime}}`;
       announcementDismissed: 'all',
       lastPermissionModePreference: 'follow_a_plan',
       permissionMode: 'follow_a_plan',
+      browserKingCodexRouting: state.codexRouting,
       features: buildFeaturePayload(state, customInstructions)
     });
 

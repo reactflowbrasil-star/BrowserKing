@@ -30,6 +30,7 @@ Current Date/Time: {{currentDateTime}}
 Model: {{modelName}}`;
 
   const SKIP_PERMS_PROMPT = SYSTEM_PROMPT + '\n\nYou have been granted permission to act without asking for confirmation on each action. Proceed efficiently with the task.';
+  const CODEX_ROUTING_SYSTEM_RULE = 'REGRA EXCLUSIVA DO FLUXO CODEX/OPENAI: resolva operações determinísticas localmente; use o modelo econômico para classificação, filtragem, extração e sumarização; use o modelo padrão para decisões semânticas; escale somente diante de ambiguidade persistente, baixa confiança, falhas repetidas, visão complexa ou replanning substancial. Nunca altere o provider selecionado.';
 
   const DEFAULT_PROVIDER_CONFIG = {
     provider: 'zai',
@@ -51,6 +52,78 @@ Model: {{modelName}}`;
     ],
     timeoutMs: 45000
   };
+
+  const codexRoutingApi = globalThis.HatClawCodexRouting || null;
+  let codexRouter = null;
+  let codexRouterConfigKey = '';
+  let codexCostTracker = null;
+
+  async function getCodexRoutingConfig() {
+    const defaults = codexRoutingApi?.DEFAULT_CONFIG || { enabled: true };
+    try {
+      if (!globalThis.chrome?.storage?.local) return defaults;
+      const stored = await chrome.storage.local.get('browserKingCodexRouting');
+      return { ...defaults, ...(stored?.browserKingCodexRouting || {}) };
+    } catch (_) {
+      return defaults;
+    }
+  }
+
+  async function selectCodexRoute(provider, requestedModel, anthropicRequest) {
+    const originalModel = requestedModel;
+    if (provider?.id !== 'openai' || !codexRoutingApi?.CodexModelRouter) {
+      return { enabled: false, tier: 'existing', model: originalModel, originalModel, reason: 'Provider não Codex ou roteador indisponível.' };
+    }
+    const config = await getCodexRoutingConfig();
+    const effectiveConfig = { ...config, standardModel: config.standardModel || originalModel };
+    const configKey = JSON.stringify(effectiveConfig);
+    if (!codexRouter || codexRouterConfigKey !== configKey) {
+      codexRouter = new codexRoutingApi.CodexModelRouter(effectiveConfig);
+      codexRouterConfigKey = configKey;
+    }
+    const stored = globalThis.chrome?.storage?.local
+      ? await chrome.storage.local.get(['hatclawActionResult', 'hatclawCodexMetrics'])
+      : {};
+    const lastResult = stored?.hatclawActionResult || {};
+    if (!codexCostTracker) codexCostTracker = new codexRoutingApi.AgentCostTracker(stored?.hatclawCodexMetrics);
+    const task = getOriginalUserTask(anthropicRequest?.messages || []) || getLatestUserText(anthropicRequest?.messages || []);
+    const route = codexRouter.route({
+      providerId: provider.id,
+      originalModel,
+      task,
+      taskId: codexRoutingApi.hashText(task || originalModel),
+      taskType: /\b(extrair|extraia|extract|classificar|classify|resumir dom|summari[sz]e dom)\b/i.test(task) ? 'extract' : 'decision',
+      failedAttempts: lastResult.success === false ? 1 : 0,
+      loopDetected: lastResult?.verification?.classification === 'LOOP_DETECTED',
+      visualAmbiguity: requestContainsImages({ messages: convertAnthropicMessagesToOpenAI(anthropicRequest || {}) }),
+      confidence: lastResult?.verification?.classification === 'NO_EFFECT' ? 0.6 : 0.9
+    });
+    if (globalThis.chrome?.storage?.local) {
+      await chrome.storage.local.set({
+        hatclawCodexRouterStatus: { ...route, enabled: Boolean(route.enabled), selectedAt: Date.now() }
+      });
+    }
+    return route;
+  }
+
+  async function recordCodexMetrics(route, data, latencyMs, fallbackUsed) {
+    if (!route?.enabled || !codexCostTracker || !globalThis.chrome?.storage?.local) return;
+    const metrics = codexCostTracker.record(route, data?.usage || {}, latencyMs);
+    const stored = await chrome.storage.local.get('hatclawCodexRoutingLog');
+    const log = Array.isArray(stored?.hatclawCodexRoutingLog) ? stored.hatclawCodexRoutingLog : [];
+    log.push({
+      timestamp: Date.now(), taskId: route.taskId, model: data?.model || route.model,
+      tier: route.tier, inputTokens: data?.usage?.prompt_tokens || 0,
+      cachedTokens: data?.usage?.prompt_tokens_details?.cached_tokens || 0,
+      outputTokens: data?.usage?.completion_tokens || 0, reason: route.reason,
+      latency: latencyMs, costEstimate: metrics.lastRequestEstimatedCost || 0, cacheHit: Boolean(route.cacheHit),
+      fallbackUsed: Boolean(fallbackUsed)
+    });
+    await chrome.storage.local.set({
+      hatclawCodexMetrics: metrics,
+      hatclawCodexRoutingLog: log.slice(-100)
+    });
+  }
 
   const MOCK_ORG = {
     uuid: 'custom-provider-org-00000000',
@@ -226,6 +299,18 @@ Model: {{modelName}}`;
   const encoder = new TextEncoder();
   const decoder = new TextDecoder();
 
+  function storeScopedAgentValue(key, value) {
+    if (!globalThis.chrome?.storage?.local) return;
+    if (globalThis.chrome?.tabs) {
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        const controlledTabId = tabs?.[0]?.id || null;
+        chrome.storage.local.set({ [key]: { ...value, controlledTabId } });
+      });
+      return;
+    }
+    chrome.storage.local.set({ [key]: value });
+  }
+
   function emitActivity(action, data = {}, stepId = null) {
     // Safe dispatch - window is not available in service worker context
     try {
@@ -246,7 +331,7 @@ Model: {{modelName}}`;
     try {
       if (globalThis.chrome?.storage?.local) {
         const payload = { action, data, stepId, ts: Date.now() };
-        chrome.storage.local.set({ hatclawAgentActivity: payload });
+        storeScopedAgentValue('hatclawAgentActivity', payload);
 
         // If this is an action with tool params, emit DOM-first structured action
         if (action === 'start' && data?.type === 'action' && data?.details) {
@@ -299,29 +384,25 @@ Model: {{modelName}}`;
                 if (coord) domAction.coordinate = coord;
 
                 // Store structured action for content-script.js to pick up
-                chrome.storage.local.set({ hatclawAgentAction: domAction });
+                storeScopedAgentValue('hatclawAgentAction', domAction);
 
                 // Also store legacy cursor command for backward compat
                 if (coord) {
                   const isClick = ['left_click', 'right_click', 'double_click', 'triple_click', 'click'].some(a => actionName.includes(a));
                   const isHover = actionName.includes('hover');
-                  chrome.storage.local.set({
-                    hatclawCursorCommand: {
+                  storeScopedAgentValue('hatclawCursorCommand', {
                       type: 'MOVE_CURSOR',
                       x: coord[0], y: coord[1],
                       clicked: isClick, hover: isHover,
                       ts: Date.now()
-                    }
                   });
                 } else if (ref || selector) {
                   const isClick = ['left_click', 'right_click', 'double_click', 'triple_click', 'click'].some(a => actionName.includes(a));
-                  chrome.storage.local.set({
-                    hatclawCursorCommand: {
+                  storeScopedAgentValue('hatclawCursorCommand', {
                       type: 'MOVE_CURSOR_TO_ELEMENT',
                       selector, ref,
                       clicked: isClick,
                       ts: Date.now()
-                    }
                   });
                 }
               }
@@ -1897,9 +1978,7 @@ Model: {{modelName}}`;
     const customInstructions = generalBehavior?.browserKingGeneralBehavior || '';
 
     let effectiveSystemPrompt = SYSTEM_PROMPT;
-    if (taskMemoryContext) {
-      effectiveSystemPrompt += `\n\n${taskMemoryContext}`;
-    }
+    if (provider.id === 'openai') effectiveSystemPrompt += `\n\n${CODEX_ROUTING_SYSTEM_RULE}`;
     if (customInstructions) {
       effectiveSystemPrompt += `\n\nGENERAL BEHAVIOR INSTRUCTIONS:\n${customInstructions}`;
     }
@@ -1909,6 +1988,10 @@ Model: {{modelName}}`;
         role: 'system',
         content: effectiveSystemPrompt
       });
+    }
+    if (taskMemoryContext) {
+      const systemIndex = messages.findIndex((message) => message.role === 'system');
+      messages.splice(systemIndex < 0 ? 0 : systemIndex + 1, 0, { role: 'system', content: taskMemoryContext });
     }
 
     const visionSupported = checkVisionForModel(providerConfig, provider, targetModel);
@@ -2494,10 +2577,20 @@ Model: {{modelName}}`;
     const providerConfig = await getProviderConfig();
     const provider = getActiveProvider(providerConfig);
     let requestedModel = resolveTargetModel(anthropicRequest, provider);
+    let codexRoute = { enabled: false, tier: 'existing', model: requestedModel, originalModel: requestedModel };
     const modelRoute = selectGeminiModel(anthropicRequest, provider);
     if (modelRoute) {
       requestedModel = modelRoute.model;
       await persistModelRoute(modelRoute);
+    }
+    if (provider.id === 'openai') {
+      try {
+        codexRoute = await selectCodexRoute(provider, requestedModel, anthropicRequest);
+        requestedModel = codexRoute.model || requestedModel;
+      } catch (error) {
+        codexRoute = { enabled: false, tier: 'fallback', model: requestedModel, originalModel: requestedModel, reason: error.message };
+        await writeDebugLog({ phase: 'codex_router_error', message: error.message, fallbackModel: requestedModel });
+      }
     }
 
     if (provider.id !== 'openai' && !String(provider.apiKey || '').trim()) {
@@ -2575,6 +2668,9 @@ Model: {{modelName}}`;
       ...anthropicRequest,
       model: requestedModel
     }, provider, providerConfig);
+    if (provider.id === 'openai' && codexRoute.enabled && codexRoute.model !== codexRoute.originalModel) {
+      openAIRequest.timeoutMs = 60000;
+    }
     openAIRequest = attachGraphifyToOpenAI(openAIRequest, consultGraphify(getLatestUserText(anthropicRequest.messages || [])));
     const orchestration = await getOrchestrationConfig();
     if (orchestration.enabled && isInitialAgentTurn(anthropicRequest) && shouldRunSpecialists(anthropicRequest)) {
@@ -2605,10 +2701,23 @@ Model: {{modelName}}`;
     });
 
     let upstreamResponse;
+    let codexFallbackUsed = false;
+    const modelRequestStartedAt = Date.now();
 
     try {
       if (provider.id === 'openai') {
-        const reply = await chrome.runtime.sendMessage({ target: 'browserking-windows', action: 'codex.chat', params: openAIRequest });
+        let reply = await chrome.runtime.sendMessage({ target: 'browserking-windows', action: 'codex.chat', params: openAIRequest });
+        if (!reply?.ok && codexRoute.enabled && codexRoute.model !== codexRoute.originalModel) {
+          codexFallbackUsed = true;
+          const fallbackRequest = { ...openAIRequest, model: codexRoute.originalModel };
+          delete fallbackRequest.timeoutMs;
+          await writeDebugLog({ phase: 'codex_router_fallback', routedModel: codexRoute.model, fallbackModel: codexRoute.originalModel, error: reply?.error || 'unknown' });
+          reply = await chrome.runtime.sendMessage({ target: 'browserking-windows', action: 'codex.chat', params: fallbackRequest });
+          if (reply?.ok) {
+            openAIRequest = fallbackRequest;
+            requestedModel = codexRoute.originalModel;
+          }
+        }
         if (!reply?.ok) throw new Error(reply?.error || 'Falha no companion Codex');
         upstreamResponse = new Response(JSON.stringify(reply.result), { status: 200, headers: { 'Content-Type': 'application/json' } });
       } else {
@@ -2745,6 +2854,9 @@ Model: {{modelName}}`;
     }
 
     const data = await upstreamResponse.json();
+    if (provider.id === 'openai') {
+      await recordCodexMetrics(codexRoute, data, Date.now() - modelRequestStartedAt, codexFallbackUsed);
+    }
     await writeDebugLog({
       phase: 'response',
       status: upstreamResponse.status,

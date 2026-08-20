@@ -20,6 +20,8 @@ function loadConfig() {
 }
 const config = loadConfig();
 
+function estimateTokens(value){return Math.max(1,Math.ceil(String(value||'').length/4));}
+
 class CodexAppServer {
   constructor() { this.child=null; this.nextId=1; this.pending=new Map(); this.waiters=[]; }
   async start() {
@@ -58,7 +60,7 @@ class CodexAppServer {
     const thread=await this.call('thread/start',{model:params.model||'gpt-5.6-terra',cwd:os.tmpdir(),approvalPolicy:'never',sandbox:'read-only',serviceName:'hatclaw',...(developerInstructions?{developerInstructions}:{})});
     const threadId=thread.thread.id;
     let answer='';
-    const completed=this.waitFor(m=>{if(m?.params?.threadId!==threadId)return false;if(m.method==='item/agentMessage/delta')answer+=m.params.delta||'';if(m.method==='item/completed'&&m.params?.item?.type==='agentMessage')answer=m.params.item.text||answer;return m.method==='turn/completed';});
+    const completed=this.waitFor(m=>{if(m?.params?.threadId!==threadId)return false;if(m.method==='item/agentMessage/delta')answer+=m.params.delta||'';if(m.method==='item/completed'&&m.params?.item?.type==='agentMessage')answer=m.params.item.text||answer;return m.method==='turn/completed';},Math.min(180000,Math.max(30000,Number(params.timeoutMs)||120000)));
     const outputSchema=tools.length?{type:'object',properties:{content:{type:'string'},tool_calls:{type:'array',items:{type:'object',properties:{name:{type:'string'},arguments:{type:'string'}},required:['name','arguments'],additionalProperties:false}}},required:['content','tool_calls'],additionalProperties:false}:undefined;
     await this.call('turn/start',{threadId,input:[{type:'text',text}],model:params.model||'gpt-5.6-terra',approvalPolicy:'never',sandboxPolicy:{type:'readOnly'},...(outputSchema?{outputSchema}:{})});
     const completion=await completed;
@@ -73,7 +75,7 @@ class CodexAppServer {
     let parsed=null;try{parsed=tools.length?JSON.parse(answer):null;}catch{}
     const toolCalls=Array.isArray(parsed?.tool_calls)?parsed.tool_calls.map(call=>({id:`call_${crypto.randomUUID().replace(/-/g,'')}`,type:'function',function:{name:call.name,arguments:typeof call.arguments==='string'?call.arguments:JSON.stringify(call.arguments||{})}})):[];
     const message={role:'assistant',content:parsed?.content??answer,...(toolCalls.length?{tool_calls:toolCalls}:{})};
-    return {id:`chatcmpl-${crypto.randomUUID()}`,object:'chat.completion',created:Math.floor(Date.now()/1000),model:params.model||'gpt-5.6-terra',choices:[{index:0,message,finish_reason:toolCalls.length?'tool_calls':'stop'}]};
+    return {id:`chatcmpl-${crypto.randomUUID()}`,object:'chat.completion',created:Math.floor(Date.now()/1000),model:params.model||'gpt-5.6-terra',choices:[{index:0,message,finish_reason:toolCalls.length?'tool_calls':'stop'}],usage:{prompt_tokens:estimateTokens(text+developerInstructions),completion_tokens:estimateTokens(answer),total_tokens:estimateTokens(text+developerInstructions)+estimateTokens(answer),estimated:true}};
   }
 }
 const codexServer=new CodexAppServer();
@@ -187,4 +189,4 @@ function startProtocol() {
 
 if (require.main === module) startProtocol();
 
-module.exports = { handle, resolveAllowed, runPowerShell, startProtocol };
+module.exports = { handle, resolveAllowed, runPowerShell, startProtocol, estimateTokens };
