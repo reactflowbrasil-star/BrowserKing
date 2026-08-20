@@ -241,6 +241,45 @@ if ($method === 'POST' && $route === 'licenses') {
     reply(201, ['license' => $result]);
 }
 
+if ($method === 'GET' && $route === 'admin/licenses') {
+    $state = stateRead($stateFile); reply(200, ['licenses' => array_values($state['licenses']), 'activationCodes' => array_values($state['activationCodes'])]);
+}
+if ($method === 'GET' && $route === 'admin/customers') {
+    $state = stateRead($stateFile); $customers = [];
+    foreach ($state['licenses'] as $license) { $id = $license['customerId'] ?: 'sem-cliente'; $customers[$id] = ['customerId' => $id, 'licenses' => ($customers[$id]['licenses'] ?? 0) + 1, 'lastStatus' => $license['status']]; }
+    reply(200, ['customers' => array_values($customers)]);
+}
+if ($method === 'GET' && $route === 'admin/devices') {
+    $state = stateRead($stateFile); reply(200, ['devices' => array_values($state['devices'])]);
+}
+if ($method === 'GET' && $route === 'admin/audit-logs') {
+    $state = stateRead($stateFile); reply(200, ['auditLogs' => array_reverse($state['auditLogs'])]);
+}
+if ($method === 'POST' && preg_match('#^admin/licenses/([^/]+)/action$#', $route, $match)) {
+    $payload = body(); $licenseId = $match[1]; $action = strtoupper((string)($payload['action'] ?? ''));
+    if (!in_array($action, ['SUSPEND', 'REACTIVATE', 'REVOKE', 'RENEW'], true)) reply(400, ['error' => 'Unsupported action']);
+    $result = stateMutate($stateFile, function (&$state) use ($licenseId, $action, $payload) {
+        if (!isset($state['licenses'][$licenseId])) reply(404, ['error' => 'License not found']);
+        $license =& $state['licenses'][$licenseId];
+        if ($action === 'SUSPEND') $license['status'] = 'SUSPENDED';
+        if ($action === 'REACTIVATE') $license['status'] = 'ACTIVE';
+        if ($action === 'REVOKE') $license['status'] = 'REVOKED';
+        if ($action === 'RENEW') $license['expiresAt'] = (int)($payload['expiresAt'] ?? ((int)$license['expiresAt'] + 30 * 86400000));
+        $license['updatedAt'] = (int)(microtime(true) * 1000); audit($state, 'LICENSE_' . $action, ['licenseId' => $licenseId]); return $license;
+    });
+    reply(200, ['license' => $result]);
+}
+if ($method === 'POST' && preg_match('#^admin/devices/([^/]+)/action$#', $route, $match)) {
+    $payload = body(); $deviceId = $match[1]; $action = strtoupper((string)($payload['action'] ?? ''));
+    if (!in_array($action, ['BLOCK', 'UNBLOCK', 'REVOKE'], true)) reply(400, ['error' => 'Unsupported action']);
+    $result = stateMutate($stateFile, function (&$state) use ($deviceId, $action) {
+        if (!isset($state['devices'][$deviceId])) reply(404, ['error' => 'Device not found']);
+        $state['devices'][$deviceId]['status'] = $action === 'BLOCK' ? 'BLOCKED' : ($action === 'UNBLOCK' ? 'ACTIVE' : 'REVOKED');
+        audit($state, 'DEVICE_' . $action, ['deviceId' => $deviceId]); return $state['devices'][$deviceId];
+    });
+    reply(200, ['device' => $result]);
+}
+
 if ($method === 'POST' && preg_match('#^licenses/([^/]+)/activation-codes$#', $route, $match)) {
     $licenseId = $match[1];
     $result = stateMutate($stateFile, function (&$state) use ($licenseId) {
