@@ -9,6 +9,7 @@
   let lastSnapshot = '';
   let stopped = false;
   let lastTabsSignature = '';
+  let deviceId = '';
 
   async function request(path, options) {
     const headers = new Headers(options?.headers || {});
@@ -37,6 +38,10 @@
     token = data.token || token;
     commandCursor = Number(data.commandCursor || 0);
     await chrome.storage.local.set({ [STORAGE_KEY]: { token } });
+    const storedDevice = await chrome.storage.local.get('hatclawDeviceId');
+    deviceId = storedDevice.hatclawDeviceId || `chrome-${crypto.randomUUID()}`;
+    await chrome.storage.local.set({ hatclawDeviceId: deviceId });
+    await request('/extension/device-heartbeat', { method: 'POST', body: JSON.stringify({ deviceId, extensionVersion: chrome.runtime.getManifest().version, userAgent: navigator.userAgent }) }).catch(() => {});
     await publishCapabilities().catch(() => {});
   }
 

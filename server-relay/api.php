@@ -241,6 +241,17 @@ if ($method === 'POST' && $route === 'extension/event') {
     });
     reply(202, ['ok' => true]);
 }
+if ($method === 'POST' && $route === 'extension/device-heartbeat') {
+    $payload = body(); $deviceId = substr(trim((string)($payload['deviceId'] ?? '')), 0, 160);
+    if ($deviceId === '') reply(400, ['error' => 'deviceId is required']);
+    stateMutate($stateFile, function (&$state) use ($payload, $deviceId) {
+        $existing = $state['devices'][$deviceId] ?? ['id' => $deviceId, 'licenseId' => null, 'status' => 'DETECTED', 'activatedAt' => null];
+        $state['devices'][$deviceId] = array_merge($existing, ['deviceId' => $deviceId, 'extensionVersion' => substr((string)($payload['extensionVersion'] ?? ''), 0, 40), 'lastSeenAt' => (int)(microtime(true) * 1000), 'userAgent' => substr((string)($payload['userAgent'] ?? ''), 0, 240)]);
+        $state['extensionLastSeen'] = time();
+        audit($state, 'DEVICE_HEARTBEAT', ['deviceId' => $deviceId]); return [];
+    });
+    reply(202, ['ok' => true, 'deviceId' => $deviceId]);
+}
 
 if ($method === 'POST' && $route === 'licenses') {
     $payload = body();
@@ -265,7 +276,7 @@ if ($method === 'GET' && $route === 'admin/customers') {
     reply(200, ['customers' => array_values($customers)]);
 }
 if ($method === 'GET' && $route === 'admin/devices') {
-    $state = stateRead($stateFile); reply(200, ['devices' => array_values($state['devices'])]);
+    $state = stateRead($stateFile); $now = (int)(microtime(true) * 1000); $devices = array_map(function ($device) use ($now) { $device['online'] = ($now - (int)($device['lastSeenAt'] ?? 0)) < 90000; return $device; }, array_values($state['devices'])); reply(200, ['devices' => $devices]);
 }
 if ($method === 'GET' && $route === 'admin/audit-logs') {
     $state = stateRead($stateFile); reply(200, ['auditLogs' => array_reverse($state['auditLogs'])]);
