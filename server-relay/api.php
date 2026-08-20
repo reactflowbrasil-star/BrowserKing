@@ -40,7 +40,22 @@ function defaultState(): array {
     return ['nextCommandId' => 1, 'nextEventId' => 1, 'commands' => [], 'events' => [], 'extensionLastSeen' => 0,
         'capabilities' => ['tools' => false, 'skills' => false, 'plugins' => false, 'apps' => false, 'updatedAt' => 0],
         'tabs' => [], 'tabsUpdatedAt' => 0,
+        'nextLicenseId' => 1, 'nextActivationId' => 1, 'nextDeviceId' => 1,
+        'licenses' => [], 'activationCodes' => [], 'devices' => [], 'auditLogs' => [],
         'graphify' => ['revision' => 0, 'updatedAt' => 0, 'devices' => [], 'state' => null]];
+}
+
+function licenseCode(): string {
+    $bytes = random_bytes(10);
+    $raw = strtoupper(substr(bin2hex($bytes), 0, 16));
+    return implode('-', str_split($raw, 4));
+}
+
+function codeHash(string $code): string { return hash('sha256', strtoupper(trim($code))); }
+
+function audit(array &$state, string $action, array $metadata = []): void {
+    $state['auditLogs'][] = ['timestamp' => (int)(microtime(true) * 1000), 'action' => $action, 'metadata' => $metadata];
+    $state['auditLogs'] = array_slice($state['auditLogs'], -500);
 }
 
 function stateRead(string $file): array {
@@ -210,6 +225,61 @@ if ($method === 'POST' && $route === 'extension/event') {
         return [];
     });
     reply(202, ['ok' => true]);
+}
+
+if ($method === 'POST' && $route === 'licenses') {
+    $payload = body();
+    $result = stateMutate($stateFile, function (&$state) use ($payload) {
+        $id = 'lic_' . $state['nextLicenseId']++;
+        $license = ['id' => $id, 'customerId' => substr(trim((string)($payload['customerId'] ?? '')), 0, 160),
+            'plan' => substr(trim((string)($payload['plan'] ?? 'basic')), 0, 40), 'status' => 'ACTIVE',
+            'expiresAt' => (int)($payload['expiresAt'] ?? (time() + 30 * 86400) * 1000),
+            'deviceLimit' => max(1, min(100, (int)($payload['deviceLimit'] ?? 1))), 'createdAt' => (int)(microtime(true) * 1000), 'updatedAt' => (int)(microtime(true) * 1000)];
+        $state['licenses'][$id] = $license; audit($state, 'LICENSE_CREATED', ['licenseId' => $id]);
+        return $license;
+    });
+    reply(201, ['license' => $result]);
+}
+
+if ($method === 'POST' && preg_match('#^licenses/([^/]+)/activation-codes$#', $route, $match)) {
+    $licenseId = $match[1];
+    $result = stateMutate($stateFile, function (&$state) use ($licenseId) {
+        $license = $state['licenses'][$licenseId] ?? null;
+        if (!$license) reply(404, ['error' => 'License not found']);
+        $code = licenseCode(); $id = 'act_' . $state['nextActivationId']++;
+        $state['activationCodes'][$id] = ['id' => $id, 'licenseId' => $licenseId, 'codeHash' => codeHash($code), 'status' => 'ACTIVE', 'expiresAt' => $license['expiresAt'], 'usedAt' => null, 'createdAt' => (int)(microtime(true) * 1000)];
+        audit($state, 'ACTIVATION_CODE_CREATED', ['licenseId' => $licenseId, 'activationId' => $id]);
+        return ['id' => $id, 'code' => $code, 'expiresAt' => $license['expiresAt']];
+    });
+    reply(201, $result);
+}
+
+if ($method === 'POST' && $route === 'licenses/activate') {
+    $payload = body(); $code = (string)($payload['code'] ?? ''); $deviceId = substr(trim((string)($payload['deviceId'] ?? '')), 0, 160);
+    if ($code === '' || $deviceId === '') reply(400, ['error' => 'code and deviceId are required']);
+    $result = stateMutate($stateFile, function (&$state) use ($code, $deviceId, $payload) {
+        foreach ($state['activationCodes'] as $id => &$activation) {
+            if ($activation['status'] !== 'ACTIVE' || !hash_equals($activation['codeHash'], codeHash($code))) continue;
+            $license = $state['licenses'][$activation['licenseId']] ?? null;
+            if (!$license || $license['status'] !== 'ACTIVE' || (int)$license['expiresAt'] < (int)(microtime(true) * 1000)) reply(403, ['error' => 'License expired or inactive']);
+            $activeDevices = array_filter($state['devices'], fn($device) => $device['licenseId'] === $license['id'] && $device['status'] === 'ACTIVE');
+            $existing = $state['devices'][$deviceId] ?? null;
+            if (!$existing && count($activeDevices) >= $license['deviceLimit']) reply(409, ['error' => 'Device limit exceeded']);
+            $state['devices'][$deviceId] = ['id' => $deviceId, 'licenseId' => $license['id'], 'extensionVersion' => substr((string)($payload['extensionVersion'] ?? ''), 0, 40), 'status' => 'ACTIVE', 'activatedAt' => $existing['activatedAt'] ?? (int)(microtime(true) * 1000), 'lastSeenAt' => (int)(microtime(true) * 1000)];
+            $activation['status'] = 'USED'; $activation['usedAt'] = (int)(microtime(true) * 1000); audit($state, 'ACTIVATION_CODE_USED', ['licenseId' => $license['id'], 'deviceId' => $deviceId]);
+            return ['license' => $license, 'device' => $state['devices'][$deviceId], 'installationToken' => bin2hex(random_bytes(32))];
+        }
+        reply(403, ['error' => 'Invalid activation code']);
+    });
+    reply(200, $result);
+}
+
+if ($method === 'POST' && $route === 'licenses/validate') {
+    $payload = body(); $deviceId = (string)($payload['deviceId'] ?? ''); $device = $state = stateRead($stateFile)['devices'][$deviceId] ?? null;
+    if (!$device) reply(404, ['valid' => false, 'error' => 'Device not registered']);
+    $state = stateRead($stateFile); $license = $state['licenses'][$device['licenseId']] ?? null;
+    $valid = $license && $device['status'] === 'ACTIVE' && $license['status'] === 'ACTIVE' && (int)$license['expiresAt'] >= (int)(microtime(true) * 1000);
+    reply(200, ['valid' => (bool)$valid, 'license' => $license, 'device' => $device]);
 }
 if ($method === 'POST' && $route === 'extension/capabilities') {
     $payload = body();
