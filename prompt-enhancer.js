@@ -39,11 +39,12 @@
         background: rgba(183,255,42,.08);
         border-color: rgba(183,255,42,.3);
       }
-      #${BUTTON_ID}.loading { color: #b7ff2a; cursor: wait; }
-      #${BUTTON_ID}.loading svg { animation: hc-wand-spin .8s linear infinite; }
+      #${BUTTON_ID}.loading,
+      [data-hc-prompt-enhancer="true"].loading { color: #b7ff2a !important; cursor: wait; }
+      #${BUTTON_ID}.loading svg,
+      [data-hc-prompt-enhancer="true"].loading svg { animation: hc-wand-spin .8s linear infinite; }
       #${BUTTON_ID}:disabled { opacity: .75; }
       @keyframes hc-wand-spin { to { transform: rotate(360deg); } }
-      .hc-enhancer-field { position: relative !important; }
       .hc-enhancer-field textarea,
       .hc-enhancer-field [contenteditable="true"] { padding-right: 46px !important; }
       #hc-enhancer-toast {
@@ -95,18 +96,25 @@
     }
 
     field.focus();
-    field.textContent = value;
-    field.dispatchEvent(new InputEvent('input', {
-      bubbles: true,
-      inputType: 'insertText',
-      data: value,
-    }));
     const range = document.createRange();
     range.selectNodeContents(field);
-    range.collapse(false);
     const selection = window.getSelection();
     selection.removeAllRanges();
     selection.addRange(range);
+    const inserted = document.execCommand?.('insertText', false, value);
+    if (!inserted) {
+      field.textContent = value;
+      field.dispatchEvent(new InputEvent('input', {
+        bubbles: true,
+        inputType: 'insertText',
+        data: value,
+      }));
+    }
+    const endRange = document.createRange();
+    endRange.selectNodeContents(field);
+    endRange.collapse(false);
+    selection.removeAllRanges();
+    selection.addRange(endRange);
   }
 
   function collectContext(inputField) {
@@ -232,6 +240,7 @@
     if (!field) return false;
     addStyles();
     field.classList.add('hc-enhancer-field');
+    if (getComputedStyle(field).position === 'static') field.style.position = 'relative';
     const button = document.createElement('button');
     button.id = BUTTON_ID;
     button.type = 'button';
@@ -247,9 +256,47 @@
     return true;
   }
 
-  const timer = setInterval(() => inject() && clearInterval(timer), 400);
+  function bindVisibleToolbarWand() {
+    if (document.querySelector('[data-hc-prompt-enhancer="true"]')) return true;
+    const recorder = document.getElementById('hc-record-wrapper');
+    let wand = recorder?.nextElementSibling;
+
+    if (!wand?.matches?.('button,[role="button"]')) {
+      const permission = [...document.querySelectorAll('button,[role="button"]')].find((node) =>
+        /perguntar antes|agir sem perguntar|ask before|act without asking/i.test(node.textContent || '')
+      );
+      if (permission?.parentElement) {
+        const controls = [...permission.parentElement.children];
+        const permissionIndex = controls.indexOf(permission);
+        wand = controls.slice(permissionIndex + 1).find((node) =>
+          node.matches?.('button,[role="button"]') && !node.id?.startsWith('hc-record')
+        );
+      }
+    }
+
+    if (!wand?.matches?.('button,[role="button"]')) return false;
+    wand.dataset.hcPromptEnhancer = 'true';
+    wand.title = 'Aperfeiçoar solicitação com IA';
+    wand.setAttribute('aria-label', 'Aperfeiçoar e melhorar o texto');
+    wand.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      event.stopPropagation();
+      const inputField = findInputField();
+      if (!inputField) return toast('Campo da solicitação não encontrado.');
+      enhance(inputField, wand);
+    }, true);
+    return true;
+  }
+
+  const timer = setInterval(() => {
+    const injected = inject();
+    const bound = bindVisibleToolbarWand();
+    if (injected && bound) clearInterval(timer);
+  }, 400);
   const observer = new MutationObserver(() => {
     if (!document.getElementById(BUTTON_ID)) inject();
+    if (!document.querySelector('[data-hc-prompt-enhancer="true"]')) bindVisibleToolbarWand();
   });
   observer.observe(document.documentElement, { childList: true, subtree: true });
 })();
