@@ -1,0 +1,156 @@
+@font-face {
+  font-family: "HatClaw Sans";
+  src: url("/assets/AnthropicSans-Romans-Variable-25x258-Bpr3wWwO.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "HatClaw Sans";
+  src: url("/assets/AnthropicSans-Italics-Variable-25x258-DiJh4Brh.woff2") format("woff2");
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+:root {
+  --hc-message-bg: #242422;
+  --hc-message-surface: #2b2b29;
+  --hc-message-title: #f7f7f5;
+  --hc-message-text: #a9a9a4;
+  --hc-message-link: #b7ff00;
+  --hc-message-border: rgba(255, 255, 255, 0.055);
+  --hc-message-success: #4baa17;
+}
+
+/* Tipografia das respostas e mensagens do agente. */
+body,
+.font-claude-response,
+.font-claude-response-body,
+.font-claude-response-heading,
+.prose {
+  font-family: "HatClaw Sans", "Segoe UI", Arial, sans-serif !important;
+  font-variation-settings: "wght" 430;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.font-claude-response,
+.prose {
+  color: var(--hc-message-text) !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  letter-spacing: -0.006em;
+}
+
+.font-claude-response-body,
+.prose p,
+.prose li,
+.prose blockquote {
+  color: var(--hc-message-text) !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  font-weight: 430 !important;
+}
+
+.font-claude-response-heading,
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6,
+.font-claude-response strong,
+.font-claude-response-body strong,
+.prose strong {
+  color: var(--hc-message-title) !important;
+  font-weight: 650 !important;
+  letter-spacing: -0.018em;
+}
+
+.prose h1 { font-size: 18px !important; line-height: 1.3 !important; }
+.prose h2 { font-size: 16px !important; line-height: 1.35 !important; }
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 { font-size: 15px !important; line-height: 1.4 !important; }
+
+.font-claude-response a,
+.font-claude-response-body a,
+.prose a {
+  color: var(--hc-message-link) !important;
+  font-weight: 620 !important;
+  text-decoration-color: color-mix(in srgb, var(--hc-message-link) 65%, transparent) !important;
+  text-underline-offset: 2px;
+}
+
+.font-claude-response a:hover,
+.font-claude-response-body a:hover,
+.prose a:hover {
+  color: #c7ff3d !important;
+  text-decoration-color: currentColor !important;
+}
+
+.prose code:not(pre code),
+.font-claude-response-body code:not(pre code) {
+  color: #d8ff85 !important;
+  background: rgba(183, 255, 0, 0.075) !important;
+  border: 1px solid rgba(183, 255, 0, 0.11);
+  border-radius: 5px;
+  padding: 0.08em 0.32em;
+}
+
+.prose pre,
+.font-claude-response pre {
+  color: #d7d7d2 !important;
+  background: #1c1c1b !important;
+  border: 1px solid var(--hc-message-border) !important;
+  border-radius: 10px !important;
+}
+
+.prose blockquote {
+  border-left-color: var(--hc-message-link) !important;
+  background: rgba(183, 255, 0, 0.035);
+  border-radius: 0 8px 8px 0;
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+
+/* Banners e avisos seguem o cartão compacto da referência. */
+[role="alert"],
+[class*="bg-success"],
+[class*="bg-green-"] {
+  font-family: "HatClaw Sans", "Segoe UI", Arial, sans-serif !important;
+  background-color: var(--hc-message-bg) !important;
+  color: var(--hc-message-text) !important;
+  border-color: var(--hc-message-border) !important;
+}
+
+[role="alert"] strong,
+[role="alert"] h1,
+[role="alert"] h2,
+[role="alert"] h3,
+[class*="bg-success"] strong,
+[class*="bg-green-"] strong {
+  color: var(--hc-message-title) !important;
+  font-weight: 650 !important;
+}
+
+[role="alert"] a,
+[class*="bg-success"] a,
+[class*="bg-green-"] a {
+  color: var(--hc-message-link) !important;
+  font-weight: 650 !important;
+}
+
+[role="alert"] svg,
+[class*="bg-success"] svg,
+[class*="bg-green-"] svg {
+  color: var(--hc-message-success) !important;
+}
+
+::selection {
+  color: #151713;
+  background: rgba(183, 255, 0, 0.72);
+}
