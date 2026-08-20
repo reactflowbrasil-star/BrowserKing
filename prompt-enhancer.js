@@ -140,7 +140,9 @@
         signal: controller.signal,
         headers: { 'Content-Type': 'application/json', 'anthropic-version': '2023-06-01' },
         body: JSON.stringify({
-          model: 'hatclaw-prompt-enhancer',
+          // Names beginning with "claude-" are intentionally resolved by the
+          // compatibility adapter to the active HatClaw provider/model.
+          model: 'claude-hatclaw-prompt-enhancer',
           max_tokens: 1400,
           stream: false,
           system: 'Você é um editor de solicitações. Reescreva a solicitação do usuário de forma completa, clara, específica e executável, preservando rigorosamente a intenção, o idioma, nomes, caminhos, restrições e fatos. Use o contexto apenas para eliminar ambiguidades. Não execute a tarefa, não responda à solicitação, não invente requisitos e não acrescente comentários. Retorne exclusivamente a solicitação aperfeiçoada.',
@@ -150,7 +152,14 @@
           }],
         }),
       });
-      if (!response.ok) throw new Error(`Provider ${response.status}`);
+      if (!response.ok) {
+        let detail = '';
+        try {
+          const errorBody = await response.json();
+          detail = errorBody?.error?.message || errorBody?.message || '';
+        } catch {}
+        throw new Error(detail || `Provedor retornou ${response.status}`);
+      }
       const data = await response.json();
       const text = data?.content?.filter((part) => part?.type === 'text').map((part) => part.text).join('\n');
       const improved = cleanResponse(text);
@@ -176,7 +185,10 @@
       toast('Solicitação aperfeiçoada com o contexto da conversa.');
     } catch (error) {
       console.warn('[HatClaw Prompt Enhancer]', error);
-      toast('Não foi possível aperfeiçoar agora. O texto original foi preservado.');
+      const reason = error?.name === 'AbortError'
+        ? 'A solicitação excedeu 60 segundos.'
+        : String(error?.message || '').slice(0, 140);
+      toast(`Não foi possível aperfeiçoar. ${reason || 'Verifique o provedor ativo.'} O texto original foi preservado.`);
     } finally {
       busy = false;
       button.disabled = false;
