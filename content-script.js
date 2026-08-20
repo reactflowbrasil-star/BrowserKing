@@ -623,7 +623,7 @@
     var prevState = capturePageState();
     var startTime = Date.now();
     try {
-      console.log('[BrowserKing] === ACTION START ===', action.type, JSON.stringify(action));
+      console.log('[HatClaw] === ACTION START ===', action.type, JSON.stringify(action));
       await executeAction(action);
       await waitForStableState(5000, 350);
       var currState = capturePageState();
@@ -639,9 +639,9 @@
       var successResult = { success: verification.ok, action: action.type, requestTs: action.ts, verification: verification, duration: Date.now() - startTime, memorySize: Object.keys(elementMemory).length, ts: Date.now() };
       await chrome.storage.local.set({ hatclawActionResult: successResult });
       await recordLocalActionMetric(successResult);
-      console.log('[BrowserKing] === ACTION OK ===', action.type, verification);
+      console.log('[HatClaw] === ACTION OK ===', action.type, verification);
     } catch (error) {
-      console.error('[BrowserKing] === ACTION FAILED ===', action.type, error.message);
+      console.error('[HatClaw] === ACTION FAILED ===', action.type, error.message);
       var failureResult = { success: false, action: action.type, requestTs: action.ts, error: error.message, duration: Date.now() - startTime, ts: Date.now() };
       await chrome.storage.local.set({ hatclawActionResult: failureResult });
       await recordLocalActionMetric(failureResult);
@@ -726,6 +726,6 @@
     }).observe(document.documentElement, { childList: true, subtree: true });
   } catch (_) {}
 
-  console.log('[BrowserKing] content-script.js v3 loaded - DOM-first with element memory');
+  console.log('[HatClaw] content-script.js v3 loaded - DOM-first with element memory');
 
 })();

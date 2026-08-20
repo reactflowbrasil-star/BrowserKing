@@ -1065,7 +1065,7 @@ Model: {{modelName}}`;
           type: mimeType.startsWith('image/') ? 'image' : 'file',
           mimeType,
           base64Data: match[2],
-          fileName: `browserking.${fileExtensionFromMimeType(mimeType)}`
+          fileName: `hatclaw.${fileExtensionFromMimeType(mimeType)}`
         };
       }
 
@@ -1081,7 +1081,7 @@ Model: {{modelName}}`;
         type: mimeType.startsWith('image/') ? 'image' : 'file',
         mimeType,
         base64Data: part.source.data,
-        fileName: `browserking.${fileExtensionFromMimeType(mimeType)}`
+        fileName: `hatclaw.${fileExtensionFromMimeType(mimeType)}`
       };
     }
 
@@ -1148,7 +1148,7 @@ Model: {{modelName}}`;
       const contentType = String(response.headers.get('content-type') || '').split(';')[0].trim();
       const mimeType = contentType || 'application/octet-stream';
       const cleanUrl = String(attachment.url).split('?')[0];
-      const fileName = cleanUrl.split('/').filter(Boolean).pop() || `browserking.${fileExtensionFromMimeType(mimeType)}`;
+        const fileName = cleanUrl.split('/').filter(Boolean).pop() || `hatclaw.${fileExtensionFromMimeType(mimeType)}`;
 
       return {
         ...attachment,
