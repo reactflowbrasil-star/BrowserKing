@@ -1708,6 +1708,16 @@ Model: {{modelName}}`;
     return undefined;
   }
 
+  function normalizeToolArgumentObject(value) {
+    if (!value || typeof value !== 'object' || Array.isArray(value)) return value;
+    const normalized = { ...value };
+    if (normalized.tabId === undefined) {
+      const alias = normalized.tab_id ?? normalized.tabID ?? normalized.table ?? normalized.tab;
+      if (alias !== undefined) normalized.tabId = Number.isFinite(Number(alias)) ? Number(alias) : alias;
+    }
+    return normalized;
+  }
+
   function resolveTargetModel(body, provider) {
     const requestedModel = body.model && !String(body.model).startsWith('claude-')
       ? String(body.model)
@@ -2049,6 +2059,10 @@ Model: {{modelName}}`;
       openAIRequest.tools = [...convertAnthropicToolsToOpenAI(body.tools), ...NATIVE_TOOLS];
       let toolChoice = convertAnthropicToolChoice(body.tool_choice);
 
+      if (toolChoice === 'required' && hasToolResult(body.messages)) {
+        toolChoice = 'auto';
+      }
+
       if (toolChoice !== undefined) {
         if (toolChoice === 'required' && noRequiredToolChoice.includes(providerId)) {
           toolChoice = 'auto';
@@ -2091,15 +2105,15 @@ Model: {{modelName}}`;
     }
 
     if (typeof value === 'object') {
-      return value;
+      return normalizeToolArgumentObject(value);
     }
 
     try {
-      return JSON.parse(value);
+      return normalizeToolArgumentObject(JSON.parse(value));
     } catch (error) {
       try {
         const firstObj = extractFirstJsonObject(String(value));
-        if (firstObj) return JSON.parse(firstObj);
+        if (firstObj) return normalizeToolArgumentObject(JSON.parse(firstObj));
       } catch (_) {}
       return { raw: value };
     }
