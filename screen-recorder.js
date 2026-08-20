@@ -1,7 +1,7 @@
 /**
  * Screen Recorder
  *
- * Injects a video recording button into the HatClaw sidepanel header.
+ * Injects a video recording button into the HatClaw composer toolbar.
  * Records screen, tab, or window and exports as MP4.
  */
 
@@ -19,6 +19,7 @@
   let recordBtn = null;
   let dropdown = null;
   let timerEl = null;
+  let selectedFormat = 'mp4';
 
   const RECORD_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4" fill="currentColor"/></svg>`;
 
@@ -30,14 +31,21 @@
 
   const WINDOW_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg>`;
 
-  function getSupportedMimeType() {
-    const types = [
-      'video/mp4;codecs=avc1',
-      'video/mp4',
-      'video/webm;codecs=vp9',
-      'video/webm;codecs=vp8',
-      'video/webm',
-    ];
+  function getSupportedMimeType(format = selectedFormat) {
+    const types = format === 'mp4'
+      ? [
+          'video/mp4;codecs=avc1.42E01E,mp4a.40.2',
+          'video/mp4;codecs=avc1.42E01E',
+          'video/mp4;codecs=avc1',
+          'video/mp4',
+        ]
+      : [
+          'video/webm;codecs=vp9,opus',
+          'video/webm;codecs=vp8,opus',
+          'video/webm;codecs=vp9',
+          'video/webm;codecs=vp8',
+          'video/webm',
+        ];
     for (const type of types) {
       if (MediaRecorder.isTypeSupported(type)) return type;
     }
@@ -109,14 +117,14 @@
       }
       #hc-record-dropdown {
         position: absolute;
-        top: 100%;
-        right: 0;
-        margin-top: 6px;
+        bottom: calc(100% + 8px);
+        left: 50%;
+        transform: translateX(-50%);
         background: hsl(var(--bg-000, 0 0% 7%));
         border: 1px solid hsl(var(--border-200, 0 0% 20%) / 0.5);
         border-radius: 12px;
         padding: 6px;
-        min-width: 180px;
+        min-width: 238px;
         z-index: 99999;
         box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
         backdrop-filter: blur(12px);
@@ -154,6 +162,42 @@
         background: hsl(var(--border-200, 0 0% 20%) / 0.3);
         margin: 4px 8px;
       }
+      .hc-rec-format-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+        padding: 4px 6px 6px;
+      }
+      .hc-rec-format {
+        border: 1px solid hsl(var(--border-200, 0 0% 25%) / 0.7);
+        border-radius: 7px;
+        padding: 6px 8px;
+        color: hsl(var(--text-200, 0 0% 65%));
+        background: transparent;
+        cursor: pointer;
+        font: 600 11px/1.2 inherit;
+      }
+      .hc-rec-format.selected {
+        color: #b7ff2a;
+        border-color: rgba(183, 255, 42, 0.65);
+        background: rgba(183, 255, 42, 0.08);
+      }
+      #hc-rec-toast {
+        position: fixed;
+        left: 50%;
+        bottom: 112px;
+        transform: translateX(-50%);
+        z-index: 100000;
+        max-width: calc(100vw - 32px);
+        padding: 9px 12px;
+        border-radius: 9px;
+        color: #f5f5f5;
+        background: rgba(18, 18, 18, 0.96);
+        border: 1px solid rgba(255,255,255,0.12);
+        box-shadow: 0 8px 24px rgba(0,0,0,.35);
+        font: 12px/1.35 inherit;
+        text-align: center;
+      }
       .hc-rec-stop-btn {
         display: flex;
         align-items: center;
@@ -178,23 +222,19 @@
     document.head.appendChild(style);
   }
 
-  function findInjectionTarget() {
-    // Look for the header toolbar area - the top bar with icons
-    // The sidepanel header typically has a flex row with icons
-    const header = document.querySelector('[class*="header"], [class*="Header"], [class*="toolbar"], [class*="Toolbar"]');
-    if (header) return header;
-
-    // Fallback: look for a flex container near the top that has SVG buttons
-    const candidates = document.querySelectorAll('div, nav, header');
-    for (const el of candidates) {
-      const rect = el.getBoundingClientRect();
-      if (rect.top < 60 && rect.height < 80 && rect.height > 30) {
-        const hasSvg = el.querySelector('svg');
-        const isFlex = getComputedStyle(el).display === 'flex';
-        if (hasSvg && isFlex) return el;
-      }
+  function findComposerAnchor() {
+    const nodes = document.querySelectorAll('button, [role="button"]');
+    for (const node of nodes) {
+      const text = (node.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase();
+      if (text.includes('perguntar antes') || text.includes('ask before')) return node;
     }
-    return null;
+
+    const textarea = document.querySelector('textarea');
+    if (!textarea) return null;
+    const composer = textarea.closest('form') || textarea.parentElement?.parentElement;
+    if (!composer) return null;
+    const buttons = composer.querySelectorAll('button, [role="button"]');
+    return buttons.length ? buttons[0] : null;
   }
 
   function createRecordButton() {
@@ -205,7 +245,8 @@
     recordBtn = document.createElement('button');
     recordBtn.id = 'hc-record-btn';
     recordBtn.type = 'button';
-    recordBtn.title = 'Record screen';
+    recordBtn.title = 'Gravar vídeo';
+    recordBtn.setAttribute('aria-label', 'Gravar vídeo da tela');
     recordBtn.innerHTML = RECORD_ICON;
 
     timerEl = document.createElement('span');
@@ -242,7 +283,7 @@
       dropdown.innerHTML = `
         <button class="hc-rec-stop-btn" data-action="stop">
           ${STOP_ICON}
-          <span>Stop recording</span>
+          <span>Parar e exportar</span>
         </button>
       `;
       dropdown.querySelector('[data-action="stop"]').addEventListener('click', (e) => {
@@ -252,19 +293,31 @@
       });
     } else {
       dropdown.innerHTML = `
+        <div class="hc-rec-format-row" role="group" aria-label="Formato de exportação">
+          <button class="hc-rec-format ${selectedFormat === 'mp4' ? 'selected' : ''}" data-format="mp4">Exportar MP4</button>
+          <button class="hc-rec-format ${selectedFormat === 'webm' ? 'selected' : ''}" data-format="webm">Exportar WebM</button>
+        </div>
+        <div class="hc-rec-divider"></div>
         <button class="hc-rec-option" data-mode="screen">
           ${SCREEN_ICON}
-          <span>Record entire screen</span>
+          <span>Desktop completo</span>
         </button>
         <button class="hc-rec-option" data-mode="window">
           ${WINDOW_ICON}
-          <span>Record window</span>
+          <span>Uma janela</span>
         </button>
         <button class="hc-rec-option" data-mode="tab">
           ${TAB_ICON}
-          <span>Record tab</span>
+          <span>Uma aba</span>
         </button>
       `;
+      dropdown.querySelectorAll('.hc-rec-format').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          selectedFormat = btn.getAttribute('data-format') || 'mp4';
+          renderDropdown();
+        });
+      });
       dropdown.querySelectorAll('.hc-rec-option').forEach((btn) => {
         btn.addEventListener('click', (e) => {
           e.stopPropagation();
@@ -296,7 +349,7 @@
     if (recordBtn) {
       recordBtn.classList.toggle('hc-recording', recording);
       recordBtn.innerHTML = recording ? STOP_ICON : RECORD_ICON;
-      recordBtn.title = recording ? 'Stop recording' : 'Record screen';
+      recordBtn.title = recording ? 'Parar e exportar gravação' : 'Gravar vídeo';
     }
     if (timerEl) {
       timerEl.classList.toggle('visible', recording);
@@ -325,7 +378,7 @@
         video: {
           cursor: 'always',
         },
-        audio: false,
+        audio: true,
       };
 
       if (mode === 'tab') {
@@ -342,7 +395,15 @@
       currentStream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
 
       recordedChunks = [];
-      const mimeType = getSupportedMimeType();
+      const mimeType = getSupportedMimeType(selectedFormat);
+      if (!mimeType) {
+        showToast(selectedFormat === 'mp4'
+          ? 'Este Chrome não oferece gravação MP4. Selecione WebM.'
+          : 'Este Chrome não oferece um formato de gravação compatível.');
+        currentStream.getTracks().forEach((track) => track.stop());
+        currentStream = null;
+        return;
+      }
       const recorderOptions = { mimeType };
       if (mimeType.includes('mp4')) {
         recorderOptions.videoBitsPerSecond = 5000000;
@@ -373,9 +434,11 @@
       updateRecordingUI(true);
       startTimer();
       closeDropdown();
+      showToast('Gravação iniciada. Use o botão vermelho para parar.');
     } catch (err) {
       if (err.name !== 'AbortError') {
         console.warn('[HatClaw Recorder] Could not start recording:', err.message);
+        showToast('Não foi possível iniciar a gravação. Verifique a permissão de captura.');
       }
       cleanup();
     }
@@ -409,6 +472,7 @@
     a.style.display = 'none';
     document.body.appendChild(a);
     a.click();
+    showToast(`Gravação exportada em ${ext.toUpperCase()}.`);
 
     setTimeout(() => {
       URL.revokeObjectURL(url);
@@ -429,29 +493,26 @@
     updateRecordingUI(false);
   }
 
+  function showToast(message) {
+    document.getElementById('hc-rec-toast')?.remove();
+    const toast = document.createElement('div');
+    toast.id = 'hc-rec-toast';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3800);
+  }
+
   function injectButton() {
     if (document.getElementById('hc-record-btn')) return;
 
     createStyles();
 
-    const target = findInjectionTarget();
-    if (!target) return false;
+    const anchor = findComposerAnchor();
+    if (!anchor || !anchor.parentElement) return false;
 
     const btn = createRecordButton();
 
-    // Try to insert before the last icon button (before teach hatclaw icon)
-    const buttons = target.querySelectorAll('button, [role="button"]');
-    if (buttons.length > 0) {
-      // Insert before the last button (typically the rightmost icon)
-      const lastBtn = buttons[buttons.length - 1];
-      if (lastBtn && !lastBtn.id?.includes('record')) {
-        target.insertBefore(btn, lastBtn);
-        return true;
-      }
-    }
-
-    // Fallback: prepend to the target
-    target.insertBefore(btn, target.firstChild);
+    anchor.insertAdjacentElement('afterend', btn);
     return true;
   }
 
