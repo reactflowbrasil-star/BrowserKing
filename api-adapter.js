@@ -2105,6 +2105,14 @@ Model: {{modelName}}`;
     }
   }
 
+  function normalizeToolArgumentsJson(value) {
+    const parsed = parseToolArguments(value);
+    if (parsed && typeof parsed === 'object' && !Object.prototype.hasOwnProperty.call(parsed, 'raw')) {
+      return JSON.stringify(parsed);
+    }
+    return '{}';
+  }
+
   function mapFinishReason(reason) {
     switch (reason) {
       case 'tool_calls':
@@ -2389,6 +2397,14 @@ Model: {{modelName}}`;
 
           activeToolBlocks.forEach((toolState) => {
             if (toolState.started) {
+              controller.enqueue(sseChunk('content_block_delta', {
+                type: 'content_block_delta',
+                index: toolState.anthropicIndex,
+                delta: {
+                  type: 'input_json_delta',
+                  partial_json: normalizeToolArgumentsJson(toolState.args || '{}')
+                }
+              }));
               controller.enqueue(sseChunk('content_block_stop', {
                 type: 'content_block_stop',
                 index: toolState.anthropicIndex
@@ -2543,17 +2559,9 @@ Model: {{modelName}}`;
                 }
 
                 if (toolState.started && toolDelta.function?.arguments) {
-                  controller.enqueue(sseChunk('content_block_delta', {
-                    type: 'content_block_delta',
-                    index: toolState.anthropicIndex,
-                    delta: {
-                      type: 'input_json_delta',
-                      partial_json: toolDelta.function.arguments
-                    }
-                  }));
-
-                  // Accumulate arguments and emit the cursor/glow activity once the
-                  // full tool call JSON is available (streaming path).
+                  // Buffer the complete tool argument. Some Gemini-compatible
+                  // endpoints concatenate multiple JSON envelopes in the stream;
+                  // emitting each raw fragment makes the side panel reject it.
                   toolState.args = (toolState.args || '') + toolDelta.function.arguments;
                   if (!toolState.emitted && toolState.name) {
                     try {
