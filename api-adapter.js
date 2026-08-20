@@ -2270,6 +2270,55 @@ Model: {{modelName}}`;
     return handleNativeToolCalls(nextData, nextRequest, upstreamUrl, headers, requestedModel);
   }
 
+  async function handleCodexNativeToolCalls(data, openAIRequest, maxRounds = 8) {
+    let currentData = data;
+    let currentRequest = openAIRequest;
+    const seenCalls = new Map();
+
+    for (let round = 0; round < maxRounds; round += 1) {
+      const message = currentData?.choices?.[0]?.message || {};
+      const toolCalls = ensureArray(message.tool_calls);
+      const nativeCalls = toolCalls.filter((toolCall) => toolCall.function?.name?.startsWith('native_'));
+      if (nativeCalls.length === 0) return currentData;
+
+      // Mixed browser/native calls must return to the side panel so its own tool
+      // runner can satisfy the browser calls without producing an invalid partial
+      // tool-result sequence.
+      if (nativeCalls.length !== toolCalls.length) return currentData;
+
+      const results = [];
+      for (const toolCall of nativeCalls) {
+        const signature = `${toolCall.function?.name}:${toolCall.function?.arguments || ''}`;
+        const attempts = (seenCalls.get(signature) || 0) + 1;
+        seenCalls.set(signature, attempts);
+        if (attempts > 2) {
+          results.push({
+            role: 'tool',
+            tool_call_id: toolCall.id,
+            content: JSON.stringify({ ok: false, error: 'Ação repetida sem progresso; escolha outra estratégia.' })
+          });
+        } else {
+          results.push(await executeNativeAction(toolCall));
+        }
+      }
+
+      currentRequest = {
+        ...currentRequest,
+        stream: false,
+        messages: [...ensureArray(currentRequest.messages), message, ...results]
+      };
+      const reply = await chrome.runtime.sendMessage({
+        target: 'browserking-windows',
+        action: 'codex.chat',
+        params: currentRequest
+      });
+      if (!reply?.ok) throw new Error(reply?.error || 'Falha ao continuar após executar a ação nativa');
+      currentData = reply.result;
+    }
+
+    throw new Error('A tarefa excedeu o limite seguro de ações nativas consecutivas.');
+  }
+
   function sseChunk(event, payload) {
     return encoder.encode(`event: ${event}\ndata: ${JSON.stringify(payload)}\n\n`);
   }
@@ -2851,7 +2900,15 @@ Model: {{modelName}}`;
       });
     }
 
-    const data = await upstreamResponse.json();
+    let data = await upstreamResponse.json();
+    if (provider.id === 'openai') {
+      try {
+        data = await handleCodexNativeToolCalls(data, openAIRequest);
+      } catch (error) {
+        await writeDebugLog({ phase: 'codex_native_tool_error', message: error.message });
+        return createAnthropicError(error.message || 'Falha ao executar a ação nativa.', 502);
+      }
+    }
     if (provider.id === 'openai') {
       await recordCodexMetrics(codexRoute, data, Date.now() - modelRequestStartedAt, codexFallbackUsed);
     }

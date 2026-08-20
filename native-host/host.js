@@ -68,6 +68,15 @@ class CodexAppServer {
     await this.call('initialize',{clientInfo:{name:'hatclaw',title:'HatClaw',version:'1.4.0'},capabilities:{experimentalApi:true}},15000);
     this.notify('initialized',{});
   }
+  stop() {
+    const error=new Error('Controlador Codex desconectado');
+    for(const pending of this.pending.values()){clearTimeout(pending.timer);pending.reject(error);}
+    this.pending.clear();
+    this.waiters=[];
+    if(this.child&&!this.child.killed)this.child.kill();
+    this.child=null;
+    this.starting=null;
+  }
   send(message){ this.child.stdin.write(JSON.stringify(message)+'\n'); }
   notify(method,params){ this.send({method,params}); }
   call(method,params={},timeoutMs=15000){ const id=this.nextId++; return new Promise((resolve,reject)=>{const timer=setTimeout(()=>{this.pending.delete(id);reject(new Error(`Codex não respondeu durante ${method}`));},timeoutMs);this.pending.set(id,{resolve,reject,timer});this.send({method,id,params});}); }
@@ -93,13 +102,13 @@ class CodexAppServer {
     const history=conversationMessages.map(m=>`${String(m.role||'user').toUpperCase()}: ${typeof m.content==='string'?m.content:JSON.stringify(m.content)}`).join('\n\n');
     const toolGuide=tools.length ? `\n\nFERRAMENTAS DISPONIVEIS:\n${tools.map(t=>JSON.stringify(t.function||t)).join('\n')}\n\nRetorne JSON com content e tool_calls. O campo content deve sempre conter uma frase curta e útil ao usuário, inclusive quando houver tool_calls. Quando precisar agir, use tool_calls com name e arguments como uma string JSON. Quando responder normalmente, use tool_calls vazio.` : '';
     const text=history+toolGuide;
-    const thread=await this.call('thread/start',{model:params.model||'gpt-5.6-terra',cwd:os.tmpdir(),approvalPolicy:'never',sandbox:'read-only',serviceName:'hatclaw',...(developerInstructions?{developerInstructions}:{})},15000);
+    const thread=await this.call('thread/start',{model:params.model||'gpt-5.6-terra',cwd:os.tmpdir(),approvalPolicy:'never',sandbox:'read-only',serviceName:'hatclaw',...(developerInstructions?{developerInstructions}:{})},30000);
     const threadId=thread.thread.id;
     let answer='';
     const completed=this.waitFor(m=>{if(m?.params?.threadId!==threadId)return false;if(m.method==='item/agentMessage/delta')answer+=m.params.delta||'';if(m.method==='item/completed'&&m.params?.item?.type==='agentMessage')answer=m.params.item.text||answer;return m.method==='turn/completed';},Math.min(120000,Math.max(20000,Number(params.timeoutMs)||60000)));
     const outputSchema=tools.length?{type:'object',properties:{content:{type:'string'},tool_calls:{type:'array',items:{type:'object',properties:{name:{type:'string'},arguments:{type:'string'}},required:['name','arguments'],additionalProperties:false}}},required:['content','tool_calls'],additionalProperties:false}:undefined;
     try {
-      await this.call('turn/start',{threadId,input:[{type:'text',text}],model:params.model||'gpt-5.6-terra',approvalPolicy:'never',sandboxPolicy:{type:'readOnly'},...(outputSchema?{outputSchema}:{})},15000);
+      await this.call('turn/start',{threadId,input:[{type:'text',text}],model:params.model||'gpt-5.6-terra',approvalPolicy:'never',sandboxPolicy:{type:'readOnly'},...(outputSchema?{outputSchema}:{})},30000);
     } catch (error) {
       completed.cancel();
       throw error;
@@ -227,6 +236,7 @@ function startProtocol() {
       Promise.resolve().then(()=>handle(JSON.parse(payload.toString('utf8')))).then(reply=>{const body=Buffer.from(JSON.stringify(reply));const header=Buffer.alloc(4);header.writeUInt32LE(body.length);process.stdout.write(Buffer.concat([header,body]));});
     }
   });
+  process.stdin.on('end',()=>{codexServer.stop();process.exit(0);});
 }
 
 if (require.main === module) startProtocol();

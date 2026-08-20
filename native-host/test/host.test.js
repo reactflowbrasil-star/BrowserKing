@@ -46,3 +46,12 @@ test('concurrent requests share one Codex initialization',async()=>{
   await Promise.all([server.start(),server.start(),server.start()]);
   assert.equal(starts,1);
 });
+
+test('disconnect stops the Codex child process',()=>{
+  const server=new CodexAppServer();
+  let stopped=false;
+  server.child={killed:false,kill(){stopped=true;this.killed=true;}};
+  server.stop();
+  assert.equal(stopped,true);
+  assert.equal(server.child,null);
+});
