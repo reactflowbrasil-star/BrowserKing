@@ -1,7 +1,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const path = require('node:path');
-const { handle, resolveAllowed, buildAssistantMessage } = require('../host');
+const { handle, resolveAllowed, buildAssistantMessage, CodexAppServer } = require('../host');
 
 test('host rejects an unknown action through its public handler', async()=>{
   const result=await handle({requestId:'test-unknown',action:'not.real',params:{}});
@@ -33,4 +33,16 @@ test('tool response accepts fenced JSON envelopes',()=>{
   const message=buildAssistantMessage('```json\n{"content":"Vou preparar a mensagem.","tool_calls":[]}\n```',[{name:'computer'}]);
   assert.equal(message.content,'Vou preparar a mensagem.');
   assert.equal(message.tool_calls,undefined);
+});
+
+test('concurrent requests share one Codex initialization',async()=>{
+  const server=new CodexAppServer();
+  let starts=0;
+  server.startProcess=async()=>{
+    starts+=1;
+    await new Promise(resolve=>setTimeout(resolve,20));
+    server.child={killed:false};
+  };
+  await Promise.all([server.start(),server.start(),server.start()]);
+  assert.equal(starts,1);
 });

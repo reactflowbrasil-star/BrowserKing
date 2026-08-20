@@ -54,24 +54,29 @@ function buildAssistantMessage(answer, tools) {
 }
 
 class CodexAppServer {
-  constructor() { this.child=null; this.nextId=1; this.pending=new Map(); this.waiters=[]; }
+  constructor() { this.child=null; this.starting=null; this.nextId=1; this.pending=new Map(); this.waiters=[]; }
   async start() {
+    if (this.starting) return this.starting;
     if (this.child && !this.child.killed) return;
+    this.starting=this.startProcess();
+    try { await this.starting; } catch(error) { if(this.child&&!this.child.killed)this.child.kill(); throw error; } finally { this.starting=null; }
+  }
+  async startProcess() {
     this.child=spawn('codex',['app-server','--stdio'],{stdio:['pipe','pipe','pipe'],windowsHide:true});
-    this.child.on('exit',()=>{ const error=new Error('Codex App Server encerrou'); for(const p of this.pending.values())p.reject(error); this.pending.clear(); this.child=null; });
+    this.child.on('exit',()=>{ const error=new Error('Codex App Server encerrou'); for(const p of this.pending.values()){clearTimeout(p.timer);p.reject(error);} this.pending.clear(); this.child=null; });
     readline.createInterface({input:this.child.stdout}).on('line',line=>{ try{this.onMessage(JSON.parse(line));}catch{} });
-    await this.call('initialize',{clientInfo:{name:'hatclaw',title:'HatClaw',version:'1.4.0'},capabilities:{experimentalApi:true}});
+    await this.call('initialize',{clientInfo:{name:'hatclaw',title:'HatClaw',version:'1.4.0'},capabilities:{experimentalApi:true}},15000);
     this.notify('initialized',{});
   }
   send(message){ this.child.stdin.write(JSON.stringify(message)+'\n'); }
   notify(method,params){ this.send({method,params}); }
-  call(method,params={}){ const id=this.nextId++; return new Promise((resolve,reject)=>{this.pending.set(id,{resolve,reject});this.send({method,id,params});}); }
+  call(method,params={},timeoutMs=15000){ const id=this.nextId++; return new Promise((resolve,reject)=>{const timer=setTimeout(()=>{this.pending.delete(id);reject(new Error(`Codex não respondeu durante ${method}`));},timeoutMs);this.pending.set(id,{resolve,reject,timer});this.send({method,id,params});}); }
   onMessage(message){
-    if(message.id!=null && (message.result!==undefined || message.error)){const p=this.pending.get(message.id);if(p){this.pending.delete(message.id);message.error?p.reject(new Error(message.error.message||'Erro do Codex')):p.resolve(message.result);}return;}
+    if(message.id!=null && (message.result!==undefined || message.error)){const p=this.pending.get(message.id);if(p){this.pending.delete(message.id);clearTimeout(p.timer);message.error?p.reject(new Error(message.error.message||'Erro do Codex')):p.resolve(message.result);}return;}
     if(message.id!=null && message.method){ this.send({id:message.id,result:{decision:'decline'}}); return; }
     for(const waiter of [...this.waiters]) waiter(message);
   }
-  waitFor(test,timeout=180000){return new Promise((resolve,reject)=>{const fn=m=>{if(!test(m))return;cleanup();resolve(m);};const timer=setTimeout(()=>{cleanup();reject(new Error('Tempo esgotado aguardando o Codex'));},timeout);const cleanup=()=>{clearTimeout(timer);this.waiters=this.waiters.filter(x=>x!==fn);};this.waiters.push(fn);});}
+  waitFor(test,timeout=90000){let cleanup=()=>{};const promise=new Promise((resolve,reject)=>{const fn=m=>{if(!test(m))return;cleanup();resolve(m);};const timer=setTimeout(()=>{cleanup();reject(new Error('Tempo esgotado aguardando o Codex'));},timeout);cleanup=()=>{clearTimeout(timer);this.waiters=this.waiters.filter(x=>x!==fn);};this.waiters.push(fn);});promise.cancel=cleanup;return promise;}
   async account(){await this.start();const result=await this.call('account/read',{refreshToken:false});const account=result?.account||result;return {authenticated:Boolean(account?.type||account?.email),authMode:account?.type||null,planType:account?.planType||null,email:account?.email||null};}
   async login(){await this.start();const current=await this.account();if(current.authenticated)return {...current,message:`Conta ChatGPT já conectada${current.planType?` (${current.planType})`:''}.`};const result=await this.call('account/login/start',{type:'chatgpt',useHostedLoginSuccessPage:true,appBrand:'chatgpt'});return {authenticated:false,authUrl:result.authUrl,loginId:result.loginId,message:'Login oficial aberto no navegador.'};}
   async logout(){await this.start();await this.call('account/logout',{});return {authenticated:false,message:'Conta ChatGPT desconectada.'};}
@@ -88,13 +93,19 @@ class CodexAppServer {
     const history=conversationMessages.map(m=>`${String(m.role||'user').toUpperCase()}: ${typeof m.content==='string'?m.content:JSON.stringify(m.content)}`).join('\n\n');
     const toolGuide=tools.length ? `\n\nFERRAMENTAS DISPONIVEIS:\n${tools.map(t=>JSON.stringify(t.function||t)).join('\n')}\n\nRetorne JSON com content e tool_calls. O campo content deve sempre conter uma frase curta e útil ao usuário, inclusive quando houver tool_calls. Quando precisar agir, use tool_calls com name e arguments como uma string JSON. Quando responder normalmente, use tool_calls vazio.` : '';
     const text=history+toolGuide;
-    const thread=await this.call('thread/start',{model:params.model||'gpt-5.6-terra',cwd:os.tmpdir(),approvalPolicy:'never',sandbox:'read-only',serviceName:'hatclaw',...(developerInstructions?{developerInstructions}:{})});
+    const thread=await this.call('thread/start',{model:params.model||'gpt-5.6-terra',cwd:os.tmpdir(),approvalPolicy:'never',sandbox:'read-only',serviceName:'hatclaw',...(developerInstructions?{developerInstructions}:{})},15000);
     const threadId=thread.thread.id;
     let answer='';
-    const completed=this.waitFor(m=>{if(m?.params?.threadId!==threadId)return false;if(m.method==='item/agentMessage/delta')answer+=m.params.delta||'';if(m.method==='item/completed'&&m.params?.item?.type==='agentMessage')answer=m.params.item.text||answer;return m.method==='turn/completed';},Math.min(180000,Math.max(30000,Number(params.timeoutMs)||120000)));
+    const completed=this.waitFor(m=>{if(m?.params?.threadId!==threadId)return false;if(m.method==='item/agentMessage/delta')answer+=m.params.delta||'';if(m.method==='item/completed'&&m.params?.item?.type==='agentMessage')answer=m.params.item.text||answer;return m.method==='turn/completed';},Math.min(120000,Math.max(20000,Number(params.timeoutMs)||60000)));
     const outputSchema=tools.length?{type:'object',properties:{content:{type:'string'},tool_calls:{type:'array',items:{type:'object',properties:{name:{type:'string'},arguments:{type:'string'}},required:['name','arguments'],additionalProperties:false}}},required:['content','tool_calls'],additionalProperties:false}:undefined;
-    await this.call('turn/start',{threadId,input:[{type:'text',text}],model:params.model||'gpt-5.6-terra',approvalPolicy:'never',sandboxPolicy:{type:'readOnly'},...(outputSchema?{outputSchema}:{})});
-    const completion=await completed;
+    try {
+      await this.call('turn/start',{threadId,input:[{type:'text',text}],model:params.model||'gpt-5.6-terra',approvalPolicy:'never',sandboxPolicy:{type:'readOnly'},...(outputSchema?{outputSchema}:{})},15000);
+    } catch (error) {
+      completed.cancel();
+      throw error;
+    }
+    let completion;
+    try { completion=await completed; } catch (error) { if(this.child&&!this.child.killed)this.child.kill(); throw error; }
     if(completion.params?.turn?.status==='failed'||completion.params?.turn?.error){
       const rawError=completion.params?.turn?.error?.message||'O turno do Codex falhou';
       if(/flagged as potentially violating|usage polic/i.test(rawError)){
@@ -192,6 +203,7 @@ async function execute(action, p) {
 }
 
 async function handle(message) {
+  const startedAt = Date.now();
   const requestId = message?.requestId || crypto.randomUUID();
   const action = String(message?.action || '');
   const params = message?.params && typeof message.params === 'object' ? message.params : {};
@@ -201,8 +213,8 @@ async function handle(message) {
     if (!decision.allowed) throw new Error(decision.reason);
     if (decision.confirmation && !(await confirm(action, params))) { record.status='denied'; audit(record); return { requestId, ok:false, error:'Action denied by user' }; }
     const result = await execute(action, params);
-    record.status='completed'; audit(record); return { requestId, ok:true, result };
-  } catch (error) { record.status='failed'; record.error=error.message; audit(record); return { requestId, ok:false, error:error.message }; }
+    record.status='completed'; record.durationMs=Date.now()-startedAt; audit(record); return { requestId, ok:true, result };
+  } catch (error) { record.status='failed'; record.error=error.message; record.durationMs=Date.now()-startedAt; audit(record); return { requestId, ok:false, error:error.message }; }
 }
 
 function startProtocol() {
@@ -219,4 +231,4 @@ function startProtocol() {
 
 if (require.main === module) startProtocol();
 
-module.exports = { handle, resolveAllowed, runPowerShell, startProtocol, estimateTokens, parseToolEnvelope, buildAssistantMessage };
+module.exports = { handle, resolveAllowed, runPowerShell, startProtocol, estimateTokens, parseToolEnvelope, buildAssistantMessage, CodexAppServer };

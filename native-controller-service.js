@@ -10,11 +10,12 @@ function connect() {
     const waiter = pending.get(message?.requestId);
     if (!waiter) return;
     pending.delete(message.requestId);
+    clearTimeout(waiter.timer);
     message.ok ? waiter.resolve(message) : waiter.reject(new Error(message.error || 'Native action failed'));
   });
   port.onDisconnect.addListener(() => {
     const reason = chrome.runtime.lastError?.message || 'Windows controller disconnected';
-    for (const waiter of pending.values()) waiter.reject(new Error(reason));
+    for (const waiter of pending.values()) { clearTimeout(waiter.timer); waiter.reject(new Error(reason)); }
     pending.clear();
     port = null;
   });
@@ -24,9 +25,14 @@ function connect() {
 function invoke(action, params = {}) {
   return new Promise((resolve, reject) => {
     const requestId = crypto.randomUUID();
-    pending.set(requestId, { resolve, reject });
+    const timeoutMs = action === 'codex.chat' ? 80000 : 30000;
+    const timer = setTimeout(() => {
+      pending.delete(requestId);
+      reject(new Error('O controlador demorou além do limite. Tente novamente.'));
+    }, timeoutMs);
+    pending.set(requestId, { resolve, reject, timer });
     try { connect().postMessage({ requestId, action, params }); }
-    catch (error) { pending.delete(requestId); reject(error); }
+    catch (error) { pending.delete(requestId); clearTimeout(timer); reject(error); }
   });
 }
 

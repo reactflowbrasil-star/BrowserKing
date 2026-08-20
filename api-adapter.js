@@ -839,7 +839,7 @@ Model: {{modelName}}`;
       message.role !== 'tool' && !message.tool_calls
     ));
     const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort(), Math.min(15000, Math.max(5000, Number(orchestration.timeoutMs) || 12000)));
+    const timer = setTimeout(() => controller.abort(), Math.min(8000, Math.max(3000, Number(orchestration.timeoutMs) || 6000)));
     const startedAt = Date.now();
     const latestTask = [...sharedMessages].reverse().find((message) => message.role === 'user')?.content;
 
@@ -927,7 +927,7 @@ Model: {{modelName}}`;
     const count = Math.max(2, Math.min(6, Number(orchestration.agentCount) || 3));
     const latestUser = ensureArray(anthropicRequest.messages).filter((message) => message.role === 'user').at(-1);
     const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort(), Math.min(15000, Math.max(5000, Number(orchestration.timeoutMs) || 12000)));
+    const timer = setTimeout(() => controller.abort(), Math.min(8000, Math.max(3000, Number(orchestration.timeoutMs) || 6000)));
     const startedAt = Date.now();
     try {
       const tasks = Array.from({ length: count - 1 }, (_, index) => {
@@ -2668,9 +2668,7 @@ Model: {{modelName}}`;
       ...anthropicRequest,
       model: requestedModel
     }, provider, providerConfig);
-    if (provider.id === 'openai' && codexRoute.enabled && codexRoute.model !== codexRoute.originalModel) {
-      openAIRequest.timeoutMs = 60000;
-    }
+    if (provider.id === 'openai') openAIRequest.timeoutMs = 60000;
     openAIRequest = attachGraphifyToOpenAI(openAIRequest, consultGraphify(getLatestUserText(anthropicRequest.messages || [])));
     const orchestration = await getOrchestrationConfig();
     if (orchestration.enabled && isInitialAgentTurn(anthropicRequest) && shouldRunSpecialists(anthropicRequest)) {
