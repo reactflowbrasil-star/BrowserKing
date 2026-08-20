@@ -50,7 +50,7 @@ function route(): string {
 function defaultState(): array {
     return ['nextCommandId' => 1, 'nextEventId' => 1, 'commands' => [], 'events' => [], 'extensionLastSeen' => 0,
         'capabilities' => ['tools' => false, 'skills' => false, 'plugins' => false, 'apps' => false, 'updatedAt' => 0],
-        'tabs' => [], 'tabsUpdatedAt' => 0,
+        'tabs' => [], 'tabsUpdatedAt' => 0, 'androidDeviceId' => '',
         'nextLicenseId' => 1, 'nextActivationId' => 1, 'nextDeviceId' => 1,
         'licenses' => [], 'activationCodes' => [], 'devices' => [], 'auditLogs' => [],
         'graphify' => ['revision' => 0, 'updatedAt' => 0, 'devices' => [], 'state' => null]];
@@ -396,7 +396,12 @@ if ($method === 'POST' && $route === 'graph/sync') {
     reply(200, $result);
 }
 if ($method === 'GET' && $route === 'android/status') {
+    $deviceId = substr(trim((string)($_GET['deviceId'] ?? '')), 0, 160);
     $state = stateRead($stateFile);
+    if ($deviceId === '') reply(400, ['error' => 'Android device id is required']);
+    $bound = (string)($state['androidDeviceId'] ?? '');
+    if ($bound !== '' && !hash_equals($bound, $deviceId)) reply(409, ['error' => 'Este token já está vinculado a outro dispositivo Android']);
+    if ($bound === '') { $state['androidDeviceId'] = $deviceId; file_put_contents($stateFile, json_encode($state, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), LOCK_EX); }
     reply(200, ['ok' => true, 'extensionOnline' => (time() - (int)$state['extensionLastSeen']) < 35,
         'eventCursor' => (int)$state['nextEventId'] - 1, 'capabilities' => $state['capabilities'],
         'tabs' => $state['tabs'], 'tabsUpdatedAt' => (int)$state['tabsUpdatedAt']]);

@@ -235,7 +235,7 @@ public class MainActivity extends Activity {
         setConnectionState("Conectando…", false);
         network.execute(() -> {
             try {
-                JSONObject remote = request("GET", "/android/status", null, true);
+                JSONObject remote = request("GET", "/android/status?deviceId=" + Uri.encode(deviceId), null, true);
                 if (!remote.optBoolean("extensionOnline")) throw new Exception("Extensão remota offline");
                 eventCursor = remote.optLong("eventCursor", eventCursor);
                 JSONObject capabilities = remote.optJSONObject("capabilities");
