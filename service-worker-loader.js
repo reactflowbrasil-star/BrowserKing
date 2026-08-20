@@ -83,13 +83,5 @@ async function ensureAutoRemoteSession() {
   }
 }
 
-function scheduleAutoRemoteSession() {
-  chrome.alarms.create(AUTO_REMOTE_ALARM, { delayInMinutes: 0.1, periodInMinutes: 1 });
-  ensureAutoRemoteSession().catch(() => {});
-}
-
-chrome.runtime.onStartup.addListener(scheduleAutoRemoteSession);
-chrome.runtime.onInstalled.addListener(scheduleAutoRemoteSession);
-chrome.alarms.onAlarm.addListener(alarm => {
-  if (alarm.name === AUTO_REMOTE_ALARM) ensureAutoRemoteSession().catch(() => {});
-});
+// Sessões remotas são abertas sob demanda pelo Side Panel; nunca criamos pop-ups
+// automaticamente no startup/alarme, evitando janelas duplicadas no Windows.
