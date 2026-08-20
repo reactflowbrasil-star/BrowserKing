@@ -236,6 +236,29 @@
         background: rgba(255,255,255,0.1);
       }
 
+      .codex-modal[hidden] { display: none; }
+      .codex-modal { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; padding: 20px; background: rgba(0,0,0,.72); backdrop-filter: blur(10px); }
+      .codex-dialog { width: min(430px, 100%); border: 1px solid rgba(255,255,255,.12); border-radius: 18px; background: #171717; box-shadow: 0 28px 80px rgba(0,0,0,.55); overflow: hidden; }
+      .codex-dialog-main { padding: 18px 18px 24px; }
+      .codex-dialog-head { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+      .codex-dialog-head h2 { margin: 0; font-size: 18px; }
+      .codex-close { padding: 4px 8px; background: transparent; color: #ddd; font-size: 22px; }
+      .codex-subtitle { color: #999; line-height: 1.5; margin: 8px 0 20px; font-size: 14px; }
+      .codex-label { display: block; margin: 18px 0 8px; color: #ddd; font-size: 13px; font-weight: 700; }
+      .codex-name { box-sizing: border-box; width: 100%; padding: 10px 12px; color: #fff; background: #1c1c1c; border: 1px solid #3a3a3a; border-radius: 8px; font: inherit; }
+      .codex-name:focus { outline: none; border-color: #ff6a00; box-shadow: 0 0 0 2px rgba(255,106,0,.32); }
+      .accent-list { display: flex; flex-wrap: wrap; gap: 8px; }
+      .accent-dot { width: 22px; height: 22px; padding: 0; border-radius: 50%; background: var(--accent); border: 2px solid transparent; box-shadow: none; }
+      .accent-dot.selected { outline: 2px solid #ff6a00; outline-offset: 2px; }
+      .link-account-row { width: 100%; margin-top: 20px; display: flex; align-items: center; gap: 12px; padding: 14px; color: #fff; text-align: left; background: #1b1b1b; border: 1px solid #303030; border-radius: 10px; }
+      .link-icon { display: grid; place-items: center; width: 30px; height: 30px; border: 1px solid #333; border-radius: 8px; color: #bbb; }
+      .link-copy { flex: 1; display: grid; gap: 3px; }
+      .link-copy small { color: #8e8e8e; font-weight: 400; }
+      .codex-dialog-footer { display: flex; justify-content: flex-end; padding: 14px 18px; border-top: 1px solid #292929; }
+      .codex-profile-summary { display:flex; align-items:center; gap:10px; padding:12px; border:1px solid rgba(255,255,255,.1); border-radius:12px; background:rgba(255,255,255,.035); }
+      .codex-profile-summary .profile-accent { width:12px; height:12px; border-radius:50%; background:var(--profile-accent); box-shadow:0 0 12px var(--profile-accent); }
+      .codex-profile-summary strong { flex:1; }
+
       .footer-bar {
         position: sticky;
         bottom: 24px;
@@ -292,6 +315,21 @@
           <button class="secondary" id="save-providers" type="button">Save configuration</button>
         </div>
       </div>
+    </div>
+    <div class="codex-modal" id="codex-profile-modal" hidden>
+      <section class="codex-dialog" role="dialog" aria-modal="true" aria-labelledby="codex-profile-title">
+        <div class="codex-dialog-main">
+          <div class="codex-dialog-head"><h2 id="codex-profile-title">Adicionar perfil Codex</h2><button class="codex-close" id="codex-profile-close" type="button" aria-label="Fechar">×</button></div>
+          <p class="codex-subtitle">Dê um nome ao perfil, escolha uma cor e vincule a conta que ele deve usar.</p>
+          <label class="codex-label" for="codex-profile-name">Nome do perfil</label>
+          <input class="codex-name" id="codex-profile-name" value="Meu Codex" maxlength="50" />
+          <span class="codex-label">Cor de destaque</span>
+          <div class="accent-list" id="codex-accent-list"></div>
+          <button class="link-account-row" id="codex-link-account" type="button"><span class="link-icon">↪</span><span class="link-copy"><strong>Vincular conta</strong><small>Entre na conta que este perfil deve usar.</small></span><span>›</span></button>
+          <div class="status" id="codex-profile-status"></div>
+        </div>
+        <div class="codex-dialog-footer"><button class="secondary" id="codex-profile-cancel" type="button">Cancelar</button></div>
+      </section>
     </div>
     <script src="/provider-settings.js"></script>
   </body>

@@ -13,6 +13,13 @@
   const saveButton = document.getElementById('save-providers');
   const resetButton = document.getElementById('reset-providers');
   const syncAllButton = document.getElementById('sync-all-models');
+  const codexModal = document.getElementById('codex-profile-modal');
+  const codexName = document.getElementById('codex-profile-name');
+  const codexAccentList = document.getElementById('codex-accent-list');
+  const codexStatus = document.getElementById('codex-profile-status');
+  const CODEX_PROFILE_KEY = 'hatclawCodexProfile';
+  const CODEX_ACCENTS = ['#ef4444','#f97316','#f59e0b','#84cc16','#10b981','#14b8a6','#06b6d4','#3b82f6','#8b5cf6','#a855f7','#d946ef','#ec4899'];
+  let codexProfile = { name: 'Meu Codex', accent: '#f97316', linked: false, planType: null };
 
   let state = null;
   let filterText = '';
@@ -52,9 +59,10 @@
         ${note}
 
         ${definition.authMode === 'chatgpt' ? `
-        <div class="card-note">Conecta à sua assinatura ChatGPT pelo fluxo oficial do Codex. As credenciais ficam no Codex local.</div>
+        <div class="card-note">Use um perfil Codex vinculado à conta que deve atender este agente.</div>
+        ${codexProfile.linked ? `<div class="codex-profile-summary" style="--profile-accent:${escapeHtml(codexProfile.accent)}"><span class="profile-accent"></span><strong>${escapeHtml(codexProfile.name)}</strong><small>${escapeHtml(codexProfile.planType || 'Codex')}</small></div>` : ''}
         <div class="buttons">
-          <button class="primary" data-action="chatgpt-login" type="button">Conectar conta ChatGPT</button>
+          <button class="primary" data-action="codex-profile" type="button">${codexProfile.linked ? 'Gerenciar perfil Codex' : 'Adicionar perfil Codex'}</button>
           <button class="secondary" data-action="chatgpt-status" type="button">Verificar conexão</button>
           <button class="secondary" data-action="chatgpt-logout" type="button">Sair</button>
         </div>` : ''}
@@ -125,9 +133,26 @@
   }
 
   async function load() {
+    const storedProfile = await chrome.storage.local.get(CODEX_PROFILE_KEY);
+    codexProfile = { ...codexProfile, ...(storedProfile[CODEX_PROFILE_KEY] || {}) };
     state = await registry.loadState();
     render();
   }
+
+  function renderAccentChoices() {
+    codexAccentList.innerHTML = CODEX_ACCENTS.map((accent) => `<button class="accent-dot ${codexProfile.accent === accent ? 'selected' : ''}" type="button" data-accent="${accent}" style="--accent:${accent}" aria-label="Cor ${accent}"></button>`).join('');
+  }
+
+  function openCodexProfile() {
+    codexName.value = codexProfile.name || 'Meu Codex';
+    codexStatus.textContent = codexProfile.linked ? `Conta vinculada${codexProfile.planType ? ` · ${codexProfile.planType}` : ''}` : '';
+    renderAccentChoices();
+    codexModal.hidden = false;
+    codexName.focus();
+    codexName.select();
+  }
+
+  function closeCodexProfile() { codexModal.hidden = true; }
 
   async function persist(message) {
     state = await registry.saveState(state);
@@ -252,6 +277,8 @@
     const providerState = state.providers[providerId];
     const action = button.getAttribute('data-action');
 
+    if (action === 'codex-profile') { openCodexProfile(); return; }
+
     if (action.startsWith('chatgpt-')) {
       button.disabled = true;
       try {
@@ -263,6 +290,16 @@
           providerState.enabled = true;
           state.activeProvider = 'openai';
           await persist('Login aberto no navegador. Conclua o acesso e clique em Verificar conexão.');
+        }
+        if (nativeAction === 'codex.status' && reply.result?.authenticated) {
+          codexProfile = { ...codexProfile, linked: true, planType: reply.result.planType || null };
+          await chrome.storage.local.set({ [CODEX_PROFILE_KEY]: codexProfile });
+          render();
+        }
+        if (nativeAction === 'codex.logout') {
+          codexProfile = { ...codexProfile, linked: false, planType: null };
+          await chrome.storage.local.set({ [CODEX_PROFILE_KEY]: codexProfile });
+          render();
         }
         const currentCard = providerGrid.querySelector(`[data-provider-id="${providerId}"]`) || card;
         setCardStatus(currentCard, reply.result?.message || (reply.result?.authenticated ? `Conectado via ChatGPT (${reply.result.planType || 'plano ativo'}).` : 'Ainda não conectado.'), reply.result?.authenticated ? 'success' : '');
@@ -292,6 +329,35 @@
       }
     }
   });
+
+  codexAccentList.addEventListener('click', (event) => {
+    const choice = event.target.closest('[data-accent]');
+    if (!choice) return;
+    codexProfile.accent = choice.dataset.accent;
+    renderAccentChoices();
+  });
+
+  document.getElementById('codex-link-account').addEventListener('click', async () => {
+    const linkButton = document.getElementById('codex-link-account');
+    linkButton.disabled = true;
+    codexStatus.textContent = 'Abrindo login oficial do Codex...';
+    try {
+      const reply = await chrome.runtime.sendMessage({ target: 'browserking-windows', action: 'codex.login', params: {} });
+      if (!reply?.ok) throw new Error(reply?.error || 'Falha ao vincular conta Codex');
+      if (reply.result?.authUrl) await chrome.tabs.create({ url: reply.result.authUrl });
+      codexProfile = { ...codexProfile, name: codexName.value.trim() || 'Meu Codex', linked: Boolean(reply.result?.authenticated), planType: reply.result?.planType || null };
+      await chrome.storage.local.set({ [CODEX_PROFILE_KEY]: codexProfile });
+      codexStatus.textContent = reply.result?.authenticated ? `Conta vinculada · ${reply.result.planType || 'Codex'}` : 'Conclua o login no navegador e depois verifique a conexão.';
+      state.providers.openai.enabled = true;
+      state.activeProvider = 'openai';
+      await registry.saveState(state);
+      render();
+    } catch (error) { codexStatus.textContent = error.message; }
+    finally { linkButton.disabled = false; }
+  });
+
+  ['codex-profile-close','codex-profile-cancel'].forEach((id) => document.getElementById(id).addEventListener('click', closeCodexProfile));
+  codexModal.addEventListener('click', (event) => { if (event.target === codexModal) closeCodexProfile(); });
 
   providerSearch.addEventListener('input', () => {
     filterText = providerSearch.value.trim().toLowerCase();
