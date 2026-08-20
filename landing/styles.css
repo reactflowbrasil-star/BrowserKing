@@ -34,3 +34,5 @@ section[id]{scroll-margin-top:96px}
 @media(max-width:620px){.plans{padding-top:70px}.plans-grid{grid-template-columns:1fr}.plan-card:last-child{grid-column:auto}.plan-card{min-height:390px;padding:26px}.plan-card h3{font-size:30px}}
 /* Destaque verde para todas as palavras antes exibidas apenas em contorno. */
 h1 em,h2 em,.typewriter-main{color:var(--acid);-webkit-text-stroke:0;text-shadow:0 0 24px rgba(200,255,61,.12)}
+/* Destaque comercial: periodo de teste e valores em verde da marca. */
+.plans-grid .plan-card:nth-child(1) .plan-description,.plans-grid .plan-card:nth-child(2) .plan-description,.plans-grid .plan-card:nth-child(3) .plan-description{color:var(--acid);font-weight:700}.plans-grid .plan-card:nth-child(1) .plan-description::first-line,.plans-grid .plan-card:nth-child(2) .plan-description::first-line,.plans-grid .plan-card:nth-child(3) .plan-description::first-line{font:700 15px var(--mono);letter-spacing:.02em;text-shadow:0 0 18px rgba(200,255,61,.22)}
